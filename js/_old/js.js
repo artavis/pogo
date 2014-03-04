@@ -84,7 +84,7 @@ function init(){
 	
 	pogos.push(player);
 	
-	var numEnemies = 10;
+	var numEnemies = 0;
 	
 	for(var i=0;i<numEnemies;i++){
 		var x = Math.floor(Math.random() * xSpaces);
