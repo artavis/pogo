@@ -9,7 +9,9 @@ function($,requestAnimFrame,Map) {
 	    canvas = document.querySelector("#canvas");
 	    ctx = canvas.getContext("2d");
 	    
-
+		
+		var gameMap = new Map();
+		
 	    //Start the game loop
 	    requestAnimFrame(game_loop);
     }

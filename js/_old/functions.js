@@ -5,7 +5,7 @@ function Iso(x,y,z) {
 	
 	return {
 		x: ((x - y * 1)) + 960 + 20,
-		y: ((((x + y) / 1.5) - z*BLOCK_HEIGHT) + 100) * 1
+		y: ((((x + y) / 1.5) - z*1.5) + 100) * 1
 /*
 		x: x,
 		y: y

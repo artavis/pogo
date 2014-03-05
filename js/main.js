@@ -5,6 +5,9 @@ requirejs.config({
         jquery: 			'lib/jquery-2.1.0.min',
         requestAnimFrame:   'lib/requestAnimFrame',
         
+        //Helpers
+        utils:   'helpers/utils',
+        
         //Game
         GameController:     'controller/GameController',
         
