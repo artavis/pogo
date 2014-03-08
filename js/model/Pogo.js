@@ -1,47 +1,54 @@
 define(["jquery","utils"], function($,utils) {
     
 
-    function Pogo(x,y,z) {
+    function Pogo(startingSpace) {
 	    var width = 24;
 	    var zHeight = 48;
 	    
-	    this.x = x;
-	    this.y = y;
-	    this.z = z;
+	    var currentSpace = startingSpace;
 	    
-	    var bounceCount = 1;
+	    var size = { w:width, h:width, z:zHeight };
+	    var pos = { x:currentSpace.x, y:currentSpace.y, z:currentSpace.zHeight };
+	    var velocity = { x:0, y:0, z:0 };
+
 	    var bounceSpeed = 1;
 	    
-		this.update = function(){
-			this.bounce();
-			this.draw();
+	    var gravity = 10;
+	    
+	    function bounce() {			
+			//console.log("bounce");
+			velocity.z = 3;
+		};
+	    
+		this.update = function(dt){
+			//velocity.x;
+			//velocity.y;
+			
+			velocity.z -= gravity*dt/1000;
+			
+			pos.x += velocity.x;
+			pos.y += velocity.y;
+			pos.z = Math.floor(pos.z + velocity.z);
+			
+			//console.log(pos.z);
+			if(pos.z <= currentSpace.zHeight) {
+				pos.z = currentSpace.zHeight;
+				bounce();	
+			}
+			
 		};
 		
-		this.bounce = function() {
-			
-			
-			if(bounceCount < 9) {
-				this.z += Math.round(((9/bounceCount)*bounceSpeed));
-				bounceCount++;
-			} else {
-				this.z -= Math.round((9/(Math.abs(bounceCount - 17))*bounceSpeed));
-				bounceCount++;
-				if(bounceCount == 17){
-					bounceCount = 1;
-				}
-			} 
-		};
 
 	    
 	    this.draw = function() {
-		    var iso = utils.isoOffset(this.x,this.y,this.z);
+		    var iso = utils.isoOffset(pos.x,pos.y,pos.z);
 		    
 		    //console.log(iso);
 		    
 		    var canvas = document.querySelector("#canvas");
 			var ctx = canvas.getContext("2d");
 
-			ctx.drawImage(IMG,iso.x-width/2,iso.y-zHeight);
+			ctx.drawImage(IMG,iso.x-size.w/2,iso.y-size.z);
 			//ctx.fillRect(iso.x,iso.y,width,width);
 
 	    };

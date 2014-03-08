@@ -7,6 +7,7 @@ requirejs.config({
         
         //Helpers
         utils:   'helpers/utils',
+        config:   'helpers/config',
         
         //Game
         GameController:     'controller/GameController',
@@ -14,6 +15,8 @@ requirejs.config({
         //Models
         Map:				'model/Map',
         Space:				'model/Space',
+        
+        Entity:				'model/Entity',
         Pogo:				'model/Pogo',
         Player:				'model/Player',
         Enemy:				'model/Enemy',
@@ -34,5 +37,5 @@ IMG.src = "images/pogo.png";
 requirejs(['jquery', 'GameController'],
 function   ($,        GameController) {
     
-    var controller = new GameController();
+    window.GAME_CONTROLLER = new GameController();
 });
