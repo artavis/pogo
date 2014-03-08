@@ -23,7 +23,7 @@ define(["jquery"], function($) {
     }
     function isoOffset(x,y,z) {
 	    var pts = iso(x,y,z);
-	    pts.x += 200;
+	    pts.x += 300;
 	    pts.y += 100;
 	    return pts;
     }

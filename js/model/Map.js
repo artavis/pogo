@@ -1,4 +1,4 @@
-define(["jquery","Space"], function($,Space) {
+define(["jquery","Space","Pogo"], function($,Space,Pogo) {
     
     var X_SPACES = 5, 
         Y_SPACES = 5,
@@ -8,7 +8,6 @@ define(["jquery","Space"], function($,Space) {
 	    this.init = function() {
 			
 			this.createSpaces();
-			
 		}  
 		
 		this.createSpaces = function() {
@@ -24,6 +23,12 @@ define(["jquery","Space"], function($,Space) {
 			}
 
 		}  
+		
+		this.draw = function() {
+			for(var i in this.spaces) {
+				this.spaces[i].draw();
+			}
+		}
 		
 		this.init();
     }

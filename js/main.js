@@ -18,10 +18,17 @@ requirejs.config({
         Player:				'model/Player',
         Enemy:				'model/Enemy',
         Bullet:				'model/Bullet',
-        Explosion:			'model/Explosion'
+        Explosion:			'model/Explosion',
+        
+        //Views
+        SpaceView:			'view/SpaceView'
         
     }
 });
+
+var IMG = new Image();
+IMG.src = "images/pogo.png";
+
 
 // Start the main app logic.
 requirejs(['jquery', 'GameController'],
