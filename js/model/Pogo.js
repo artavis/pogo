@@ -11,31 +11,35 @@ define(["jquery","utils"], function($,utils) {
 	    var pos = { x:currentSpace.x, y:currentSpace.y, z:currentSpace.zHeight };
 	    var velocity = { x:0, y:0, z:0 };
 
-	    var bounceSpeed = 1;
+	    var bounceCount = 0;
 	    
 	    var gravity = 10;
 	    
 	    function bounce() {			
-			//console.log("bounce");
-			velocity.z = 3;
+			if(bounceCount == 5) {
+				jump();
+				return;
+			}
+			velocity.z = 200;
+			bounceCount++;
 		};
+		
+		function jump() {
+			velocity.z = 300;
+			bounceCount = 0;
+		}
 	    
 		this.update = function(dt){
-			//velocity.x;
-			//velocity.y;
+			if(pos.z <= currentSpace.zHeight) bounce();
 			
-			velocity.z -= gravity*dt/1000;
+			velocity.z -= gravity;
 			
 			pos.x += velocity.x;
 			pos.y += velocity.y;
-			pos.z = Math.floor(pos.z + velocity.z);
+			pos.z = Math.floor(pos.z + velocity.z*dt/1000);
 			
-			//console.log(pos.z);
-			if(pos.z <= currentSpace.zHeight) {
-				pos.z = currentSpace.zHeight;
-				bounce();	
-			}
-			
+			if(pos.z <= currentSpace.zHeight) pos.z = currentSpace.zHeight;
+						
 		};
 		
 
