@@ -6,7 +6,6 @@ define(["jquery","Space","Pogo"], function($,Space,Pogo) {
 
     function Map() {
 	    this.init = function() {
-			
 			this.createSpaces();
 		}  
 		
@@ -15,7 +14,6 @@ define(["jquery","Space","Pogo"], function($,Space,Pogo) {
 			for(var i=0; i<Y_SPACES; i++) {
 				for(var k=0; k<X_SPACES; k++) {
 					var space = new Space(k,i);
-					space.draw();
 					
 					this.spaces.push(space);
 					

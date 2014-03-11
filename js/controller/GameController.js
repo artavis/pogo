@@ -7,6 +7,8 @@ function($,       requestAnimFrame,  config,  Map,  Pogo) {
 	    var _gameStartTime=0, _currentTime = 0;
 	    
 	    var view, canvas, ctx, pogo, gameMap;
+	    
+	    var stage;
 
 	    function init() {
 			canvas = document.querySelector("#canvas");
@@ -15,12 +17,20 @@ function($,       requestAnimFrame,  config,  Map,  Pogo) {
 			gameMap = new Map();
 			
 			var space = gameMap.spaces[gameMap.spaces.length-1];
-			pogo = new Pogo(space);
+			//pogo = new Pogo(space);
 			
-	
+			
+			stage = new createjs.Stage("canvas");
+			var circle = new createjs.Shape();
+			circle.graphics.beginFill("red").drawCircle(0, 0, 50);
+			circle.x = 100;
+			circle.y = 100;
+			stage.addChild(circle);
+			
+			stage.update();
 			
 		    //Start the game loop
-		    requestAnimFrame(gameLoop);
+		    //requestAnimFrame(gameLoop);
     
 	    }
 	    
@@ -52,6 +62,9 @@ function($,       requestAnimFrame,  config,  Map,  Pogo) {
 	    //Exposed Public Methods
 	    this.gameStartTime = function() {
 		    return _gameStartTime;
+	    };
+	    this.getStage = function() {
+		  	return stage;  
 	    };
 	    
 	    init();
