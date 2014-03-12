@@ -1,5 +1,6 @@
 define(function() {
     //Polyfill for requestAnimationFrame. Falls back to setTimeout if none available.
+    //return function(callback){ setTimeout(function(){ callback(+new Date); },500) };
     return  window.requestAnimationFrame     ||
           window.webkitRequestAnimationFrame ||
           window.mozRequestAnimationFrame    ||

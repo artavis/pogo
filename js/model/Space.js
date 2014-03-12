@@ -2,7 +2,7 @@ define(["jquery","utils","SpaceView","Pogo"],
 	function($,   utils,  SpaceView,  Pogo) {
     
     var WIDTH = 48,
-        MAX_BLOCK_HEIGHT = 3,
+        MAX_BLOCK_HEIGHT = 4,
         PLATFORM_HEIGHT = 24;
         
     function Space(xInd,yInd) {

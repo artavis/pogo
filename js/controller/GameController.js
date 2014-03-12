@@ -7,8 +7,9 @@ function($,       requestAnimFrame,  config,  Map,  Pogo) {
 	    var _gameStartTime=0, _currentTime = 0;
 	    
 	    var view, canvas, ctx, pogo, gameMap;
-	    
+	    var gameEntities = [], drawnEntities = [];
 	    var stage;
+	    var paused = false;
 
 	    function init() {
 			canvas = document.querySelector("#canvas");
@@ -16,21 +17,15 @@ function($,       requestAnimFrame,  config,  Map,  Pogo) {
 			
 			gameMap = new Map();
 			
-			var space = gameMap.spaces[gameMap.spaces.length-1];
-			//pogo = new Pogo(space);
-			
-			
-			stage = new createjs.Stage("canvas");
-			var circle = new createjs.Shape();
-			circle.graphics.beginFill("red").drawCircle(0, 0, 50);
-			circle.x = 100;
-			circle.y = 100;
-			stage.addChild(circle);
-			
-			stage.update();
-			
+			for(var i in gameMap.spaces) {
+				var pogo = new Pogo(gameMap.spaces[i]);
+				gameEntities.push(pogo);
+			}
+						
 		    //Start the game loop
-		    //requestAnimFrame(gameLoop);
+		    requestAnimFrame(gameLoop);
+		    
+		    $("#pauser").on("click",function(){ paused = !paused; });
     
 	    }
 	    
@@ -38,11 +33,13 @@ function($,       requestAnimFrame,  config,  Map,  Pogo) {
 		    //set clock and delta since last frame
 		    var dt = t - _currentTime;
 		    _currentTime = t;
-
-		    canvas.width = canvas.width;
 		    
+		    if(paused) return;
 		    //Update all game entities
 		    update(dt);		    
+		    
+		    //Update the draw order
+		    updateDrawOrder();
 		    
 		    //Draw the game
 		    draw();
@@ -52,11 +49,21 @@ function($,       requestAnimFrame,  config,  Map,  Pogo) {
 	    }
 	    
 	    function update(dt) {
-		    pogo.update(dt);
+		    for(var i in gameEntities) gameEntities[i].update(dt);
 	    }
 	    function draw() {
-		    gameMap.draw();
-		    pogo.draw();
+		    canvas.width = canvas.width;
+		    for(var i in drawnEntities) drawnEntities[i].draw();
+	    }
+	    function updateDrawOrder(){
+		    drawnEntities = [];
+		    for(var i in gameMap.spaces) {
+			    drawnEntities.push(gameMap.spaces[i]);
+			    for(var k in gameEntities) {
+				    if(gameEntities[k].currentSpace().xIndex === gameMap.spaces[i].xIndex &&
+				    	gameEntities[k].currentSpace().yIndex === gameMap.spaces[i].yIndex) drawnEntities.push(gameEntities[i]);
+			    }
+		    }
 	    }
 	    
 	    //Exposed Public Methods
