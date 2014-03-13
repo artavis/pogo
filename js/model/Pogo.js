@@ -1,4 +1,4 @@
-define(["jquery","utils"], function($,utils) {
+define(["jquery","utils","GameController"], function($,utils,GameController) {
     
 
     function Pogo(startingSpace) {
@@ -10,11 +10,13 @@ define(["jquery","utils"], function($,utils) {
 	    var currentSpace = startingSpace;
 	    	    
 	    var gravity = -600;
+	    var moveDir = null;
+	    var isJumping = false;
 	    
 	    function init() {
 		    		    
 		    size = { w:width, h:width, z:zHeight };
-		    pos = { x:currentSpace.x, y:currentSpace.y, z:currentSpace.zHeight + Math.floor(Math.random()*200) };
+		    pos = { x:currentSpace.pos.x, y:currentSpace.pos.y, z:currentSpace.size.z + Math.floor(Math.random()*200) };
 		    velocity = { x:0, y:0, z:Math.floor(Math.random()*200) };
 	
 		    bounceCount = 0;
@@ -23,14 +25,51 @@ define(["jquery","utils"], function($,utils) {
 	    }
 	    
 	    function bounce() {			
-			//console.log("bounce");
-			if(bounceCount == 5) {
+			//console.log(GAME_CONTROLLER);
+			
+			if(moveDir != null) {
+				if(moveDir == "right") {
+					velocity.x = currentSpace.size.width;
+				}else if(moveDir == "left") {
+					velocity.x = currentSpace.size.width * -1;
+				}else if(moveDir == "up") {
+					velocity.y = currentSpace.size.height * -1;
+				}else if(moveDir == "down") {
+					velocity.y = currentSpace.size.height;
+				}
+				
+				moveDir = null;
+				isJumping = true;
 				jump();
 			} else {
+				//normal bounce
+				velocity.x = 0;
+				velocity.y = 0;
 				velocity.z = 200;
-				bounceCount++;
+				isJumping = false;
 			}
 		};
+		
+		function moveRight(e) {
+			e.preventDefault();			
+			if(currentSpace.onBoardEdge("right")) return;
+			moveDir = "right";
+		}
+		function moveLeft(e) {
+			e.preventDefault();	
+			if(currentSpace.onBoardEdge("left")) return;		
+			moveDir = "left";
+		}
+		function moveUp(e) {
+			e.preventDefault();		
+			if(currentSpace.onBoardEdge("top")) return;	
+			moveDir = "up";
+		}
+		function moveDown(e) {
+			e.preventDefault();	
+			if(currentSpace.onBoardEdge("bottom")) return;		
+			moveDir = "down";
+		}
 		
 		function jump() {
 			velocity.z = 300;
@@ -46,15 +85,33 @@ define(["jquery","utils"], function($,utils) {
 			
 			
 			velocity.z += (gravity*dt)/1000;
+			var vx1 = (velocity.x*dt)/1000;
+			var vy1 = (velocity.y*dt)/1000;
 			var vz1 = (velocity.z*dt)/1000;
 			
-			pos.x += velocity.x;
-			pos.y += velocity.y;
+			pos.x += vx1;
+			pos.y += vy1;
 			pos.z += vz1;
 			
-			if(pos.z <= currentSpace.zHeight && velocity.z < 0) {
-				pos.z = currentSpace.zHeight;
+			if(pos.z <= currentSpace.size.z && velocity.z < 0) {
+				pos.z = currentSpace.size.z;
 				bounce();
+			}
+			
+			if(isJumping) {
+/* 				console.log("jumping"); */
+				var map = GAME_CONTROLLER.map;
+				//console.log(pos,currentSpace.edges);
+				if(pos.x >= currentSpace.edges.right) {
+					currentSpace = map.getSpace(currentSpace.xIndex+1,currentSpace.yIndex);
+				} else if(pos.x < currentSpace.edges.left) {
+					currentSpace = map.getSpace(currentSpace.xIndex-1,currentSpace.yIndex);
+				} else if(pos.y < currentSpace.edges.top) {
+					currentSpace = map.getSpace(currentSpace.xIndex,currentSpace.yIndex-1);
+				} else if(pos.y >= currentSpace.edges.bottom) {
+					currentSpace = map.getSpace(currentSpace.xIndex,currentSpace.yIndex+1);
+				}
+				
 			}
 
 						
@@ -77,6 +134,10 @@ define(["jquery","utils"], function($,utils) {
 			//ctx.fillRect(iso.x,iso.y,width,width);
 
 	    };
+	    this.moveRight = moveRight;
+	    this.moveLeft = moveLeft;
+	    this.moveUp = moveUp;
+	    this.moveDown = moveDown;
 	    
 	    init();
     }   

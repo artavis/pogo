@@ -12,7 +12,7 @@ define(["jquery","utils"], function($,utils) {
 	    };
 	    
 		this.createBufferCanvas = function() {
-			var iso = isoPoints(space.zHeight);
+			var iso = isoPoints(space.size.z);
 			
 			//console.log(iso);
 			this.buffer = document.createElement("canvas");
@@ -61,7 +61,7 @@ define(["jquery","utils"], function($,utils) {
 			canvas = document.querySelector("#canvas");
 			ctx = canvas.getContext("2d");
 			
-			var iso = utils.isoOffset(space.x,space.y,space.zHeight);
+			var iso = utils.isoOffset(space.pos.x,space.pos.y,space.size.z);
 			//console.log(this.buffer.points);
 			//ctx.drawImage(this.buffer,iso.x-this.buffer.points.ne.x/2,iso.y);
 			ctx.drawImage(this.buffer,iso.x-this.buffer.points.ne.x/2,iso.y-this.buffer.points.psw.y);

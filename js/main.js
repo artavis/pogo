@@ -3,6 +3,7 @@ requirejs.config({
     paths: {
         //Lib
         jquery: 			'lib/jquery-2.1.0.min',
+        pubsub: 			'lib/jquery.ba-tinypubsub.min',
         requestAnimFrame:   'lib/requestAnimFrame',
         
         //CreateJS
@@ -46,7 +47,7 @@ IMG.src = "images/pogo.png";
 
 // Start the main app logic.
 requirejs(['jquery', 'easeljs', 'preloadjs', 'soundjs', 'GameController'],
-function   ($,        createjs,   preloadjs,   soundjs,   GameController) {
+function   ($,        createjs,  preloadjs,   soundjs,   GameController) {
 
     
 

@@ -1,7 +1,10 @@
 define(["jquery"], function($) {
     
     return {
-	    boardSpaceTotal: { x: 15, y:15 }
+	    spaceWidth: 48,
+	    platformHeight: 24,
+	    maxBlockHeight: 2,
+	    boardSpaceTotal: { x: 5, y:5 }
     };
     
     

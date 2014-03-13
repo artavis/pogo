@@ -20,8 +20,8 @@ define(["jquery"], function($) {
 			y: (((x + y) / 1.5) - z*1.5)
 */
 			
-			x: (x - y),
-			y: (((x + y) / 1.5) - z*1.5)
+			x: Math.round(x - y),
+			y: Math.round(((x + y) / 1.5) - z*1.5)
 
 	
 		};
@@ -29,7 +29,7 @@ define(["jquery"], function($) {
     function isoOffset(x,y,z) {
 	    var pts = iso(x,y,z);
 	    pts.x += 300;
-	    pts.y += 100;
+	    pts.y += 150;
 	    return pts;
     }
     function oneOrNegOne() {

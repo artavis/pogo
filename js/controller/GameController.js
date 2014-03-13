@@ -1,81 +1,104 @@
-define(["jquery","requestAnimFrame","config","Map","Pogo"], 
-function($,       requestAnimFrame,  config,  Map,  Pogo) {
+define(["jquery","requestAnimFrame","config","Map","Player","Pogo"], 
+function($,       requestAnimFrame,  config,  Map,  Player,  Pogo) {
+    
+   	var _gameStartTime=0, 
+   		_currentTime = 0, 
+   		_lastFPSDisplay = 0,
+   		paused = false,
+   		
+		canvas = document.querySelector("#canvas"),
+	    ctx = canvas.getContext("2d"),
+   		
+   		self;
     
     function GameController() {
-	    var self = this;
+	    self = this;
 	    
-	    var _gameStartTime=0, _currentTime = 0;
+	    this.entities = [], 
+	    this.drawArray = [];	        
 	    
-	    var view, canvas, ctx, pogo, gameMap;
-	    var gameEntities = [], drawnEntities = [];
-	    var stage;
-	    var paused = false;
-
-	    function init() {
-			canvas = document.querySelector("#canvas");
-		    ctx = canvas.getContext("2d");
-			
-			gameMap = new Map();
-			
-			for(var i in gameMap.spaces) {
-				var pogo = new Pogo(gameMap.spaces[i]);
-				gameEntities.push(pogo);
-			}
-						
-		    //Start the game loop
-		    requestAnimFrame(gameLoop);
-		    
-		    $("#pauser").on("click",function(){ paused = !paused; });
+	    this.init();
+    }
     
-	    }
-	    
-	    function gameLoop(t) {
+    GameController.prototype = {
+	    init: function() {
+		    this.map = new Map();
+		    
+		    var player = new Player(this.map.spaces[4][4]);
+			this.entities.push(player);
+			
+			console.log(player.currentSpace());
+			
+			$("#pauser").on("click",function(){ paused = !paused; });
+			
+			//Start the game loop
+		    requestAnimFrame(this.gameLoop);
+
+	    },
+	    gameLoop: function(t) {
 		    //set clock and delta since last frame
 		    var dt = t - _currentTime;
 		    _currentTime = t;
+		    updateFPS(dt);
 		    
-		    if(paused) return;
+		    if(paused) { requestAnimFrame(self.gameLoop); return; }
+		    
 		    //Update all game entities
-		    update(dt);		    
+		    self.update(dt);		    
 		    
 		    //Update the draw order
-		    updateDrawOrder();
+		    self.updateDrawOrder();
 		    
 		    //Draw the game
-		    draw();
+		    self.draw();
 
 		    //fire next loop
-		    requestAnimFrame(gameLoop);
-	    }
-	    
-	    function update(dt) {
-		    for(var i in gameEntities) gameEntities[i].update(dt);
-	    }
-	    function draw() {
-		    canvas.width = canvas.width;
-		    for(var i in drawnEntities) drawnEntities[i].draw();
-	    }
-	    function updateDrawOrder(){
-		    drawnEntities = [];
-		    for(var i in gameMap.spaces) {
-			    drawnEntities.push(gameMap.spaces[i]);
-			    for(var k in gameEntities) {
-				    if(gameEntities[k].currentSpace().xIndex === gameMap.spaces[i].xIndex &&
-				    	gameEntities[k].currentSpace().yIndex === gameMap.spaces[i].yIndex) drawnEntities.push(gameEntities[i]);
+		    requestAnimFrame(self.gameLoop);
+		    //setTimeout(function(){ self.gameLoop(+new Date); }, 100);
+	    },
+	    update: function(dt) {
+		    for(var i in this.entities) this.entities[i].update(dt);
+	    },
+	    updateDrawOrder: function() {
+		    this.drawArray = [];
+		    //console.log(this.entities[0].currentSpace());
+		    for(var y in this.map.spaces) {
+			    for(var x in this.map.spaces[y]) {
+					this.drawArray.push(this.map.spaces[x][y]);    
+				    for(var i in this.entities) {
+					    if(this.entities[i].currentSpace() == this.map.spaces[x][y]) {
+					    	this.drawArray.push(this.entities[i]);
+					    }
+				    }
+					
 			    }
+			    
 		    }
+	    },
+	    draw: function() {
+		    canvas.width = canvas.width;
+		    for(var i in this.drawArray) this.drawArray[i].draw();
 	    }
-	    
-	    //Exposed Public Methods
-	    this.gameStartTime = function() {
-		    return _gameStartTime;
-	    };
-	    this.getStage = function() {
-		  	return stage;  
-	    };
-	    
-	    init();
+    };
+    
+    GameController.gameStartTime = function() {
+	    return _gameStartTime;
+    };
+    GameController.game = function() {
+	  	return _game;  
+    };
+    GameController.currentTime = function() {
+	  	return _currentTime;  
+    };
+    
+    function updateFPS(dt) {
+	    _lastFPSDisplay += dt;
+	    if(_lastFPSDisplay >= 500) {
+		    $("#fps").html(Math.round(1000/dt));
+		    _lastFPSDisplay = 0;
+	    }
     }
+
 
     return GameController;
     
