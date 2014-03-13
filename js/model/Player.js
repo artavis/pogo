@@ -1,8 +1,7 @@
 define(["jquery","Pogo"], function($,Pogo) {
         
     function Player(space) {
-		var pogo = new Pogo(space);
-		
+		Pogo.call(this,space);
 		
 		$(document).on("keyup", function(e){
 			if(e.keyCode == 37) pogo.moveLeft(e);
@@ -11,9 +10,10 @@ define(["jquery","Pogo"], function($,Pogo) {
 			if(e.keyCode == 40) pogo.moveDown(e);
 		});
 		
-		return pogo;
+		return this;
     }
     
+    Player.prototype = Object.create( Pogo.prototype );
     
     return Player;
     

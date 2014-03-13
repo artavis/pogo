@@ -27,7 +27,7 @@ function($,       requestAnimFrame,  config,  Map,  Player,  Pogo) {
 		    var player = new Player(this.map.spaces[4][4]);
 			this.entities.push(player);
 			
-			console.log(player.currentSpace());
+			//console.log(player.currentSpace());
 			
 			$("#pauser").on("click",function(){ paused = !paused; });
 			
@@ -66,7 +66,7 @@ function($,       requestAnimFrame,  config,  Map,  Player,  Pogo) {
 			    for(var x in this.map.spaces[y]) {
 					this.drawArray.push(this.map.spaces[x][y]);    
 				    for(var i in this.entities) {
-					    if(this.entities[i].currentSpace() == this.map.spaces[x][y]) {
+					    if(this.entities[i].currentSpace == this.map.spaces[x][y]) {
 					    	this.drawArray.push(this.entities[i]);
 					    }
 				    }

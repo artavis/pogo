@@ -24,6 +24,16 @@ define(["jquery"],
             	this.size = size;
             	return this; 
             },
+            getBounds: function() {
+	            return {
+		            left: this.pos.x - this.size.width/2,
+		            right: this.pos.x + this.size.width/2,
+		            top: this.pos.y - this.size.height/2,
+		            bottom: this.pos.y + this.size.height/2,
+		            zTop: this.pos.z - this.size.z,
+		            zBottom: this.pos.z,
+	            }
+            }
         };
   
         // Return the base Model constructor.

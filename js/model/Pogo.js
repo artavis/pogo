@@ -1,54 +1,37 @@
-define(["jquery","utils","GameController"], function($,utils,GameController) {
+define(["jquery","utils","config","Entity"], function($,utils,config,Entity) {
     
-
-    function Pogo(startingSpace) {
-	    var width = 24;
-	    var zHeight = 48;
-	    
-	    var size, pos, velocity, bounceCount, bounceStart;
-	    
-	    var currentSpace = startingSpace;
-	    	    
-	    var gravity = -600;
-	    var moveDir = null;
-	    var isJumping = false;
-	    
-	    function init() {
-		    		    
-		    size = { w:width, h:width, z:zHeight };
-		    pos = { x:currentSpace.pos.x, y:currentSpace.pos.y, z:currentSpace.size.z + Math.floor(Math.random()*200) };
-		    velocity = { x:0, y:0, z:Math.floor(Math.random()*200) };
+	var _gravity = -600;
 	
-		    bounceCount = 0;
-		    bounceStart = 0;
-		    
-	    }
+    function Pogo(startingSpace) {
 	    
-	    function bounce() {			
-			//console.log(GAME_CONTROLLER);
-			
-			if(moveDir != null) {
-				if(moveDir == "right") {
-					velocity.x = currentSpace.size.width;
-				}else if(moveDir == "left") {
-					velocity.x = currentSpace.size.width * -1;
-				}else if(moveDir == "up") {
-					velocity.y = currentSpace.size.height * -1;
-				}else if(moveDir == "down") {
-					velocity.y = currentSpace.size.height;
-				}
-				
-				moveDir = null;
-				isJumping = true;
-				jump();
-			} else {
-				//normal bounce
-				velocity.x = 0;
-				velocity.y = 0;
-				velocity.z = 200;
-				isJumping = false;
-			}
-		};
+	    Entity.call(this);
+	    
+	    this.setSize({
+		    width: config.pogoWidth,
+		    height: config.pogoWidth,
+		    z: config.pogoHeight
+	    });
+	    
+	    this.currentSpace = startingSpace;
+	    
+	    this.setPos({
+		    x: this.currentSpace.pos.x,
+		    y: this.currentSpace.pos.y,
+		    z: this.currentSpace.size.z
+	    });
+	    
+	    this.velocity = { x:0, y:0, z:Math.floor(Math.random()*200) }, 
+	    this.isJumping = false;
+	    //bounceCount = 0, 
+	    //bounceStart = 0;
+	    
+	    return this;
+	    
+	    
+	    	    
+/*
+	    var moveDir = null;
+	    	    
 		
 		function moveRight(e) {
 			e.preventDefault();			
@@ -75,72 +58,47 @@ define(["jquery","utils","GameController"], function($,utils,GameController) {
 			velocity.z = 300;
 			bounceCount = 0;
 		}
+	    		
+*/
 	    
-		this.update = function(dt){
-			//if(pos.z <= currentSpace.zHeight) bounce();
+    }   
+    
+    Pogo.prototype = Object.create( Entity.prototype );
+    
+    Pogo.prototype.bounce = function() {		
+		//normal bounce
+		this.velocity.x = 0;
+		this.velocity.y = 0;
+		this.velocity.z = 200;
+		this.isJumping = false;
+    };
+    
+    Pogo.prototype.update = function(dt) {
+			this.velocity.z += (_gravity*dt)/1000;
+			var vx1 = (this.velocity.x*dt)/1000;
+			var vy1 = (this.velocity.y*dt)/1000;
+			var vz1 = (this.velocity.z*dt)/1000;
 			
-			//pos.z += Math.floor((dt/1000) * (velocity.z + (dt/1000) * gravity));
-			//velocity.z += (dt/1000) * gravity;
+			this.pos.x += vx1;
+			this.pos.y += vy1;
+			this.pos.z += vz1;
 			
-			
-			
-			velocity.z += (gravity*dt)/1000;
-			var vx1 = (velocity.x*dt)/1000;
-			var vy1 = (velocity.y*dt)/1000;
-			var vz1 = (velocity.z*dt)/1000;
-			
-			pos.x += vx1;
-			pos.y += vy1;
-			pos.z += vz1;
-			
-			if(pos.z <= currentSpace.size.z && velocity.z < 0) {
-				pos.z = currentSpace.size.z;
-				bounce();
+			if(this.pos.z <= this.currentSpace.size.z && this.velocity.z < 0) {
+				this.pos.z = this.currentSpace.size.z;
+				this.bounce();
 			}
-			
-			if(isJumping) {
-/* 				console.log("jumping"); */
-				var map = GAME_CONTROLLER.map;
-				//console.log(pos,currentSpace.edges);
-				if(pos.x >= currentSpace.edges.right) {
-					currentSpace = map.getSpace(currentSpace.xIndex+1,currentSpace.yIndex);
-				} else if(pos.x < currentSpace.edges.left) {
-					currentSpace = map.getSpace(currentSpace.xIndex-1,currentSpace.yIndex);
-				} else if(pos.y < currentSpace.edges.top) {
-					currentSpace = map.getSpace(currentSpace.xIndex,currentSpace.yIndex-1);
-				} else if(pos.y >= currentSpace.edges.bottom) {
-					currentSpace = map.getSpace(currentSpace.xIndex,currentSpace.yIndex+1);
-				}
-				
-			}
-
-						
-		};
-		
-
-	    this.currentSpace = function() {
-			return currentSpace;
-	    };
-	    
-	    this.draw = function() {
-		    var iso = utils.isoOffset(pos.x,pos.y,pos.z);
-		    
+    };
+    
+    Pogo.prototype.draw = function() {
+		    var iso = utils.isoOffset(this.pos.x,this.pos.y,this.pos.z);
 		    //console.log(iso);
 		    
 		    var canvas = document.querySelector("#canvas");
 			var ctx = canvas.getContext("2d");
 
-			ctx.drawImage(IMG,iso.x-size.w/2,iso.y-size.z);
+			ctx.drawImage(IMG,iso.x-this.size.width/2,iso.y-this.size.z);
 			//ctx.fillRect(iso.x,iso.y,width,width);
-
-	    };
-	    this.moveRight = moveRight;
-	    this.moveLeft = moveLeft;
-	    this.moveUp = moveUp;
-	    this.moveDown = moveDown;
-	    
-	    init();
-    }   
+    }
     
     return Pogo; 
 });
