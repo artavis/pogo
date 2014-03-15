@@ -31,12 +31,15 @@ define(["jquery","Space","Pogo"], function($,Space,Pogo) {
 			return false;
 		}
 		this.getSpaceByPos = function(pos) {
-			for(var i in this.spaces) {
-				var space = this.spaces[i];
-				if(pos.x >= space.pos.x - space.width/2 && 
-					pos.x < space.pos.x + space.width/2 &&
-					pos.y >= space.pos.y - space.height/2 &&
-					pos.y < space.pos.y + space.height/2) return space;
+			for(var y in this.spaces) {
+				for(var x in this.spaces[y]) {
+					var space = this.spaces[y][x];
+					if(pos.x >= space.pos.x - space.size.width/2 && 
+						pos.x < space.pos.x + space.size.width/2 &&
+						pos.y >= space.pos.y - space.size.height/2 &&
+						pos.y < space.pos.y + space.size.height/2) return space;
+				}
+				
 			}
 			return false;
 		}

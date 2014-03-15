@@ -1,7 +1,6 @@
 define(["jquery","utils","config","Entity"], function($,utils,config,Entity) {
     
-	var _gravity = -600, _bounceSpeed = 1, _jumpFrames = 24;
-	var _jumpMidpoint = _jumpFrames/2 + 1;
+	var _bounceLength = 250, _moveLength=_bounceLength*2, _bounceHeight = 50, _jumpHeight = 90;
 	
     function Pogo(startingSpace) {
 	    
@@ -24,10 +23,12 @@ define(["jquery","utils","config","Entity"], function($,utils,config,Entity) {
 	    this.velocity = { x:0, y:0, z:0 }, 
 
 	    this.bouncing = true;
+	    this.jumping = false;
 
 	    
 	    
 	    this.bounceTime = 0;
+	    this.moveTime = 0;
 	    
 	    return this;
 	    
@@ -119,84 +120,86 @@ define(["jquery","utils","config","Entity"], function($,utils,config,Entity) {
 	Pogo.easeOutQuart =  function (t, b, c, d) {
 		return -c *(t/=d)*(t-2) + b;
 	};    
+	Pogo.noEasing = function(t, b, c, d) {
+	    return c * t / d + b;
+	}
     Pogo.prototype.bounceFunc = function(dt) {
-		var bounceLength = 250;
-		
 		var downZ = this.currentSpace.size.z;
-		var bHeight = 50;
 		
 		this.bounceTime += dt;
 		
-		if(this.bounceTime >= bounceLength) {
-			this.bounceTime = bounceLength;
+		if(this.bounceTime >= _bounceLength) {
+			this.bounceTime = _bounceLength;
 		}
 		
 		if(this.goingUp) {
-			this.pos.z = Pogo.easeOutQuart(this.bounceTime, downZ, bHeight, bounceLength);
+			this.pos.z = Pogo.easeOutQuart(this.bounceTime, downZ, _bounceHeight, _bounceLength);
 		} else {
-			this.pos.z = Pogo.easeInQuart(this.bounceTime, downZ + bHeight, -bHeight, bounceLength);
+			this.pos.z = Pogo.easeInQuart(this.bounceTime, downZ + _bounceHeight, -_bounceHeight, _bounceLength);
 		}
 		
-		if(this.bounceTime == bounceLength) {
+		if(this.bounceTime == _bounceLength) {
 			this.goingUp = !this.goingUp;
 			this.bounceTime = 0;			
 		}		
-    }
+    };
+    Pogo.prototype.jumpFunc = function(dt) {
+		var downZ = this.currentSpace.size.z;
+		var topZ = downZ + _jumpHeight;
+		
+		this.bounceTime += dt;
+		this.moveTime += dt;
+		
+		if(this.bounceTime >= _bounceLength) {
+			this.bounceTime = _bounceLength;
+		}
+		if(this.moveTime >= _moveLength) {
+			this.moveTime = _moveLength;
+		}
+		
+		//Bounce Height
+		if(this.goingUp) {
+			this.pos.z = Pogo.easeOutQuart(this.bounceTime, downZ, _jumpHeight, _bounceLength);
+		} else {
+			this.pos.z = Pogo.easeInQuart(this.bounceTime, topZ, this.destSpace.size.z-topZ, _bounceLength);
+		}
+		
+		//Moving across map
+		this.pos.x = Pogo.noEasing(this.moveTime, this.currentSpace.pos.x, 
+									this.destSpace.pos.x - this.currentSpace.pos.x, _moveLength);
+		this.pos.y = Pogo.noEasing(this.moveTime, this.currentSpace.pos.y, 
+									this.destSpace.pos.y - this.currentSpace.pos.y, _moveLength);
+		
+		
+		
+		
+		
+		if(this.bounceTime == _bounceLength) {
+			this.goingUp = !this.goingUp;
+			this.bounceTime = 0;			
+		}		
+		if(this.moveTime >= _moveLength) {
+			this.moveTime = 0;
+			
+			this.currentSpace = this.destSpace;
+		}
+
+    };
         
     Pogo.prototype.update = function(dt) {
-
 			if(this.bouncing) {
 				this.bounceFunc(dt);
+				
+			} else if (this.jumping) {
+				this.jumpFunc(dt);
 			}
 			
 			if(this.pos.z == this.currentSpace.size.z) {
-				//console.log("bounce!");
-			}
-
-/*
-			this.velocity.z += (_gravity*dt)/1000;
-			var vx1 = (this.velocity.x*dt)/1000;
-			var vy1 = (this.velocity.y*dt)/1000;
-			var vz1 = (this.velocity.z*dt)/1000;
-			
-			this.pos.x += vx1;
-			this.pos.y += vy1;
-			this.pos.z += vz1;
-			this.lastJump += dt;
-*/
-			
-/*
-			if(this.pos.z <= this.currentSpace.size.z && this.velocity.z < 0) {
-				//On platform - bounce or jump
-				this.isJumping = false;
-				this.pos.z = this.currentSpace.size.z;
+				this.jumping = !this.jumping;
+				this.bouncing = !this.bouncing;
 				
-				if(this.jumpTriggered) {
-					this.jump();
-				} else {
-					this.bounce();
-				}
-				
-				if(this.shotTriggered) this.shoot();
+				if(this.jumping) this.destSpace = GAME_CONTROLLER.map.getSpace(this.currentSpace.xIndex,this.currentSpace.yIndex-1);
 			}
-*/
-			
-/*
-			if(this.isJumping) {
-				var map = GAME_CONTROLLER.map;
-				//console.log(pos,currentSpace.edges);
-				if(this.pos.x >= this.currentSpace.edges.right) {
-					this.currentSpace = map.getSpace(this.currentSpace.xIndex+1,this.currentSpace.yIndex);
-				} else if(this.pos.x < this.currentSpace.edges.left) {
-					this.currentSpace = map.getSpace(this.currentSpace.xIndex-1,this.currentSpace.yIndex);
-				} else if(this.pos.y < this.currentSpace.edges.top) {
-					this.currentSpace = map.getSpace(this.currentSpace.xIndex,this.currentSpace.yIndex-1);
-				} else if(this.pos.y >= this.currentSpace.edges.bottom) {
-					this.currentSpace = map.getSpace(this.currentSpace.xIndex,this.currentSpace.yIndex+1);
-				}
-
-			}
-*/
     };
     
     Pogo.prototype.draw = function() {
