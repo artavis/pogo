@@ -24,8 +24,8 @@ function($,       requestAnimFrame,  config,  Map,  Player,  Pogo) {
 	    init: function() {
 		    this.map = new Map();
 		    
-		    var player = new Player(this.map.spaces[4][4]);
-			this.entities.push(player);
+			this.createPlayer();
+			//this.fillMapWithPogos();
 			
 			//console.log(player.currentSpace());
 			
@@ -78,6 +78,31 @@ function($,       requestAnimFrame,  config,  Map,  Player,  Pogo) {
 	    draw: function() {
 		    canvas.width = canvas.width;
 		    for(var i in this.drawArray) this.drawArray[i].draw();
+	    },
+	    
+	    
+	    createPlayer: function() {
+		    this.player = new Player(this.map.spaces[4][4]);
+			this.entities.push(this.player);
+	    },
+	    fillMapWithPogos: function() {
+		    var pogos = [];
+		    for(var y in this.map.spaces) {
+			    for(var x in this.map.spaces[y]) {
+				    var space = this.map.spaces[y][x];
+				    var pogo = new Pogo(space);
+				    
+				    pogos.push(pogo);
+				    
+			    }
+		    }
+		    
+		    var int = setInterval(function(){
+			    var pogo = pogos.shift();
+			    self.entities.push(pogo);
+			    
+			    if(pogos.length == 0) clearInterval(int);
+		    }, 10);
 	    }
     };
     
