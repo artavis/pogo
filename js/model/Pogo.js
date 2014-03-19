@@ -30,83 +30,32 @@ define(["jquery","utils","config","Entity"], function($,utils,config,Entity) {
 	    this.bounceTime = 0;
 	    this.moveTime = 0;
 	    
-	    return this;
-	    
-	    
-	    	    
-/*
-	    var moveDir = null;
-	    	    
-		
-		function moveRight(e) {
-			e.preventDefault();			
-			if(currentSpace.onBoardEdge("right")) return;
-			moveDir = "right";
-		}
-		function moveLeft(e) {
-			e.preventDefault();	
-			if(currentSpace.onBoardEdge("left")) return;		
-			moveDir = "left";
-		}
-		function moveUp(e) {
-			e.preventDefault();		
-			if(currentSpace.onBoardEdge("top")) return;	
-			moveDir = "up";
-		}
-		function moveDown(e) {
-			e.preventDefault();	
-			if(currentSpace.onBoardEdge("bottom")) return;		
-			moveDir = "down";
-		}
-		
-		function jump() {
-			velocity.z = 300;
-			bounceCount = 0;
-		}
-	    		
-*/
-	    
+	    return this;	    
     }   
     
     Pogo.prototype = Object.create( Entity.prototype );
-    
-    Pogo.prototype.bounce = function() {		
-		//normal bounce
-/*
-		var vel = _gravity / -3;
-		
-		//console.log(this.lastJump);
-		this.velocity.x = 0;
-		this.velocity.y = 0;
-		this.velocity.z = vel;
-		
-		this.lastJump = 0;
-*/
-		this.bouncing = true;
-		this.bouncCount = 0;
-    };
-    
-    Pogo.prototype.jump = function() {
-	    var bounceVelocity = _gravity / -2;
-	    this.velocity.z = bounceVelocity;
-	    
-	    if(this.jumpDir == Pogo.JUMP_DIRS.UP) {
-		    this.velocity.y = config.spaceWidth * -1;
-	    } else if (this.jumpDir == Pogo.JUMP_DIRS.DOWN) {
-		    this.velocity.y = config.spaceWidth;
-	    } else if (this.jumpDir == Pogo.JUMP_DIRS.LEFT) {
-		    this.velocity.x = config.spaceWidth * -1;
-	    } else if (this.jumpDir == Pogo.JUMP_DIRS.RIGHT) {
-		    this.velocity.x = config.spaceWidth;
-	    }
-	    
-	    this.jumpTriggered = false;
-	    this.isJumping = true;
-    };
-    
+            
     Pogo.prototype.triggerJump = function(dir) {
 	    this.jumpTriggered = true;
-	    this.jumpDir = dir;
+	    this.jumpDir = dir || null;
+    };
+    Pogo.prototype.getDestination = function(dir) {
+	    if(dir == undefined || dir == null) return this.currentSpace;
+	    
+	    if(dir == Pogo.JUMP_DIRS.LEFT && !this.currentSpace.onBoardEdge(Pogo.JUMP_DIRS.LEFT)) {
+		    return GAME_CONTROLLER.map.getSpace(this.currentSpace.xIndex-1,this.currentSpace.yIndex);
+	    }
+	    if(dir == Pogo.JUMP_DIRS.RIGHT && !this.currentSpace.onBoardEdge(Pogo.JUMP_DIRS.RIGHT)) {
+		    return GAME_CONTROLLER.map.getSpace(this.currentSpace.xIndex+1,this.currentSpace.yIndex);
+	    }
+	    if(dir == Pogo.JUMP_DIRS.UP && !this.currentSpace.onBoardEdge(Pogo.JUMP_DIRS.UP)) {
+		    return GAME_CONTROLLER.map.getSpace(this.currentSpace.xIndex,this.currentSpace.yIndex-1);
+	    }
+	    if(dir == Pogo.JUMP_DIRS.DOWN && !this.currentSpace.onBoardEdge(Pogo.JUMP_DIRS.DOWN)) {
+		    return GAME_CONTROLLER.map.getSpace(this.currentSpace.xIndex,this.currentSpace.yIndex+1);
+	    }
+	    
+	    return this.currentSpace;
     };
     
     Pogo.prototype.shoot = function() {
@@ -187,20 +136,21 @@ define(["jquery","utils","config","Entity"], function($,utils,config,Entity) {
     };
         
     Pogo.prototype.update = function(dt) {
-			if(this.bouncing) {
-				this.bounceFunc(dt);
-				
-			} else if (this.jumping) {
-				this.jumpFunc(dt);
-			}
+		if(this.bouncing) {
+			this.bounceFunc(dt);
 			
-			if(this.pos.z == this.currentSpace.size.z) {
-				this.jumping = !this.jumping;
-				this.bouncing = !this.bouncing;
-				
-				if(this.jumping) this.destSpace = GAME_CONTROLLER.map.getSpace(this.currentSpace.xIndex,this.currentSpace.yIndex-1);
-			}
+		} else if (this.jumping) {
+			this.jumpFunc(dt);
+		}
+		
+		if(this.pos.z == this.currentSpace.size.z) {
+			this.onBounce();
+		}
+		
+		this.onUpdate();
     };
+    Pogo.prototype.onBounce = function(){ /* STUB FOR CHILD CLASSES */ }
+    Pogo.prototype.onUpdate = function(){ /* STUB FOR CHILD CLASSES */ }
     
     Pogo.prototype.draw = function() {
 		    var iso = utils.isoOffset(this.pos.x,this.pos.y,this.pos.z);

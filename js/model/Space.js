@@ -45,13 +45,12 @@ define(["jquery","utils","config","Entity","SpaceView"],
     }
 
 	Space.prototype.onBoardEdge = function(dir) {
-		if(!dir) return false;
-		
+		if(!dir) return false;		
 		
 		if(dir === "right") return this.xIndex == config.boardSpaceTotal.x - 1;
 		if(dir === "left") return this.xIndex == 0;
-		if(dir === "bottom") return this.yIndex == config.boardSpaceTotal.y - 1;
-		if(dir === "top") return this.yIndex == 0;
+		if(dir === "down") return this.yIndex == config.boardSpaceTotal.y - 1;
+		if(dir === "up") return this.yIndex == 0;
 		
 		return false;
 	}

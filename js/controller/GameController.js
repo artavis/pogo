@@ -33,6 +33,8 @@ function($,       requestAnimFrame,  config,  Map,  Player,  Pogo) {
 			
 			//Start the game loop
 		    requestAnimFrame(this.gameLoop);
+		    
+		    $.publish("GameLoaded");
 
 	    },
 	    gameLoop: function(t) {

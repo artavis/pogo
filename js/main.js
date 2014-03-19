@@ -14,6 +14,7 @@ requirejs.config({
         //Helpers
         utils:   			'helpers/utils',
         config:   			'helpers/config',
+        UserInput:   		'helpers/UserInput',
         
         //Game
         GameController:     'controller/GameController',
@@ -46,10 +47,9 @@ IMG.src = "images/pogo.png";
 
 
 // Start the main app logic.
-requirejs(['jquery', 'easeljs', 'preloadjs', 'soundjs', 'GameController'],
-function   ($,        createjs,  preloadjs,   soundjs,   GameController) {
-
-    
+requirejs(['jquery', 'pubsub', 'UserInput', 'GameController'],
+function   ($,        pubsub,   UserInput,   GameController) {
 
     window.GAME_CONTROLLER = new GameController();
+    UserInput.createListeners();
 });
