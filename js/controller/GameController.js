@@ -4,7 +4,7 @@ function($,       requestAnimFrame,  config,  Map,  Player,  Pogo) {
    	var _gameStartTime=0, 
    		_currentTime = 0, 
    		_lastFPSDisplay = 0,
-   		paused = false,
+   		paused = false, setSlowTick = false,
    		
 		canvas = document.querySelector("#canvas"),
 	    ctx = canvas.getContext("2d"),
@@ -30,6 +30,7 @@ function($,       requestAnimFrame,  config,  Map,  Player,  Pogo) {
 			//console.log(player.currentSpace());
 			
 			$("#pauser").on("click",function(){ paused = !paused; });
+			$("#slower").on("click",function(){ setSlowTick = !setSlowTick; });
 			
 			//Start the game loop
 		    requestAnimFrame(this.gameLoop);
@@ -53,10 +54,30 @@ function($,       requestAnimFrame,  config,  Map,  Player,  Pogo) {
 		    
 		    //Draw the game
 		    self.draw();
-
+			
+			if(setSlowTick) { requestAnimFrame(self.slowTick); return; }
 		    //fire next loop
 		    requestAnimFrame(self.gameLoop);
 		    //setTimeout(function(){ self.gameLoop(+new Date); }, 100);
+	    },
+	    slowTick: function() {
+		    tickTime = 500;
+		    _currentTime += tickTime;
+		    
+		    if(paused) { setTimeout(self.slowTick,tickTime); return; }
+		    
+		    //Update all game entities
+		    self.update(30);		    
+		    
+		    //Update the draw order
+		    self.updateDrawOrder();
+		    
+		    //Draw the game
+		    self.draw();
+			
+			if(!setSlowTick) { requestAnimFrame(self.gameLoop); return; }
+		    //fire next loop
+		    setTimeout(self.slowTick,tickTime);
 	    },
 	    update: function(dt) {
 		    for(var i in this.entities) this.entities[i].update(dt);

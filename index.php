@@ -25,6 +25,7 @@
 		<canvas id="canvas" width="720px" height="480px"></canvas>
 	</div>
 	<input class="button" type="button" id="pauser" value="Pause" />
+	<input class="button" type="button" id="slower" value="Slow" />
 	<p id="fps"></p>
 </div>
 
