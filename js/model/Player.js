@@ -61,6 +61,10 @@ define(["jquery","Pogo","UserInput"], function($,Pogo,UserInput) {
 			
 			this.destSpace = this.getDestination(this.jumpDir);
 			
+			if(!this.destSpace) {
+				this.jumping = false;
+				this.bouncing = true;
+			}
 			
 		} else {
 			this.jumping = false;
@@ -68,6 +72,7 @@ define(["jquery","Pogo","UserInput"], function($,Pogo,UserInput) {
 		}
 		
 		this.jumpTriggered = false;
+		//console.log(this.currentSpace);
     }
     Player.prototype.onUpdate = function(){
 		var keys = UserInput.keys();

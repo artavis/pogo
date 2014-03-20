@@ -8,6 +8,8 @@ define(["jquery","utils","config","Entity","SpaceView"],
 	    this.xIndex = xInd;
 		this.yIndex = yInd;
 		this.spaceIndex = (yInd*config.boardSpaceTotal.y) + xInd;
+		
+		this.occupied = false;
 	    
 	    this.init();
 	    
@@ -39,6 +41,9 @@ define(["jquery","utils","config","Entity","SpaceView"],
 		
 		this.view = new SpaceView(this);
 	};
+	Space.prototype.occupy = function(){ this.occupied = true; };
+	Space.prototype.unoccupy = function(){ this.occupied = false; };
+	Space.prototype.isOccupied = function(){ return this.occupied; };
     
     Space.prototype.draw = function() {
 	    this.view.draw();

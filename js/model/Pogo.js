@@ -1,6 +1,6 @@
 define(["jquery","utils","config","Entity"], function($,utils,config,Entity) {
     
-	var _bounceLength = 250, _moveLength=_bounceLength*2, _bounceHeight = 50, _jumpHeight = 90;
+	var _bounceLength = config.spaceWidth*5, _moveLength=_bounceLength*2, _bounceHeight = 50, _jumpHeight = 90;
 	
     function Pogo(startingSpace) {
 	    
@@ -40,22 +40,28 @@ define(["jquery","utils","config","Entity"], function($,utils,config,Entity) {
 	    this.jumpDir = dir || null;
     };
     Pogo.prototype.getDestination = function(dir) {
-	    if(dir == undefined || dir == null) return this.currentSpace;
+	    var dest;
+	    
+	    if(dir == undefined || dir == null) return false;
 	    
 	    if(dir == Pogo.JUMP_DIRS.LEFT && !this.currentSpace.onBoardEdge(Pogo.JUMP_DIRS.LEFT)) {
-		    return GAME_CONTROLLER.map.getSpace(this.currentSpace.xIndex-1,this.currentSpace.yIndex);
-	    }
-	    if(dir == Pogo.JUMP_DIRS.RIGHT && !this.currentSpace.onBoardEdge(Pogo.JUMP_DIRS.RIGHT)) {
-		    return GAME_CONTROLLER.map.getSpace(this.currentSpace.xIndex+1,this.currentSpace.yIndex);
-	    }
-	    if(dir == Pogo.JUMP_DIRS.UP && !this.currentSpace.onBoardEdge(Pogo.JUMP_DIRS.UP)) {
-		    return GAME_CONTROLLER.map.getSpace(this.currentSpace.xIndex,this.currentSpace.yIndex-1);
-	    }
-	    if(dir == Pogo.JUMP_DIRS.DOWN && !this.currentSpace.onBoardEdge(Pogo.JUMP_DIRS.DOWN)) {
-		    return GAME_CONTROLLER.map.getSpace(this.currentSpace.xIndex,this.currentSpace.yIndex+1);
+		    dest = GAME_CONTROLLER.map.getSpace(this.currentSpace.xIndex-1,this.currentSpace.yIndex);
+	    } else if(dir == Pogo.JUMP_DIRS.RIGHT && !this.currentSpace.onBoardEdge(Pogo.JUMP_DIRS.RIGHT)) {
+		    dest = GAME_CONTROLLER.map.getSpace(this.currentSpace.xIndex+1,this.currentSpace.yIndex);
+	    } else if(dir == Pogo.JUMP_DIRS.UP && !this.currentSpace.onBoardEdge(Pogo.JUMP_DIRS.UP)) {
+		    dest = GAME_CONTROLLER.map.getSpace(this.currentSpace.xIndex,this.currentSpace.yIndex-1);
+	    } else if(dir == Pogo.JUMP_DIRS.DOWN && !this.currentSpace.onBoardEdge(Pogo.JUMP_DIRS.DOWN)) {
+		    dest = GAME_CONTROLLER.map.getSpace(this.currentSpace.xIndex,this.currentSpace.yIndex+1);
+	    } else {
+			return false;    
 	    }
 	    
-	    return this.currentSpace;
+	    if(this.canJumpToSpace(dest)) return dest;
+	    return false;
+    };
+    
+    Pogo.prototype.canJumpToSpace = function(space) {		
+		return (space.blockHeight - this.currentSpace.blockHeight > 2 && !space.isOccupied()) ? false : true;
     };
     
     Pogo.prototype.shoot = function() {
@@ -93,11 +99,25 @@ define(["jquery","utils","config","Entity"], function($,utils,config,Entity) {
 		}		
     };
     Pogo.prototype.jumpFunc = function(dt) {
+/* 		if(window.DEBUG) console.log("dt",dt); */
+		
 		var downZ = this.currentSpace.size.z;
 		var topZ = downZ + _jumpHeight;
 		
+		if(this.bounceTime == 0 && this.goingUp) this.moveTime = 0;
+		
+/*
+		if(window.DEBUG) console.log("bounce time",this.bounceTime);
+		if(window.DEBUG) console.log("move time",this.moveTime);
+*/
+
 		this.bounceTime += dt;
 		this.moveTime += dt;
+		
+/*
+		if(window.DEBUG) console.log("bounce time",this.bounceTime);
+		if(window.DEBUG) console.log("move time",this.moveTime);
+*/
 		
 		if(this.bounceTime >= _bounceLength) {
 			this.bounceTime = _bounceLength;
@@ -113,24 +133,41 @@ define(["jquery","utils","config","Entity"], function($,utils,config,Entity) {
 			this.pos.z = Pogo.easeInQuart(this.bounceTime, topZ, this.destSpace.size.z-topZ, _bounceLength);
 		}
 		
+		
 		//Moving across map
+/*
+		if(window.DEBUG) console.log("move time",this.moveTime);
+		if(window.DEBUG) console.log("move length",_moveLength);
+		if(window.DEBUG) console.log(this.destSpace.pos.x - this.currentSpace.pos.x);
+		if(window.DEBUG) console.log(this.destSpace.pos.y - this.currentSpace.pos.y);
+		if(window.DEBUG) console.log(this.pos);
+*/
+		
+		
 		this.pos.x = Pogo.noEasing(this.moveTime, this.currentSpace.pos.x, 
 									this.destSpace.pos.x - this.currentSpace.pos.x, _moveLength);
 		this.pos.y = Pogo.noEasing(this.moveTime, this.currentSpace.pos.y, 
-									this.destSpace.pos.y - this.currentSpace.pos.y, _moveLength);
+									this.destSpace.pos.y - this.currentSpace.pos.y, _moveLength);		
 		
 		
-		
-		
+/*
+		if(window.DEBUG) console.log(this.pos);
+		if(window.DEBUG) console.log("****");
+		if(window.DEBUG) console.log("****");
+		if(window.DEBUG) console.log("****");
+		if(window.DEBUG) console.log("****");
+*/
 		
 		if(this.bounceTime == _bounceLength) {
 			this.goingUp = !this.goingUp;
 			this.bounceTime = 0;			
 		}		
-		if(this.moveTime >= _moveLength) {
+		if(this.moveTime == _moveLength) {
 			this.moveTime = 0;
 			
+			this.currentSpace.unoccupy();
 			this.currentSpace = this.destSpace;
+			this.currentSpace.occupy();
 		}
 
     };

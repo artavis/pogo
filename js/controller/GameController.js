@@ -39,6 +39,8 @@ function($,       requestAnimFrame,  config,  Map,  Player,  Pogo) {
 
 	    },
 	    gameLoop: function(t) {
+		    window.DEBUG = false;
+		    
 		    //set clock and delta since last frame
 		    var dt = t - _currentTime;
 		    _currentTime = t;
@@ -56,11 +58,13 @@ function($,       requestAnimFrame,  config,  Map,  Player,  Pogo) {
 		    self.draw();
 			
 			if(setSlowTick) { requestAnimFrame(self.slowTick); return; }
+		    
 		    //fire next loop
 		    requestAnimFrame(self.gameLoop);
 		    //setTimeout(function(){ self.gameLoop(+new Date); }, 100);
 	    },
 	    slowTick: function() {
+		    window.DEBUG = true;
 		    tickTime = 500;
 		    _currentTime += tickTime;
 		    
@@ -106,6 +110,7 @@ function($,       requestAnimFrame,  config,  Map,  Player,  Pogo) {
 	    
 	    createPlayer: function() {
 		    this.player = new Player(this.map.spaces[4][4]);
+		    this.player.currentSpace.occupy();
 			this.entities.push(this.player);
 	    },
 	    fillMapWithPogos: function() {
