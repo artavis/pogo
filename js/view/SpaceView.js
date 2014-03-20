@@ -1,4 +1,4 @@
-define(["jquery","utils"], function($,utils) {
+define(["jquery","utils","pixi"], function($,utils,pixi) {
         var WIDTH = 48;
 
 
@@ -7,8 +7,11 @@ define(["jquery","utils"], function($,utils) {
 		var space = model;
 	    
 	    this.init = function(){
-		  this.color = spaceColor(space.blockHeight);  
-		  this.createBufferCanvas();
+			this.color = spaceColor(space.blockHeight);  
+			this.createBufferCanvas();
+			
+			var texture = pixi.Texture.fromCanvas(this.buffer);
+			this.img = new pixi.Sprite(texture);
 	    };
 	    
 		this.createBufferCanvas = function() {
@@ -56,19 +59,13 @@ define(["jquery","utils"], function($,utils) {
 
 		}
 
-	    
+	    this.updateDrawPosition = function() {
+		    var iso = utils.isoOffset(space.pos.x,space.pos.y,space.size.z);
+		    this.img.x = iso.x-this.buffer.points.ne.x/2, this.img.y = iso.y-this.buffer.points.psw.y;
+	    };
 		this.draw = function() {
-			canvas = document.querySelector("#canvas");
-			ctx = canvas.getContext("2d");
 			
-			var iso = utils.isoOffset(space.pos.x,space.pos.y,space.size.z);
-			//console.log(this.buffer.points);
-			//ctx.drawImage(this.buffer,iso.x-this.buffer.points.ne.x/2,iso.y);
-			ctx.drawImage(this.buffer,iso.x-this.buffer.points.ne.x/2,iso.y-this.buffer.points.psw.y);
-			//ctx.fillRect(iso.x,iso.y,2,2);
-			
-			//ctx.fillText(this.xIndex+"/"+this.yIndex,iso.x,iso.y);
-
+			//ctx.drawImage(this.buffer,iso.x-this.buffer.points.ne.x/2,iso.y-this.buffer.points.psw.y);
 		};
 		
 		this.init();

@@ -1,6 +1,8 @@
 define(["jquery"], function($) {
     
     return {
+	    canvasSize: { width:720, height:480 },
+	    
 	    //Board Spaces
 	    spaceWidth: 48,
 	    platformHeight: 24,

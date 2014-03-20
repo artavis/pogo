@@ -11,6 +11,9 @@ requirejs.config({
         preloadjs:   		'lib/preloadjs-0.4.1.min',
         soundjs:   			'lib/soundjs-0.5.2.min',
         
+        //PixiJS
+        pixi:   			'lib/pixi',
+        
         //Helpers
         utils:   			'helpers/utils',
         config:   			'helpers/config',
@@ -31,7 +34,9 @@ requirejs.config({
         Explosion:			'model/Explosion',
         
         //Views
-        SpaceView:			'view/SpaceView'
+        GameView:			'view/GameView',
+        SpaceView:			'view/SpaceView',
+        PogoView:			'view/PogoView'
         
     },
     
@@ -39,6 +44,7 @@ requirejs.config({
         'easeljs': { exports: 'createjs' },
         'preloadjs': { exports: 'createjs' },
         'soundjs': { exports: 'createjs' },
+        'pixi': { exports: 'pixi' },
     }
 });
 

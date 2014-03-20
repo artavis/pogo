@@ -1,4 +1,4 @@
-define(["jquery","utils","config","Entity"], function($,utils,config,Entity) {
+define(["jquery","utils","config","Entity","PogoView"], function($,utils,config,Entity,PogoView) {
     
 	var _bounceLength = config.spaceWidth*5, _moveLength=_bounceLength*2, _bounceHeight = 50, _jumpHeight = 90;
 	
@@ -30,11 +30,25 @@ define(["jquery","utils","config","Entity"], function($,utils,config,Entity) {
 	    this.bounceTime = 0;
 	    this.moveTime = 0;
 	    
+	    
+	    this.view = new PogoView(this);
 	    return this;	    
     }   
     
     Pogo.prototype = Object.create( Entity.prototype );
             
+        
+    Pogo.prototype.draw = function() {
+		    var iso = utils.isoOffset(this.pos.x,this.pos.y,this.pos.z);
+		    //console.log(iso);
+		    
+		    var canvas = document.querySelector("#canvas");
+			var ctx = canvas.getContext("2d");
+
+			ctx.drawImage(IMG,iso.x-this.size.width/2,iso.y-this.size.z);
+			//ctx.fillRect(iso.x,iso.y,width,width);
+    }
+
     Pogo.prototype.triggerJump = function(dir) {
 	    this.jumpTriggered = true;
 	    this.jumpDir = dir || null;
@@ -188,17 +202,6 @@ define(["jquery","utils","config","Entity"], function($,utils,config,Entity) {
     };
     Pogo.prototype.onBounce = function(){ /* STUB FOR CHILD CLASSES */ }
     Pogo.prototype.onUpdate = function(){ /* STUB FOR CHILD CLASSES */ }
-    
-    Pogo.prototype.draw = function() {
-		    var iso = utils.isoOffset(this.pos.x,this.pos.y,this.pos.z);
-		    //console.log(iso);
-		    
-		    var canvas = document.querySelector("#canvas");
-			var ctx = canvas.getContext("2d");
-
-			ctx.drawImage(IMG,iso.x-this.size.width/2,iso.y-this.size.z);
-			//ctx.fillRect(iso.x,iso.y,width,width);
-    }
     
     Pogo.JUMP_DIRS = {
 		LEFT: "left",    

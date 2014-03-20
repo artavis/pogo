@@ -1,13 +1,10 @@
-define(["jquery","requestAnimFrame","config","Map","Player","Pogo"], 
-function($,       requestAnimFrame,  config,  Map,  Player,  Pogo) {
+define(["jquery","requestAnimFrame","config","GameView","Map","Player","Pogo"], 
+function($,       requestAnimFrame,  config,  GameView,  Map,  Player,  Pogo) {
     
    	var _gameStartTime=0, 
    		_currentTime = 0, 
    		_lastFPSDisplay = 0,
    		paused = false, setSlowTick = false,
-   		
-		canvas = document.querySelector("#canvas"),
-	    ctx = canvas.getContext("2d"),
    		
    		self;
     
@@ -22,6 +19,7 @@ function($,       requestAnimFrame,  config,  Map,  Player,  Pogo) {
     
     GameController.prototype = {
 	    init: function() {
+		    this.view = new GameView();
 		    this.map = new Map();
 		    
 			this.createPlayer();
@@ -69,7 +67,7 @@ function($,       requestAnimFrame,  config,  Map,  Player,  Pogo) {
 		    _currentTime += tickTime;
 		    
 		    if(paused) { setTimeout(self.slowTick,tickTime); return; }
-		    
+		    		    
 		    //Update all game entities
 		    self.update(30);		    
 		    
@@ -103,8 +101,9 @@ function($,       requestAnimFrame,  config,  Map,  Player,  Pogo) {
 		    }
 	    },
 	    draw: function() {
-		    canvas.width = canvas.width;
-		    for(var i in this.drawArray) this.drawArray[i].draw();
+		    //canvas.width = canvas.width;
+		    //for(var i in this.drawArray) this.drawArray[i].draw();
+		    this.view.render(this.drawArray);
 	    },
 	    
 	    
