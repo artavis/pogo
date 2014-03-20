@@ -1,62 +1,22 @@
-define(["jquery","utils","pixi"], function($,utils,pixi) {
+define(["jquery","utils","config","pixi"], function($,utils,config,pixi) {
         var WIDTH = 48;
 
-
+	var spaceImages = null;
+	
     function SpaceView(model) {
 	    
 		var space = model;
+	    createSpaceImages();
 	    
 	    this.init = function(){
-			this.color = spaceColor(space.blockHeight);  
-			this.createBufferCanvas();
+			this.buffer = this.getBuffer();
 			
 			var texture = pixi.Texture.fromCanvas(this.buffer);
 			this.img = new pixi.Sprite(texture);
 	    };
-	    
-		this.createBufferCanvas = function() {
-			var iso = isoPoints(space.size.z);
-			
-			//console.log(iso);
-			this.buffer = document.createElement("canvas");
-			this.buffer.width = iso.totalWidth, this.buffer.height = iso.totalHeight;
-			this.buffer.points = iso;
-			
-			var bcx = this.buffer.getContext('2d');
-			
-			bcx.beginPath();
-			bcx.moveTo(iso.pne.x,iso.pne.y);
-			bcx.lineTo(iso.ne.x,iso.ne.y);
-			bcx.lineTo(iso.se.x,iso.se.y);
-			bcx.lineTo(iso.pse.x,iso.pse.y);
-			bcx.lineTo(iso.pne.x,iso.pne.y);
-			bcx.closePath();
-			bcx.fillStyle = this.color.light;
-			bcx.fill();
-			bcx.stroke();
-			
-			bcx.beginPath();
-			bcx.moveTo(iso.pse.x,iso.pse.y);
-			bcx.lineTo(iso.se.x,iso.se.y);
-			bcx.lineTo(iso.sw.x,iso.sw.y);
-			bcx.lineTo(iso.psw.x,iso.psw.y);
-			bcx.lineTo(iso.pse.x,iso.pse.y);
-			bcx.closePath;
-			bcx.fillStyle = this.color.dark;
-			bcx.fill();
-			bcx.stroke();
-			
-			bcx.beginPath();
-			bcx.moveTo(iso.pnw.x,iso.pnw.y);
-			bcx.lineTo(iso.pne.x,iso.pne.y);
-			bcx.lineTo(iso.pse.x,iso.pse.y);
-			bcx.lineTo(iso.psw.x,iso.psw.y);
-			bcx.lineTo(iso.pnw.x,iso.pnw.y);
-			bcx.closePath;
-			bcx.fillStyle = this.color.dark;
-			bcx.fill();
-			bcx.stroke();
-
+	    		
+		this.getBuffer = function() {
+			return spaceImages[space.blockHeight][SpaceView.BLOCK_TYPES.NORMAL];
 		}
 
 	    this.updateDrawPosition = function() {
@@ -70,6 +30,70 @@ define(["jquery","utils","pixi"], function($,utils,pixi) {
 		
 		this.init();
     }   
+    
+    function createBufferCanvas(blockHeight) {
+		console.log(blockHeight);
+		var size = config.platformHeight * blockHeight;
+		var iso = isoPoints(size);
+		
+		//console.log(iso);
+		var buffer = document.createElement("canvas");
+		buffer.width = iso.totalWidth, buffer.height = iso.totalHeight;
+		buffer.points = iso;
+		
+		var bcx = buffer.getContext('2d');
+		var color = spaceColor(blockHeight);  
+		
+		bcx.beginPath();
+		bcx.moveTo(iso.pne.x,iso.pne.y);
+		bcx.lineTo(iso.ne.x,iso.ne.y);
+		bcx.lineTo(iso.se.x,iso.se.y);
+		bcx.lineTo(iso.pse.x,iso.pse.y);
+		bcx.lineTo(iso.pne.x,iso.pne.y);
+		bcx.closePath();
+		bcx.fillStyle = color.light;
+		bcx.fill();
+		bcx.stroke();
+		
+		bcx.beginPath();
+		bcx.moveTo(iso.pse.x,iso.pse.y);
+		bcx.lineTo(iso.se.x,iso.se.y);
+		bcx.lineTo(iso.sw.x,iso.sw.y);
+		bcx.lineTo(iso.psw.x,iso.psw.y);
+		bcx.lineTo(iso.pse.x,iso.pse.y);
+		bcx.closePath;
+		bcx.fillStyle = color.dark;
+		bcx.fill();
+		bcx.stroke();
+		
+		bcx.beginPath();
+		bcx.moveTo(iso.pnw.x,iso.pnw.y);
+		bcx.lineTo(iso.pne.x,iso.pne.y);
+		bcx.lineTo(iso.pse.x,iso.pse.y);
+		bcx.lineTo(iso.psw.x,iso.psw.y);
+		bcx.lineTo(iso.pnw.x,iso.pnw.y);
+		bcx.closePath;
+		bcx.fillStyle = color.dark;
+		bcx.fill();
+		bcx.stroke();
+		
+		return buffer;
+    }
+    SpaceView.BLOCK_TYPES = {
+	    NORMAL: "normal"
+    };
+    
+    function createSpaceImages() {
+	    if(spaceImages != null) return;
+	    spaceImages = [];
+	    console.log(config.maxBlockHeight);
+	    for(var i=0; i<config.maxBlockHeight; i++) {
+		    var blocks = {};
+		    blocks[SpaceView.BLOCK_TYPES.NORMAL] = createBufferCanvas(i);
+		    
+		    spaceImages.push(blocks);
+	    }
+    }
     
     function isoPoints(z) {
 	    var left = 0,
