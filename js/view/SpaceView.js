@@ -1,35 +1,35 @@
-define(["jquery","utils","config","pixi"], function($,utils,config,pixi) {
-        var WIDTH = 48;
+define(["jquery","utils","config","EntityView"], function($,utils,config,EntityView) {
 
 	var spaceImages = null;
 	
     function SpaceView(model) {
 	    
-		var space = model;
+	    EntityView.call(this,model);
 	    createSpaceImages();
 	    
-	    this.init = function(){
-			this.buffer = this.getBuffer();
-			
-			var texture = pixi.Texture.fromCanvas(this.buffer);
-			this.img = new pixi.Sprite(texture);
-	    };
-	    		
-		this.getBuffer = function() {
-			return spaceImages[space.blockHeight][SpaceView.BLOCK_TYPES.NORMAL];
-		}
+		var space = model,
+			buffer = this.getBuffer(space.blockHeight,SpaceView.BLOCK_TYPES.NORMAL);
+
+		this.setImageFromCanvas(buffer);
 
 	    this.updateDrawPosition = function() {
 		    var iso = utils.isoOffset(space.pos.x,space.pos.y,space.size.z);
-		    this.img.x = iso.x-this.buffer.points.ne.x/2, this.img.y = iso.y-this.buffer.points.psw.y;
+		    this.getImage().x = iso.x - buffer.points.ne.x/2, this.getImage().y = iso.y - buffer.points.psw.y;
 	    };
-		this.draw = function() {
-			
-			//ctx.drawImage(this.buffer,iso.x-this.buffer.points.ne.x/2,iso.y-this.buffer.points.psw.y);
-		};
+	    		
+		return this;
 		
-		this.init();
     }   
+    
+    SpaceView.prototype = Object.create( EntityView.prototype );
+    SpaceView.prototype.getBuffer = function(BLOCK_HEIGHT,TYPE) {
+	    return spaceImages[BLOCK_HEIGHT][TYPE];
+    };
+    
+    SpaceView.BLOCK_TYPES = {
+	    NORMAL: "normal"
+    };
+
     
     function createBufferCanvas(blockHeight) {
 		//console.log(blockHeight);
@@ -79,10 +79,7 @@ define(["jquery","utils","config","pixi"], function($,utils,config,pixi) {
 		
 		return buffer;
     }
-    SpaceView.BLOCK_TYPES = {
-	    NORMAL: "normal"
-    };
-    
+        
     function createSpaceImages() {
 	    if(spaceImages != null) return;
 	    spaceImages = [];
@@ -96,9 +93,9 @@ define(["jquery","utils","config","pixi"], function($,utils,config,pixi) {
     
     function isoPoints(z) {
 	    var left = 0,
-		    right = WIDTH,
+		    right = config.spaceWidth,
 		    top = 0,
-		    bottom = WIDTH;
+		    bottom = config.spaceWidth;
 		
 		var points = {
 			nw: utils.iso(left,top,0),
@@ -138,7 +135,6 @@ define(["jquery","utils","config","pixi"], function($,utils,config,pixi) {
 		return points;
 
     }
-
     
     function spaceColor(z) {
 		switch(z) {

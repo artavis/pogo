@@ -1,14 +1,23 @@
-define(["jquery"], function($) {
+define(["jquery","config","Entity","BulletView"], function($,config,Entity,BulletView) {
     
-    var WIDTH = 10;
-    
-    function init() {
+    function Bullet(pos,dir) {
+	    Entity.call(this);
+	    
+	    this.setSize({
 
+	    });
+	    
+	    this.setPos({
+
+	    });
+	    
+	    this.view = new BulletView(this);
+	    
+	    return this;
     }
     
+    Pogo.prototype = Object.create( Entity.prototype );
     
-    return function() {
-		init();		
-    };
+    return Bullet;
     
 });

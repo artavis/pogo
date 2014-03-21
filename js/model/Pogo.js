@@ -19,8 +19,6 @@ define(["jquery","utils","config","Entity","PogoView"], function($,utils,config,
 		    y: this.currentSpace.pos.y,
 		    z: this.currentSpace.size.z
 	    });
-	    
-	    this.velocity = { x:0, y:0, z:0 }, 
 
 	    this.bouncing = true;
 	    this.jumping = false;

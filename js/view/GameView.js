@@ -26,7 +26,7 @@ define(["jquery","config","pixi","ViewPort"], function($,config,pixi,ViewPort){
 	        for(var i in drawArray) {
 		        var view = drawArray[i].view;
 		        view.updateDrawPosition();
-		        stage.addChildAt(view.img,i);
+		        stage.addChildAt(view.getImage(),i);
 	        }
         }
     };

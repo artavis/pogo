@@ -36,6 +36,7 @@ requirejs.config({
         
         //Views
         GameView:			'view/GameView',
+        EntityView:			'view/EntityView',
         SpaceView:			'view/SpaceView',
         PogoView:			'view/PogoView'
         

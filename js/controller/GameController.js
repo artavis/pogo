@@ -38,7 +38,7 @@ function($,       requestAnimFrame,  config,  GameView,  Map,  Player,  Pogo) {
 	    },
 	    gameLoop: function(t) {
 		    window.DEBUG = false;
-		    
+
 		    //set clock and delta since last frame
 		    var dt = t - _currentTime;
 		    _currentTime = t;
@@ -63,6 +63,8 @@ function($,       requestAnimFrame,  config,  GameView,  Map,  Player,  Pogo) {
 	    },
 	    slowTick: function() {
 		    window.DEBUG = true;
+		    var then = +new Date;
+		    
 		    tickTime = 500;
 		    _currentTime += tickTime;
 		    
@@ -79,6 +81,9 @@ function($,       requestAnimFrame,  config,  GameView,  Map,  Player,  Pogo) {
 			
 			if(!setSlowTick) { requestAnimFrame(self.gameLoop); return; }
 		    //fire next loop
+		    
+		    var now = +new Date;
+		    //console.log("execution time:", now - then);
 		    setTimeout(self.slowTick,tickTime);
 	    },
 	    update: function(dt) {
@@ -101,8 +106,6 @@ function($,       requestAnimFrame,  config,  GameView,  Map,  Player,  Pogo) {
 		    }
 	    },
 	    draw: function() {
-		    //canvas.width = canvas.width;
-		    //for(var i in this.drawArray) this.drawArray[i].draw();
 		    this.view.render(this.drawArray);
 	    },
 	    
