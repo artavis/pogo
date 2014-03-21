@@ -20,6 +20,7 @@ define(["jquery","utils","pixi"], function($,utils,pixi){
 			_img = pixi.Sprite.fromFrame(FRAME);
         };
         this.setImageFromCanvas = function(CANVAS) {
+			this.removeFromStage();
 			var texture = pixi.Texture.fromCanvas(CANVAS);
 			_img = new pixi.Sprite(texture);
         };

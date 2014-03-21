@@ -26,7 +26,7 @@ function($,       requestAnimFrame,  config,  pixi,  GameView,  Map,  Player,  P
 		    this.map = new Map();
 		    
 			this.createPlayer();
-			//this.fillMapWithPogos();
+			this.fillMapWithPogos();
 			
 			//console.log(player.currentSpace());
 			
@@ -123,20 +123,18 @@ function($,       requestAnimFrame,  config,  pixi,  GameView,  Map,  Player,  P
 		    }
 	    },
 	    createPlayer: function() {
-		    this.player = new Player(this.map.spaces[4][4]);
+		    this.player = new Player(this.map.spaces[config.boardSpaceTotal.y-2][config.boardSpaceTotal.x-2]);
 		    this.player.currentSpace.occupy();
 			this.entities.push(this.player);
 	    },
 	    fillMapWithPogos: function() {
 		    var pogos = [];
 		    for(var y in this.map.spaces) {
-			    for(var x in this.map.spaces[y]) {
-				    var space = this.map.spaces[y][x];
-				    var pogo = new Pogo(space);
+			    var ind = Math.floor(Math.random()*this.map.spaces[y].length);
+			    var space = this.map.spaces[y][ind];
+				var pogo = new Pogo(space);
 				    
-				    pogos.push(pogo);
-				    
-			    }
+				pogos.push(pogo);
 		    }
 		    
 		    var int = setInterval(function(){

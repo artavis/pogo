@@ -15,8 +15,9 @@ define(["jquery","config","Entity","BulletView"], function($,config,Entity,Bulle
 		this.dir = dir || config.DIRS.LEFT;
 	    this.setOriginPos(shooter,this.dir);
 	    this.setVelocity(dir);
-
 	    this.getNextSpace();
+	    
+	    this.setPower();
 	    
 	    this.view = new BulletView(this);
 	    
@@ -24,6 +25,13 @@ define(["jquery","config","Entity","BulletView"], function($,config,Entity,Bulle
     }
     
     Bullet.prototype = Object.create( Entity.prototype );
+    Bullet.prototype.setPower = function() {
+	    switch(this.type) {
+		    case Bullet.TYPES.NORMAL:
+		    default:
+		    	this.power = 1;
+	    }
+    };
     Bullet.prototype.setOriginPos = function(shooter,dir) {
 	    var origPos;
 	    if(dir == config.DIRS.LEFT) {
@@ -75,13 +83,18 @@ define(["jquery","config","Entity","BulletView"], function($,config,Entity,Bulle
 	    this.pos.y += (dt*this.velocity.y)/1000;
 	    
 	    if(this.leavingCurrentSpace()) {
-		    	if(this.nextSpace === false) {
+	    	if(this.nextSpace === false) {
+		    	this.removeFromGame();
+	    	} else {
+		    	if(this.nextSpace.size.z > this.pos.z) {
+			    	this.nextSpace.blockHit(this.power);
 			    	this.removeFromGame();
 		    	} else {
 			    	this.currentSpace = this.nextSpace;
 			    	this.getNextSpace();	
 		    	}
-	    	} 
+	    	}
+    	} 
     };
     
     Bullet.TYPES = {

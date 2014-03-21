@@ -16,6 +16,10 @@ define(["jquery","utils","config","EntityView"], function($,utils,config,EntityV
 		    var iso = utils.isoOffset(space.pos.x,space.pos.y,space.size.z);
 		    this.getImage().x = iso.x - buffer.points.ne.x/2, this.getImage().y = iso.y - buffer.points.psw.y;
 	    };
+	    this.resetBuffer = function(){
+		    buffer = this.getBuffer(space.blockHeight,SpaceView.BLOCK_TYPES.NORMAL);
+		    this.setImageFromCanvas(buffer);
+	    }
 	    		
 		return this;
 		

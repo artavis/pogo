@@ -1,6 +1,10 @@
 define(["jquery","utils","config","Entity","PogoView","Bullet"], function($,utils,config,Entity,PogoView,Bullet) {
     
-	var _bounceLength = config.spaceWidth*5, _moveLength=_bounceLength*2, _bounceHeight = 50, _jumpHeight = 90;
+	var _bounceLength = config.spaceWidth*5,
+		_jumpLength = config.spaceWidth*6,
+		_moveLength =_jumpLength*2, 
+		_bounceHeight = 50, 
+		_jumpHeight = 90;
 	
     function Pogo(startingSpace) {
 	    
@@ -13,6 +17,7 @@ define(["jquery","utils","config","Entity","PogoView","Bullet"], function($,util
 	    });
 	    
 	    this.currentSpace = startingSpace;
+	    this.currentSpace.occupy();
 	    
 	    this.setPos({
 		    x: this.currentSpace.pos.x,
@@ -80,7 +85,7 @@ define(["jquery","utils","config","Entity","PogoView","Bullet"], function($,util
     };
     
     Pogo.prototype.canJumpToSpace = function(space) {		
-		return (space.blockHeight - this.currentSpace.blockHeight > 2 && !space.isOccupied()) ? false : true;
+		return (space.blockHeight - this.currentSpace.blockHeight > 2 || space.isOccupied()) ? false : true;
     };
     
     // t: current time, b: begInnIng value, c: change In value, d: duration
@@ -134,8 +139,8 @@ define(["jquery","utils","config","Entity","PogoView","Bullet"], function($,util
 		if(window.DEBUG) console.log("move time",this.moveTime);
 */
 		
-		if(this.bounceTime >= _bounceLength) {
-			this.bounceTime = _bounceLength;
+		if(this.bounceTime >= _jumpLength) {
+			this.bounceTime = _jumpLength;
 		}
 		if(this.moveTime >= _moveLength) {
 			this.moveTime = _moveLength;
@@ -143,9 +148,9 @@ define(["jquery","utils","config","Entity","PogoView","Bullet"], function($,util
 		
 		//Bounce Height
 		if(this.goingUp) {
-			this.pos.z = Pogo.easeOutQuart(this.bounceTime, downZ, _jumpHeight, _bounceLength);
+			this.pos.z = Pogo.easeOutQuart(this.bounceTime, downZ, _jumpHeight, _jumpLength);
 		} else {
-			this.pos.z = Pogo.easeInQuart(this.bounceTime, topZ, this.destSpace.size.z-topZ, _bounceLength);
+			this.pos.z = Pogo.easeInQuart(this.bounceTime, topZ, this.destSpace.size.z-topZ, _jumpLength);
 		}
 		
 		
@@ -173,7 +178,7 @@ define(["jquery","utils","config","Entity","PogoView","Bullet"], function($,util
 		if(window.DEBUG) console.log("****");
 */
 		
-		if(this.bounceTime == _bounceLength) {
+		if(this.bounceTime == _jumpLength) {
 			this.goingUp = !this.goingUp;
 			this.bounceTime = 0;			
 		}		

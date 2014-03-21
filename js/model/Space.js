@@ -10,6 +10,7 @@ define(["jquery","utils","config","Entity","SpaceView"],
 		this.spaceIndex = (yInd*config.boardSpaceTotal.y) + xInd;
 		
 		this.occupied = false;
+		this.strength = config.blockStrength;
 	    
 	    this.init();
 	    
@@ -58,7 +59,25 @@ define(["jquery","utils","config","Entity","SpaceView"],
 		if(dir === "up") return this.yIndex == 0;
 		
 		return false;
-	}
+	};
+	Space.prototype.blockHit = function(power) {
+		this.strength -= power;
+		if(this.strength == 0) {
+			this.lower();
+		} else {
+			//this.addHit();
+		}
+	};
+	Space.prototype.lower = function() {
+		this.strength = config.blockStrength;
+		this.blockHeight -= 1;
+		this.setSize({
+			width: config.spaceWidth,
+			height: config.spaceWidth,
+			z: config.platformHeight * this.blockHeight
+		});
+		this.view.resetBuffer();
+	};
 
 
 	function initBlockHeight() {
