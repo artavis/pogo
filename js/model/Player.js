@@ -1,4 +1,4 @@
-define(["jquery","Pogo","UserInput"], function($,Pogo,UserInput) {
+define(["jquery","Pogo","UserInput","utils","ViewPort"], function($,Pogo,UserInput,utils,ViewPort) {
         
     function Player(space) {
 		Pogo.call(this,space);
@@ -82,6 +82,10 @@ define(["jquery","Pogo","UserInput"], function($,Pogo,UserInput) {
 			if(keys.up) this.triggerJump(Pogo.JUMP_DIRS.UP);
 			if(keys.down) this.triggerJump(Pogo.JUMP_DIRS.DOWN);			
 		}
+		
+		//set viewport
+		var drawPos = utils.iso(this.pos.x,this.pos.y,0);
+		ViewPort.setPosByPlayerPosition(drawPos);
     }
     
     return Player;

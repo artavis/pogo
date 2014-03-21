@@ -1,4 +1,4 @@
-define(["jquery"], function($) {
+define(["jquery","ViewPort"], function($,ViewPort) {
     
     function iso(x,y,z) {
 	   	return {
@@ -27,9 +27,10 @@ define(["jquery"], function($) {
 		};
     }
     function isoOffset(x,y,z) {
+	    var viewportPos = ViewPort.getPos();
 	    var pts = iso(x,y,z);
-	    pts.x += 300;
-	    pts.y += 150;
+	    pts.x -= viewportPos.x;
+	    pts.y -= viewportPos.y;
 	    return pts;
     }
     function oneOrNegOne() {

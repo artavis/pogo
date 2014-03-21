@@ -1,6 +1,6 @@
-define(["jquery","config","pixi"], function($,config,pixi){
+define(["jquery","config","pixi","ViewPort"], function($,config,pixi,ViewPort){
  
-	var stage, renderer, bunny;
+	var stage, renderer;
 	
     // I return an initialized object.
     function GameView(){

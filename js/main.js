@@ -18,6 +18,7 @@ requirejs.config({
         utils:   			'helpers/utils',
         config:   			'helpers/config',
         UserInput:   		'helpers/UserInput',
+        ViewPort:   		'helpers/ViewPort',
         
         //Game
         GameController:     'controller/GameController',

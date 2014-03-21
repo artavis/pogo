@@ -32,7 +32,7 @@ define(["jquery","utils","config","pixi"], function($,utils,config,pixi) {
     }   
     
     function createBufferCanvas(blockHeight) {
-		console.log(blockHeight);
+		//console.log(blockHeight);
 		var size = config.platformHeight * blockHeight;
 		var iso = isoPoints(size);
 		
@@ -86,7 +86,6 @@ define(["jquery","utils","config","pixi"], function($,utils,config,pixi) {
     function createSpaceImages() {
 	    if(spaceImages != null) return;
 	    spaceImages = [];
-	    console.log(config.maxBlockHeight);
 	    for(var i=0; i<config.maxBlockHeight; i++) {
 		    var blocks = {};
 		    blocks[SpaceView.BLOCK_TYPES.NORMAL] = createBufferCanvas(i);
