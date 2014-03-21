@@ -83,6 +83,8 @@ define(["jquery","Pogo","UserInput","utils","ViewPort"], function($,Pogo,UserInp
 			if(keys.down) this.triggerJump(Pogo.JUMP_DIRS.DOWN);			
 		}
 		
+		if(keys.space) this.triggerShot();
+		
 		//set viewport
 		var drawPos = utils.iso(this.pos.x,this.pos.y,0);
 		ViewPort.setPosByPlayerPosition(drawPos);

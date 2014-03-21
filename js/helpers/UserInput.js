@@ -1,59 +1,62 @@
 define(["jquery"], function($){
  
     // Private methods and static variables
-    var _keys = {
-		left: false,
-		right: false,
-		up: false,
-		down: false,
-		space: false,
-		mouseL: false,
-		mouseR: false,
-		allKeysUp: function(){
-			this.left = false;
-			this.right = false;
-			this.up = false;
-			this.down = false;
-			this.space = false;
-		},
-    }
+    
+    var KEY_NAMES = {
+		LEFT: "left",
+		RIGHT: "right",
+		UP: "up",
+		DOWN: "down",
+		SPACE: "space"
+	};
+    
+    var _keys = {};
+    _keys[KEY_NAMES.LEFT] = false;
+    _keys[KEY_NAMES.RIGHT] = false;
+    _keys[KEY_NAMES.UP] = false;
+    _keys[KEY_NAMES.DOWN] = false;
+    _keys[KEY_NAMES.SPACE] = false;
 
-    // I return an initialized object.
     function UserInput(){
-		
-        // Return this object reference.
         return( this );
     }
     UserInput.createListeners = function() {
 		$(document).keydown(function(e){
-			if(e.keyCode == 39 || e.keyCode == 68) {
-				e.preventDefault();
-				_keys.right = true;
-			} else if (e.keyCode == 37 || e.keyCode == 65) {
-				e.preventDefault();
-				_keys.left = true;
-			} else if (e.keyCode == 38 || e.keyCode == 87) {
-				e.preventDefault();
-				_keys.up = true;
-			} else if (e.keyCode == 40 || e.keyCode == 83) {
-				e.preventDefault();
-				_keys.down = true;
-			} else if (e.keyCode == 32) {
-				e.preventDefault();
-				_keys.space = true;
-			}
+			var key = UserInput.getKeyNameFromCode(e.keyCode);
+			if(key) _keys[key] = true;
 		});
 		$(document).keyup(function(e){
-			//console.log(e.keyCode);
-			_keys.allKeysUp();
+			var key = UserInput.getKeyNameFromCode(e.keyCode);
+			if(key) _keys[key] = false;
 		});
+    };
+        
+    UserInput.getKeyNameFromCode = function(code) {
+	    switch(code) {
+		    case 39:	//R-Arrow
+		    case 68:	//D key
+		    	return KEY_NAMES.RIGHT;
+		    case 37:	//L-Arrow
+		    case 65:	//A key
+		    	return KEY_NAMES.LEFT;
+		    case 38:	//UP-Arrow
+		    case 87:	//W key
+		    	return KEY_NAMES.UP;
+		    case 40:	//UP-Arrow
+		    case 83:	//W key
+		    	return KEY_NAMES.DOWN;
+		    case 32:
+		    	return KEY_NAMES.SPACE;
+		    default:
+		    	return false;
+	    }
     }
 
     // Static Methods
     UserInput.keys = function(){
 		return _keys;
     };
-
+	
     // Return the base Model constructor.
     return UserInput;
     

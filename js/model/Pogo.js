@@ -36,8 +36,28 @@ define(["jquery","utils","config","Entity","PogoView","Bullet"], function($,util
             
     Pogo.prototype.triggerJump = function(dir) {
 	    this.jumpTriggered = true;
+	    
+	    if(this.jumpDir) this.lastJumpDir = this.jumpDir;
 	    this.jumpDir = dir || null;
     };
+    Pogo.prototype.triggerShot = function() {
+	    this.shotTriggered = true;
+	    if(this.jumpDir) {
+		    this.shootingDir = this.jumpDir;
+	    } else if (this.lastJumpDir) {
+		    this.shootingDir = this.lastJumpDir;
+	    } else {
+		    this.shootingDir = config.DIRS.LEFT;
+	    }
+    };
+        
+    Pogo.prototype.shoot = function() {
+	    var b = new Bullet(this, this.shootingDir);
+		GAME_CONTROLLER.addEntity(b);
+	    
+	    this.shotTriggered = false;
+    };
+
     Pogo.prototype.getDestination = function(dir) {
 	    var dest;
 	    
@@ -62,10 +82,6 @@ define(["jquery","utils","config","Entity","PogoView","Bullet"], function($,util
     Pogo.prototype.canJumpToSpace = function(space) {		
 		return (space.blockHeight - this.currentSpace.blockHeight > 2 && !space.isOccupied()) ? false : true;
     };
-    
-    Pogo.prototype.shoot = function() {
-	    this.shotTriggered = false;
-    }
     
     // t: current time, b: begInnIng value, c: change In value, d: duration
 	Pogo.easeInQuart = function (t, b, c, d) {
@@ -181,8 +197,7 @@ define(["jquery","utils","config","Entity","PogoView","Bullet"], function($,util
 		
 		if(this.pos.z == this.currentSpace.size.z) {
 			//this.view.setDownFrame();
-			var b = new Bullet(this, config.DIRS.DOWN);
-			GAME_CONTROLLER.addEntity(b);
+			if(this.shotTriggered) this.shoot();
 
 			this.onBounce();
 		} else {

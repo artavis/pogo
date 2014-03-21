@@ -1,9 +1,10 @@
 define(["jquery","config","Entity","BulletView"], function($,config,Entity,BulletView) {
     
     var _bulletSpeed = config.spaceWidth*config.bulletVelocityFactor;
-    function Bullet(shooter,dir) {
+    function Bullet(shooter,dir,type) {
 	    Entity.call(this);
 	    
+	    this.type = type || Bullet.TYPES.NORMAL;
 	    this.currentSpace = shooter.currentSpace || GAME_CONTROLLER.map.getSpace(0,0);
 	    this.setSize({
 			width: config.bulletSize,
@@ -75,13 +76,16 @@ define(["jquery","config","Entity","BulletView"], function($,config,Entity,Bulle
 	    
 	    if(this.leavingCurrentSpace()) {
 		    	if(this.nextSpace === false) {
-			    	console.log("REMOVE");
 			    	this.removeFromGame();
 		    	} else {
 			    	this.currentSpace = this.nextSpace;
 			    	this.getNextSpace();	
 		    	}
 	    	} 
+    };
+    
+    Bullet.TYPES = {
+		NORMAL: "normal"  
     };
     
     return Bullet;
