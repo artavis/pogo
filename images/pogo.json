@@ -1,0 +1,42 @@
+{
+	"frames": {
+	
+		"pogo_1": {
+			"frame": {"x":0,"y":0,"w":24,"h":48},
+			"rotated": false,
+			"trimmed": false,
+			"spriteSourceSize": {"x":0,"y":0,"w":24,"h":48},
+			"sourceSize": {"w":24,"h":48}
+		},
+		"pogo_2": {
+			"frame": {"x":24,"y":0,"w":24,"h":48},
+			"rotated": false,
+			"trimmed": false,
+			"spriteSourceSize": {"x":0,"y":0,"w":24,"h":48},
+			"sourceSize": {"w":24,"h":48}
+		},
+		"pogo_3": {
+			"frame": {"x":48,"y":0,"w":24,"h":48},
+			"rotated": false,
+			"trimmed": false,
+			"spriteSourceSize": {"x":0,"y":0,"w":24,"h":48},
+			"sourceSize": {"w":24,"h":48}
+		},
+		"pogo_4": {
+			"frame": {"x":72,"y":0,"w":24,"h":48},
+			"rotated": false,
+			"trimmed": false,
+			"spriteSourceSize": {"x":0,"y":0,"w":24,"h":48},
+			"sourceSize": {"w":24,"h":48}
+		}
+	},
+	"meta": {
+		"app": "http://www.texturepacker.com",
+		"version": "1.0",
+		"image": "pogo_sprite.png",
+		"format": "RGBA8888",
+		"size": {"w":96,"h":48},
+		"scale": "1",
+		"smartupdate": "$TexturePacker:SmartUpdate:17e4a2d92ff3e27832c3f4938cec7c85$"
+	}
+}

@@ -15,9 +15,21 @@ define(["jquery","utils","pixi"], function($,utils,pixi){
 			var texture = pixi.Texture.fromImage(IMG);
 			_img = new pixi.Sprite(texture);
         };
+        this.setImageFromFrame = function(FRAME) {
+			if(_img && _img.stage)_img.stage.removeChild(_img);
+			_img = pixi.Sprite.fromFrame(FRAME);
+        };
         this.setImageFromCanvas = function(CANVAS) {
 			var texture = pixi.Texture.fromCanvas(CANVAS);
 			_img = new pixi.Sprite(texture);
+        };
+        this.setTexture = function(IMG) {
+			var texture = pixi.Texture.fromImage(IMG);
+			_img.setTexture(texture);
+        };
+        this.setTextureFromCanvas = function(CANVAS) {
+			var texture = pixi.Texture.fromCanvas(CANVAS);
+			_img.setTexture(texture);
         };
 		this.getImage = function() {
 			return _img;

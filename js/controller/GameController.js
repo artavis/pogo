@@ -1,5 +1,5 @@
-define(["jquery","requestAnimFrame","config","GameView","Map","Player","Pogo"], 
-function($,       requestAnimFrame,  config,  GameView,  Map,  Player,  Pogo) {
+define(["jquery","requestAnimFrame","config","pixi","GameView","Map","Player","Pogo"], 
+function($,       requestAnimFrame,  config,  pixi,  GameView,  Map,  Player,  Pogo) {
     
    	var _gameStartTime=0, 
    		_currentTime = 0, 
@@ -12,9 +12,12 @@ function($,       requestAnimFrame,  config,  GameView,  Map,  Player,  Pogo) {
 	    self = this;
 	    
 	    this.entities = [], 
-	    this.drawArray = [];	        
+	    this.drawArray = [];	
 	    
-	    this.init();
+	    var assetsToLoad = ["images/pogo.json"];
+		loader = new pixi.AssetLoader(assetsToLoad);
+		loader.onComplete = this.init.bind(this);
+		loader.load();        
     }
     
     GameController.prototype = {
@@ -83,7 +86,7 @@ function($,       requestAnimFrame,  config,  GameView,  Map,  Player,  Pogo) {
 		    //fire next loop
 		    
 		    var now = +new Date;
-		    //console.log("execution time:", now - then);
+		    console.log("execution time:", now - then);
 		    setTimeout(self.slowTick,tickTime);
 	    },
 	    update: function(dt) {

@@ -35,18 +35,6 @@ define(["jquery","utils","config","Entity","PogoView"], function($,utils,config,
     
     Pogo.prototype = Object.create( Entity.prototype );
             
-        
-    Pogo.prototype.draw = function() {
-		    var iso = utils.isoOffset(this.pos.x,this.pos.y,this.pos.z);
-		    //console.log(iso);
-		    
-		    var canvas = document.querySelector("#canvas");
-			var ctx = canvas.getContext("2d");
-
-			ctx.drawImage(IMG,iso.x-this.size.width/2,iso.y-this.size.z);
-			//ctx.fillRect(iso.x,iso.y,width,width);
-    }
-
     Pogo.prototype.triggerJump = function(dir) {
 	    this.jumpTriggered = true;
 	    this.jumpDir = dir || null;
@@ -193,7 +181,10 @@ define(["jquery","utils","config","Entity","PogoView"], function($,utils,config,
 		}
 		
 		if(this.pos.z == this.currentSpace.size.z) {
+			this.view.setDownFrame();
 			this.onBounce();
+		} else {
+			this.view.setUpFrame();
 		}
 		
 		this.onUpdate();
