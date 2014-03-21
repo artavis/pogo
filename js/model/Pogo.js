@@ -1,4 +1,4 @@
-define(["jquery","utils","config","Entity","PogoView"], function($,utils,config,Entity,PogoView) {
+define(["jquery","utils","config","Entity","PogoView","Bullet"], function($,utils,config,Entity,PogoView,Bullet) {
     
 	var _bounceLength = config.spaceWidth*5, _moveLength=_bounceLength*2, _bounceHeight = 50, _jumpHeight = 90;
 	
@@ -22,12 +22,11 @@ define(["jquery","utils","config","Entity","PogoView"], function($,utils,config,
 
 	    this.bouncing = true;
 	    this.jumping = false;
-
-	    
 	    
 	    this.bounceTime = 0;
 	    this.moveTime = 0;
 	    
+	    this.gunHeight = config.pogoGunHeight;
 	    
 	    this.view = new PogoView(this);
 	    return this;	    
@@ -181,11 +180,15 @@ define(["jquery","utils","config","Entity","PogoView"], function($,utils,config,
 		}
 		
 		if(this.pos.z == this.currentSpace.size.z) {
-			this.view.setDownFrame();
+			//this.view.setDownFrame();
+			var b = new Bullet(this, config.DIRS.DOWN);
+			GAME_CONTROLLER.addEntity(b);
+
 			this.onBounce();
 		} else {
-			this.view.setUpFrame();
+			//this.view.setUpFrame();
 		}
+		
 		
 		this.onUpdate();
     };
@@ -193,10 +196,10 @@ define(["jquery","utils","config","Entity","PogoView"], function($,utils,config,
     Pogo.prototype.onUpdate = function(){ /* STUB FOR CHILD CLASSES */ }
     
     Pogo.JUMP_DIRS = {
-		LEFT: "left",    
-		RIGHT: "right",    
-		UP: "up",    
-		DOWN: "down"    
+		LEFT: config.DIRS.LEFT,    
+		RIGHT: config.DIRS.RIGHT,    
+		UP: config.DIRS.UP,    
+		DOWN: config.DIRS.DOWN    
     };
     
     return Pogo; 

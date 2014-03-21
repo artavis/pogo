@@ -27,7 +27,7 @@ define(["jquery","config","Space","Pogo"], function($,config,Space,Pogo) {
 		}  
 		
 		this.getSpace = function(x,y) {
-			if(this.spaces[y][x]) return this.spaces[y][x];
+			if(this.spaces[y] && this.spaces[y][x]) return this.spaces[y][x];
 			return false;
 		}
 		this.getSpaceByPos = function(pos) {

@@ -16,7 +16,7 @@ define(["jquery","utils","pixi"], function($,utils,pixi){
 			_img = new pixi.Sprite(texture);
         };
         this.setImageFromFrame = function(FRAME) {
-			if(_img && _img.stage)_img.stage.removeChild(_img);
+			this.removeFromStage();
 			_img = pixi.Sprite.fromFrame(FRAME);
         };
         this.setImageFromCanvas = function(CANVAS) {
@@ -33,6 +33,10 @@ define(["jquery","utils","pixi"], function($,utils,pixi){
         };
 		this.getImage = function() {
 			return _img;
+		}
+		
+		this.removeFromStage = function() {
+			if(_img && _img.stage)_img.stage.removeChild(_img);
 		}
 
         return this;

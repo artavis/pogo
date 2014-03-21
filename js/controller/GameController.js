@@ -111,8 +111,17 @@ function($,       requestAnimFrame,  config,  pixi,  GameView,  Map,  Player,  P
 	    draw: function() {
 		    this.view.render(this.drawArray);
 	    },
-	    
-	    
+	    addEntity: function(ent) {
+		    if(!ent) return;
+		    this.entities.push(ent);
+	    },
+	    removeEntity: function(ent) {
+		    for(var i in this.entities) {
+			    if(this.entities[i] === ent) {
+				    this.entities.splice(i, 1);
+			    }
+		    }
+	    },
 	    createPlayer: function() {
 		    this.player = new Player(this.map.spaces[4][4]);
 		    this.player.currentSpace.occupy();

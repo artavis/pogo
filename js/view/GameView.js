@@ -28,6 +28,9 @@ define(["jquery","config","pixi","ViewPort"], function($,config,pixi,ViewPort){
 		        view.updateDrawPosition();
 		        stage.addChildAt(view.getImage(),i);
 	        }
+        },
+        getStage: function() {
+	        return stage;
         }
     };
 

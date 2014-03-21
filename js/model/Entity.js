@@ -33,6 +33,10 @@ define(["jquery"],
 		            zTop: this.pos.z - this.size.z,
 		            zBottom: this.pos.z,
 	            }
+            },
+            removeFromGame: function() {
+	            this.view.removeFromStage();
+	            GAME_CONTROLLER.removeEntity(this);
             }
         };
   
