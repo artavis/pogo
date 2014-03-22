@@ -1,4 +1,4 @@
-define(["jquery","ViewPort"], function($,ViewPort) {
+define(["jquery","ViewPort","config"], function($,ViewPort,config) {
     
     function iso(x,y,z) {
 	   	return {
@@ -21,7 +21,7 @@ define(["jquery","ViewPort"], function($,ViewPort) {
 */
 			
 			x: Math.round(x - y),
-			y: Math.round(((x + y) / 1.5) - z*1.5)
+			y: Math.round(((x + y) / 1.5) - z*config.isoZFactor)
 
 	
 		};

@@ -81,7 +81,7 @@ define(["jquery","utils","config","Entity","SpaceView"],
 
 
 	function initBlockHeight() {
-	    //return 2;
+	    //return 3;
 	    return Math.floor(Math.random()*config.maxBlockHeight);
     }
     

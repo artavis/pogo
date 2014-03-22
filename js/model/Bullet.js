@@ -38,13 +38,13 @@ define(["jquery","config","Entity","BulletView"], function($,config,Entity,Bulle
     Bullet.prototype.setOriginPos = function(shooter,dir) {
 	    var origPos;
 	    if(dir == config.DIRS.LEFT) {
-		    origPos = {x: shooter.pos.x - shooter.size.width, y: shooter.pos.y, z: shooter.gunHeight};
+		    origPos = {x: shooter.pos.x - shooter.size.width, y: shooter.pos.y, z: shooter.pos.z + shooter.gunHeight};
 	    } else if(dir == config.DIRS.RIGHT) {
-		    origPos = {x: shooter.pos.x + shooter.size.width, y: shooter.pos.y, z: shooter.gunHeight};
+		    origPos = {x: shooter.pos.x + shooter.size.width, y: shooter.pos.y, z: shooter.pos.z + shooter.gunHeight};
 	    } else if(dir == config.DIRS.UP) {
-		    origPos = {x: shooter.pos.x, y: shooter.pos.y - shooter.size.height, z: shooter.gunHeight};
+		    origPos = {x: shooter.pos.x, y: shooter.pos.y - shooter.size.height, z: shooter.pos.z + shooter.gunHeight};
 	    } else if(dir == config.DIRS.DOWN) {
-		    origPos = {x: shooter.pos.x, y: shooter.pos.y + shooter.size.height, z: shooter.gunHeight};
+		    origPos = {x: shooter.pos.x, y: shooter.pos.y + shooter.size.height, z: shooter.pos.z + shooter.gunHeight};
 	    } else {
 		    origPos = {x: shooter.pos.x, y: shooter.pos.y, z: shooter.gunHeight};
 	    }

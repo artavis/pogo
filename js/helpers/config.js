@@ -20,6 +20,7 @@ define(["jquery"], function($) {
 	    bulletVelocityFactor: 8,
 	    
 	    //helpers
+	    isoZFactor: 1.5,
 	    DIRS: {
 		    LEFT: "left",
 		    RIGHT: "right",
