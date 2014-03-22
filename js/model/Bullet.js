@@ -1,9 +1,11 @@
 define(["jquery","config","Entity","BulletView"], function($,config,Entity,BulletView) {
     
     var _bulletSpeed = config.spaceWidth*config.bulletVelocityFactor;
-    function Bullet(shooter,dir,type) {
+    
+    function Bullet(shooter,type) {
 	    Entity.call(this);
 	    
+	    this.isProjectile = true;
 	    this.type = type || Bullet.TYPES.NORMAL;
 	    this.currentSpace = shooter.currentSpace || GAME_CONTROLLER.map.getSpace(0,0);
 	    this.setSize({
@@ -12,12 +14,13 @@ define(["jquery","config","Entity","BulletView"], function($,config,Entity,Bulle
 			z: config.bulletSize
 	    });
 		
-		this.dir = dir || config.DIRS.LEFT;
+		this.dir = shooter.dir || config.DIRS.LEFT;
 	    this.setOriginPos(shooter,this.dir);
-	    this.setVelocity(dir);
 	    this.getNextSpace();
 	    
+	    this.setVelocity(this.dir);
 	    this.setPower();
+	    
 	    
 	    this.view = new BulletView(this);
 	    
@@ -35,15 +38,15 @@ define(["jquery","config","Entity","BulletView"], function($,config,Entity,Bulle
     Bullet.prototype.setOriginPos = function(shooter,dir) {
 	    var origPos;
 	    if(dir == config.DIRS.LEFT) {
-		    origPos = {x: shooter.pos.x - shooter.size.width/2, y: shooter.pos.y, z: shooter.pos.z};
+		    origPos = {x: shooter.pos.x - shooter.size.width, y: shooter.pos.y, z: shooter.gunHeight};
 	    } else if(dir == config.DIRS.RIGHT) {
-		    origPos = {x: shooter.pos.x + shooter.size.width/2, y: shooter.pos.y, z: shooter.pos.z};
+		    origPos = {x: shooter.pos.x + shooter.size.width, y: shooter.pos.y, z: shooter.gunHeight};
 	    } else if(dir == config.DIRS.UP) {
-		    origPos = {x: shooter.pos.x, y: shooter.pos.y - shooter.size.height/2, z: shooter.pos.z};
+		    origPos = {x: shooter.pos.x, y: shooter.pos.y - shooter.size.height, z: shooter.gunHeight};
 	    } else if(dir == config.DIRS.DOWN) {
-		    origPos = {x: shooter.pos.x, y: shooter.pos.y + shooter.size.height/2, z: shooter.pos.z};
+		    origPos = {x: shooter.pos.x, y: shooter.pos.y + shooter.size.height, z: shooter.gunHeight};
 	    } else {
-		    origPos = {x: shooter.pos.x, y: shooter.pos.y, z: shooter.pos.z};
+		    origPos = {x: shooter.pos.x, y: shooter.pos.y, z: shooter.gunHeight};
 	    }
 	    this.setPos(origPos);
     };

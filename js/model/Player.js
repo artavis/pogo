@@ -59,7 +59,7 @@ define(["jquery","Pogo","UserInput","utils","ViewPort"], function($,Pogo,UserInp
 			this.jumping = true;
 			this.bouncing = false;
 			
-			this.destSpace = this.getDestination(this.jumpDir);
+			this.destSpace = this.getDestination(this.dir);
 			
 			if(!this.destSpace) {
 				this.jumping = false;
@@ -77,10 +77,10 @@ define(["jquery","Pogo","UserInput","utils","ViewPort"], function($,Pogo,UserInp
     Player.prototype.onUpdate = function(){
 		var keys = UserInput.keys();
 		if(!this.jumping || !this.goingUp) {
-			if(keys.left) this.triggerJump(Pogo.JUMP_DIRS.LEFT);
-			if(keys.right) this.triggerJump(Pogo.JUMP_DIRS.RIGHT);
-			if(keys.up) this.triggerJump(Pogo.JUMP_DIRS.UP);
-			if(keys.down) this.triggerJump(Pogo.JUMP_DIRS.DOWN);			
+			if(keys.left) { this.changeDir(Pogo.JUMP_DIRS.LEFT); this.triggerJump(); }
+			if(keys.right) { this.changeDir(Pogo.JUMP_DIRS.RIGHT); this.triggerJump(); }
+			if(keys.up) { this.changeDir(Pogo.JUMP_DIRS.UP); this.triggerJump(); }
+			if(keys.down) { this.changeDir(Pogo.JUMP_DIRS.DOWN); this.triggerJump(); }			
 		}
 		
 		if(keys.space) this.triggerShot();

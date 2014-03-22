@@ -38,12 +38,22 @@ define(["jquery","ViewPort"], function($,ViewPort) {
 		if (x < 0) { return -1; }
 		if (x > 0) { return 1; }
 	}
+	function collides(a,b) {
+		return a.pos.x + a.halfSize.width > b.pos.x - b.halfSize.width && 
+	         a.pos.x - a.halfSize.width < b.pos.x + b.halfSize.width &&
+	         a.pos.y + a.halfSize.height > b.pos.y - b.halfSize.height &&
+	         a.pos.y - a.halfSize.height < b.pos.y + b.halfSize.height &&
+	         a.pos.z < b.pos.z + b.size.z &&
+	         a.pos.z + a.size.z > b.pos.z;
+	         //a.space.blockHeight == b.space.blockHeight;
+	}
 
     
     return {
 	    iso: iso,
 	    isoOffset: isoOffset,
-	    oneOrNegOne: oneOrNegOne
+	    oneOrNegOne: oneOrNegOne,
+	    collides: collides
     };
     
     

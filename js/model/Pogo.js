@@ -3,8 +3,8 @@ define(["jquery","utils","config","Entity","PogoView","Bullet"], function($,util
 	var _bounceLength = config.spaceWidth*5,
 		_jumpLength = config.spaceWidth*6,
 		_moveLength =_jumpLength*2, 
-		_bounceHeight = 50, 
-		_jumpHeight = 90;
+		_bounceHeight = config.pogoHeight*2/3, 
+		_jumpHeight = config.pogoHeight*4/3;
 	
     function Pogo(startingSpace) {
 	    
@@ -30,6 +30,7 @@ define(["jquery","utils","config","Entity","PogoView","Bullet"], function($,util
 	    
 	    this.bounceTime = 0;
 	    this.moveTime = 0;
+	    this.dir = Pogo.JUMP_DIRS.UP;
 	    
 	    this.gunHeight = config.pogoGunHeight;
 	    
@@ -39,25 +40,19 @@ define(["jquery","utils","config","Entity","PogoView","Bullet"], function($,util
     
     Pogo.prototype = Object.create( Entity.prototype );
             
-    Pogo.prototype.triggerJump = function(dir) {
+    Pogo.prototype.triggerJump = function() {
 	    this.jumpTriggered = true;
-	    
-	    if(this.jumpDir) this.lastJumpDir = this.jumpDir;
-	    this.jumpDir = dir || null;
+    };
+    Pogo.prototype.changeDir = function(dir) {
+		this.dir = dir;
+		//todo - change the view's frame to the new direction  
     };
     Pogo.prototype.triggerShot = function() {
 	    this.shotTriggered = true;
-	    if(this.jumpDir) {
-		    this.shootingDir = this.jumpDir;
-	    } else if (this.lastJumpDir) {
-		    this.shootingDir = this.lastJumpDir;
-	    } else {
-		    this.shootingDir = config.DIRS.LEFT;
-	    }
     };
         
     Pogo.prototype.shoot = function() {
-	    var b = new Bullet(this, this.shootingDir);
+	    var b = new Bullet(this);
 		GAME_CONTROLLER.addEntity(b);
 	    
 	    this.shotTriggered = false;

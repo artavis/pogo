@@ -1,5 +1,5 @@
-define(["jquery","requestAnimFrame","config","pixi","GameView","Map","Player","Pogo"], 
-function($,       requestAnimFrame,  config,  pixi,  GameView,  Map,  Player,  Pogo) {
+define(["jquery","requestAnimFrame","config","utils","pixi","GameView","Map","Player","Pogo"], 
+function($,       requestAnimFrame,  config,  utils,  pixi,  GameView,  Map,  Player,  Pogo) {
     
    	var _gameStartTime=0, 
    		_currentTime = 0, 
@@ -91,6 +91,23 @@ function($,       requestAnimFrame,  config,  pixi,  GameView,  Map,  Player,  P
 	    },
 	    update: function(dt) {
 		    for(var i in this.entities) this.entities[i].update(dt);
+		    this.handleCollision();
+	    },
+	    handleCollision: function() {
+			for(var a in this.entities) {
+				var entA = this.entities[a];
+				if(!entA.isProjectile) continue;
+				
+				for(var b in this.entities) {
+					var entB = this.entities[b];
+					if(entB.isProjectile) continue;
+
+					if(utils.collides(entA,entB)) {
+						entA.removeFromGame();
+						entB.removeFromGame();
+					}
+				}
+			}
 	    },
 	    updateDrawOrder: function() {
 		    this.drawArray = [];

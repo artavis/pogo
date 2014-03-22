@@ -6,6 +6,8 @@ define(["jquery"],
             
             this.pos  	= {x:0,y:0,z:0};
             this.size 	= {width:0, height:0, z:0};
+            this.isProjectile = false;
+            
             // Return this object reference.
             return( this );
         }
@@ -22,6 +24,7 @@ define(["jquery"],
             setSize: function(size){ 
             	if(!size || size.width === undefined || size.height === undefined || size.z === undefined) return this;
             	this.size = size;
+            	this.halfSize = { width: size.width/2, height: size.height/2 };
             	return this; 
             },
             getBounds: function() {
@@ -36,6 +39,7 @@ define(["jquery"],
             },
             removeFromGame: function() {
 	            this.view.removeFromStage();
+	            if(this.currentSpace) this.currentSpace.unoccupy();
 	            GAME_CONTROLLER.removeEntity(this);
             }
         };
