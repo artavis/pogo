@@ -1,22 +1,21 @@
 define(["jquery","config","utils","Entity","pixi","ExplosionView"], function($,config,utils,Entity,pixi,ExplosionView) {
         
-    function Explosion(emitter,type) {
+    function Explosion(_opts) {
 	    Entity.call(this);
+				
+		this.currentSpace = _opts.currentSpace || 0;
+		var type = _opts.type || Explosion.TYPES.NORMAL;
+		var pos = _opts.pos || {x:0,y:0,z:0};
 		
-		this.currentSpace = emitter.currentSpace;
 	    this.setSize({
 			width: 64,
 			height: 64,
 			z: 64
 	    });
-	    this.setPos({
-	    	x: emitter.pos.x,
-	    	y: emitter.pos.y,
-	    	z: emitter.pos.z
-	    })
+
+	    this.setPos(pos);
 	    
 	    this.view = new ExplosionView(this,type);
-	    //var pos = utils.isoOffset(emitter.pos.x-this.size.width/2,emitter.pos.y,emitter.pos.z);
 	    
 	    GAME_CONTROLLER.addEntity(this);
 	    return this;

@@ -37,7 +37,26 @@ define(["jquery","config","Entity","BulletView","Explosion"], function($,config,
 	    }
     };
     Bullet.prototype.explode = function() {
-	    var expl = new Explosion(this,Explosion.TYPES.NORMAL);
+	    var expl = new Explosion({
+			currentSpace: this.currentSpace,
+			pos: this.pos
+	    });
+	    this.removeFromGame();
+    };
+    Bullet.prototype.multExplosion = function(num) {
+	    var currentSpace = this.currentSpace;
+	    var pos = this.pos;
+	    for(var i=0; i<num; i++) {
+			setTimeout(function(){
+				var randX = Math.floor(Math.random()*24);
+				var randY = Math.floor(Math.random()*24);
+				var randZ = Math.floor(Math.random()*24);
+				var expl = new Explosion({
+					currentSpace: currentSpace,
+					pos: {x:pos.x+randX,y:pos.y+randY,z:pos.z+randZ}
+				});    
+			},i*100);
+	    };
 	    this.removeFromGame();
     }
     Bullet.prototype.setOriginPos = function(shooter,dir) {
@@ -95,8 +114,7 @@ define(["jquery","config","Entity","BulletView","Explosion"], function($,config,
 		    	this.removeFromGame();
 	    	} else {
 		    	if(this.nextSpace.size.z > this.pos.z) {
-			    	this.nextSpace.blockHit(this.power);
-			    	this.explode();
+			    	this.nextSpace.blockHit(this);
 		    	} else {
 			    	this.currentSpace = this.nextSpace;
 			    	this.getNextSpace();	

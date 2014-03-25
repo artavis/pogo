@@ -1,4 +1,4 @@
-define(["jquery","utils","config","Entity","PogoView","Bullet"], function($,utils,config,Entity,PogoView,Bullet) {
+define(["jquery","utils","config","Entity","PogoView","Bullet","Explosion"], function($,utils,config,Entity,PogoView,Bullet,Explosion) {
     
 	var _bounceLength = config.spaceWidth*5,
 		_jumpLength = config.spaceWidth*6,
@@ -16,6 +16,8 @@ define(["jquery","utils","config","Entity","PogoView","Bullet"], function($,util
 		    z: config.pogoHeight
 	    });
 	    this.checkCollide = true;
+	    this.health = 1;
+	    
 	    this.currentSpace = startingSpace;
 	    this.currentSpace.occupy();
 	    
@@ -40,6 +42,26 @@ define(["jquery","utils","config","Entity","PogoView","Bullet"], function($,util
     
     Pogo.prototype = Object.create( Entity.prototype );
             
+    Pogo.prototype.getHit = function(power) {
+	    this.health -= power;
+	    if(this.health <= 0) this.kill();
+    };
+    Pogo.prototype.kill = function() {
+	    var currentSpace = this.currentSpace;
+	    var pos = this.pos;
+	    for(var i=0; i<4; i++) {
+			setTimeout(function(){
+				var randX = Math.floor(Math.random()*24);
+				var randY = Math.floor(Math.random()*24);
+				var randZ = Math.floor(Math.random()*24);
+				var expl = new Explosion({
+					currentSpace: currentSpace,
+					pos: {x:pos.x+randX,y:pos.y+randY,z:pos.z+randZ}
+				});    
+			},i*100);
+	    }
+	    this.removeFromGame();
+    };
     Pogo.prototype.triggerJump = function() {
 	    this.jumpTriggered = true;
     };

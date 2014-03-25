@@ -60,11 +60,13 @@ define(["jquery","utils","config","Entity","SpaceView","Explosion"],
 		
 		return false;
 	};
-	Space.prototype.blockHit = function(power) {
-		this.strength -= power;
-		if(this.strength == 0) {
+	Space.prototype.blockHit = function(bullet) {
+		this.strength -= bullet.power;
+		if(this.strength <= 0) {
 			this.lower();
+			bullet.multExplosion(3);
 		} else {
+			bullet.explode();
 			//this.addHit();
 		}
 	};

@@ -17,7 +17,7 @@ define(["jquery"], function($) {
 	    
 	    //Bullets
 	    bulletSize: 12,
-	    bulletVelocityFactor: 8,
+	    bulletVelocityFactor: 12,
 	    
 	    //helpers
 	    isoZFactor: 1.5,

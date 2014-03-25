@@ -12,7 +12,8 @@ function($,       requestAnimFrame,  config,  utils,  pixi,  GameView,  Map,  Pl
 	    self = this;
 	    
 	    this.entities = [], 
-	    this.drawArray = [];	
+	    this.drawArray = [];
+	    this.scheduledTasks = [];	
 	    
 	    var assetsToLoad = ["images/pogo.json","images/explosion.json"];
 		loader = new pixi.AssetLoader(assetsToLoad);
@@ -57,7 +58,7 @@ function($,       requestAnimFrame,  config,  utils,  pixi,  GameView,  Map,  Pl
 		    
 		    //Draw the game
 		    self.draw();
-			
+		    			
 			if(setSlowTick) { requestAnimFrame(self.slowTick); return; }
 		    
 		    //fire next loop
@@ -94,6 +95,7 @@ function($,       requestAnimFrame,  config,  utils,  pixi,  GameView,  Map,  Pl
 		    this.handleCollision();
 	    },
 	    handleCollision: function() {
+			//entA is a projectile, entB is not
 			for(var a in this.entities) {
 				var entA = this.entities[a];
 				if(!entA.isProjectile || !entA.checkCollide) continue;
@@ -104,7 +106,7 @@ function($,       requestAnimFrame,  config,  utils,  pixi,  GameView,  Map,  Pl
 
 					if(utils.collides(entA,entB)) {
 						entA.explode();
-						entB.removeFromGame();
+						entB.getHit(entA.power);
 					}
 				}
 			}
