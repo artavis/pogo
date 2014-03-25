@@ -1,10 +1,11 @@
-define(["jquery","config","Entity","BulletView"], function($,config,Entity,BulletView) {
+define(["jquery","config","Entity","BulletView","Explosion"], function($,config,Entity,BulletView,Explosion) {
     
     var _bulletSpeed = config.spaceWidth*config.bulletVelocityFactor;
     
     function Bullet(shooter,type) {
 	    Entity.call(this);
 	    
+	    this.checkCollide = true;
 	    this.isProjectile = true;
 	    this.type = type || Bullet.TYPES.NORMAL;
 	    this.currentSpace = shooter.currentSpace || GAME_CONTROLLER.map.getSpace(0,0);
@@ -35,6 +36,10 @@ define(["jquery","config","Entity","BulletView"], function($,config,Entity,Bulle
 		    	this.power = 1;
 	    }
     };
+    Bullet.prototype.explode = function() {
+	    var expl = new Explosion(this,Explosion.TYPES.NORMAL);
+	    this.removeFromGame();
+    }
     Bullet.prototype.setOriginPos = function(shooter,dir) {
 	    var origPos;
 	    if(dir == config.DIRS.LEFT) {
@@ -91,7 +96,7 @@ define(["jquery","config","Entity","BulletView"], function($,config,Entity,Bulle
 	    	} else {
 		    	if(this.nextSpace.size.z > this.pos.z) {
 			    	this.nextSpace.blockHit(this.power);
-			    	this.removeFromGame();
+			    	this.explode();
 		    	} else {
 			    	this.currentSpace = this.nextSpace;
 			    	this.getNextSpace();	

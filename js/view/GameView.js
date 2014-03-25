@@ -18,7 +18,7 @@ define(["jquery","config","pixi","ViewPort"], function($,config,pixi,ViewPort){
     GameView.prototype = {
         render: function(drawArray) {
 	        this.updateDrawOrder(drawArray);
-
+			//if(window.DEBUG) console.log(drawArray);
 	        renderer.render(stage);
         },
         updateDrawOrder: function(drawArray) {

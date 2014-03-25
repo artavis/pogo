@@ -1,5 +1,5 @@
-define(["jquery","utils","config","Entity","SpaceView"], 
-	function($,   utils,  config,  Entity,  SpaceView) {
+define(["jquery","utils","config","Entity","SpaceView","Explosion"], 
+	function($,   utils,  config,  Entity,  SpaceView,  Explosion) {
             
     function Space(xInd,yInd) {
 	    

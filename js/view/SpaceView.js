@@ -1,4 +1,4 @@
-define(["jquery","utils","config","EntityView"], function($,utils,config,EntityView) {
+define(["jquery","utils","config","EntityView","pixi"], function($,utils,config,EntityView,pixi) {
 
 	var spaceImages = null;
 	
@@ -18,7 +18,7 @@ define(["jquery","utils","config","EntityView"], function($,utils,config,EntityV
 	    };
 	    this.resetBuffer = function(){
 		    buffer = this.getBuffer(space.blockHeight,SpaceView.BLOCK_TYPES.NORMAL);
-		    this.setImageFromCanvas(buffer);
+		    this.setImageFromCanvas(buffer);		    
 	    }
 	    		
 		return this;
@@ -39,7 +39,6 @@ define(["jquery","utils","config","EntityView"], function($,utils,config,EntityV
 		var size = config.platformHeight * blockHeight;
 		var iso = isoPoints(0,size,true);
 		
-		console.log("!!!",blockHeight,"!!!!");
 		var buffer = document.createElement("canvas");
 		buffer.width = iso.totalWidth, buffer.height = iso.totalHeight;
 		buffer.points = iso;

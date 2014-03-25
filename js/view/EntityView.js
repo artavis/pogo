@@ -24,6 +24,14 @@ define(["jquery","utils","pixi"], function($,utils,pixi){
 			var texture = pixi.Texture.fromCanvas(CANVAS);
 			_img = new pixi.Sprite(texture);
         };
+        this.setMovieClip = function(FRAMES,LOOP,ON_COMPLETE) {
+			_img = new pixi.MovieClip(FRAMES);
+			_img.loop = LOOP || false;
+			_img.onComplete = ON_COMPLETE || function(){};
+			_img.play();
+			
+			this.isMovie = true;
+        };
         this.setTexture = function(IMG) {
 			var texture = pixi.Texture.fromImage(IMG);
 			_img.setTexture(texture);
@@ -37,7 +45,13 @@ define(["jquery","utils","pixi"], function($,utils,pixi){
 		}
 		
 		this.removeFromStage = function() {
-			if(_img && _img.stage)_img.stage.removeChild(_img);
+			if(!_img || !_img.stage) return;
+			if(this.isMovie) {
+				_img.visible = false;
+			} else {
+				_img.stage.removeChild(_img);	
+			}
+			
 		}
 
         return this;

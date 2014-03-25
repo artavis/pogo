@@ -15,7 +15,7 @@ define(["jquery","utils","config","Entity","PogoView","Bullet"], function($,util
 		    height: config.pogoWidth,
 		    z: config.pogoHeight
 	    });
-	    
+	    this.checkCollide = true;
 	    this.currentSpace = startingSpace;
 	    this.currentSpace.occupy();
 	    

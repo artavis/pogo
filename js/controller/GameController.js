@@ -14,7 +14,7 @@ function($,       requestAnimFrame,  config,  utils,  pixi,  GameView,  Map,  Pl
 	    this.entities = [], 
 	    this.drawArray = [];	
 	    
-	    var assetsToLoad = ["images/pogo.json"];
+	    var assetsToLoad = ["images/pogo.json","images/explosion.json"];
 		loader = new pixi.AssetLoader(assetsToLoad);
 		loader.onComplete = this.init.bind(this);
 		loader.load();        
@@ -96,14 +96,14 @@ function($,       requestAnimFrame,  config,  utils,  pixi,  GameView,  Map,  Pl
 	    handleCollision: function() {
 			for(var a in this.entities) {
 				var entA = this.entities[a];
-				if(!entA.isProjectile) continue;
+				if(!entA.isProjectile || !entA.checkCollide) continue;
 				
 				for(var b in this.entities) {
 					var entB = this.entities[b];
-					if(entB.isProjectile) continue;
+					if(entB.isProjectile || !entB.checkCollide) continue;
 
 					if(utils.collides(entA,entB)) {
-						entA.removeFromGame();
+						entA.explode();
 						entB.removeFromGame();
 					}
 				}

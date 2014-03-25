@@ -7,6 +7,7 @@ define(["jquery"],
             this.pos  	= {x:0,y:0,z:0};
             this.size 	= {width:0, height:0, z:0};
             this.isProjectile = false;
+            this.checkCollide = false;
             
             // Return this object reference.
             return( this );
