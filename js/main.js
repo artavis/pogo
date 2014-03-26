@@ -36,6 +36,7 @@ requirejs.config({
         //Enemies
         EnemyController:	'controller/EnemyController',
         Enemy:				'model/Enemy',
+        Drone:				'model/Drone',
         Spinner:			'model/Spinner',
         
         //Views

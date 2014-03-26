@@ -1,4 +1,4 @@
-define(["jquery","config","Spinner"], function($,config,Spinner){
+define(["jquery","config","Spinner","Drone"], function($,config,Spinner,Drone){
 
     function EnemyController(){
 
@@ -8,7 +8,13 @@ define(["jquery","config","Spinner"], function($,config,Spinner){
     
     EnemyController.prototype = {
 		createEnemies: function() {
-			this.addSpinners();
+			//this.addSpinners();
+			this.addDrones();
+		},
+		addDrones: function() {
+			var space = GAME_CONTROLLER.map.spaces[config.boardSpaceTotal.y-1][config.boardSpaceTotal.x-1];
+			var drone = new Drone(space);
+			GAME_CONTROLLER.addEntity(drone);
 		},
 		addSpinners: function() {
 			var tallBlocks = [];

@@ -110,8 +110,7 @@ define(["jquery","config","Entity","BulletView","Explosion"], function($,config,
 		    	this.removeFromGame();
 	    	} else {
 		    	if(this.nextSpace.size.z > this.pos.z) {
-			    	this.currentSpace = this.nextSpace;
-			    	this.currentSpace.blockHit(this);
+			    	this.nextSpace.blockHit(this);
 		    	} else {
 			    	this.currentSpace = this.nextSpace;
 			    	this.getNextSpace();	
