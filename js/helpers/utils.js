@@ -38,6 +38,11 @@ define(["jquery","ViewPort","config"], function($,ViewPort,config) {
 		if (x < 0) { return -1; }
 		if (x > 0) { return 1; }
 	}
+	function rand(min,max,includeMax) {
+		roundFunc = includeMax ? Math.floor : Math.round;
+		
+		return roundFunc(Math.random()*(max-min)) + min;
+	}
 	function collides(a,b) {
 		return a.pos.x + a.halfSize.width > b.pos.x - b.halfSize.width && 
 	         a.pos.x - a.halfSize.width < b.pos.x + b.halfSize.width &&
@@ -53,6 +58,7 @@ define(["jquery","ViewPort","config"], function($,ViewPort,config) {
 	    iso: iso,
 	    isoOffset: isoOffset,
 	    oneOrNegOne: oneOrNegOne,
+	    rand: rand,
 	    collides: collides
     };
     

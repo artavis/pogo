@@ -8,14 +8,20 @@ define(["jquery","config","Spinner","Drone"], function($,config,Spinner,Drone){
     
     EnemyController.prototype = {
 		createEnemies: function() {
-			//this.addSpinners();
-			this.addDrones();
+			this.addSpinners();
+			//this.addDrones();
 		},
 		addDrones: function() {
 			var space = GAME_CONTROLLER.map.spaces[config.boardSpaceTotal.y-1][config.boardSpaceTotal.x-1];
 			var drone = new Drone(space);
 			GAME_CONTROLLER.addEntity(drone);
 		},
+		addSpinners: function() {
+			var space = GAME_CONTROLLER.map.spaces[config.boardSpaceTotal.y-1][config.boardSpaceTotal.x-1];
+			var spinner = new Spinner(space);
+			GAME_CONTROLLER.addEntity(spinner);
+		},
+/*
 		addSpinners: function() {
 			var tallBlocks = [];
 			var map = GAME_CONTROLLER.map;
@@ -54,6 +60,7 @@ define(["jquery","config","Spinner","Drone"], function($,config,Spinner,Drone){
 				}
 			}	
 		}
+*/
     };
 
     return EnemyController;

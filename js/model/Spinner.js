@@ -1,24 +1,30 @@
-define(["jquery","Enemy","config"], function($,Enemy,config) {
+define(["jquery","Enemy","config","utils"], function($,Enemy,config,utils) {
         
     function Spinner(space) {
 		Enemy.call(this,space);
-		
+		this.bounceCounter = 0;
+		this.numBouncesBeforeJump = utils.rand(3,6,true);
+		console.log(this.numBouncesBeforeJump);
 		return this;
     }
     
     Spinner.prototype = Object.create( Enemy.prototype );
     
     Spinner.prototype.onBounce = function(){
-		this.jumping = true;
-		this.bouncing = false;
+		this.bounceCounter++;
+		this.jumping = false;
+		this.bouncing = true;
+
 		var nextDir = nextDirection(this.dir);
 		this.changeDir(nextDir);
-		this.destSpace = this.getDestination(this.dir);
-		if(!this.destSpace) {
-			this.jumping = false;
-			this.bouncing = true;
-		}
-
+		if(this.bounceCounter == this.numBouncesBeforeJump) {
+			this.destSpace = this.getDestination(this.dir);
+			if(this.destSpace) {
+				this.jumping = true;
+				this.bouncing = false;
+			}
+			this.bounceCounter = 0;
+		}	
 		
 		this.shoot();
     };
