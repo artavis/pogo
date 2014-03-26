@@ -1,5 +1,5 @@
-define(["jquery","requestAnimFrame","config","utils","pixi","GameView","Map","Player","Pogo"], 
-function($,       requestAnimFrame,  config,  utils,  pixi,  GameView,  Map,  Player,  Pogo) {
+define(["jquery","requestAnimFrame","config","utils","pixi","GameView","Map","Player","Pogo","EnemyController"], 
+function($,       requestAnimFrame,  config,  utils,  pixi,  GameView,  Map,  Player,  Pogo,  EnemyController) {
     
    	var _gameStartTime=0, 
    		_currentTime = 0, 
@@ -15,7 +15,7 @@ function($,       requestAnimFrame,  config,  utils,  pixi,  GameView,  Map,  Pl
 	    this.drawArray = [];
 	    this.scheduledTasks = [];	
 	    
-	    var assetsToLoad = ["images/pogo.json","images/explosion.json"];
+	    var assetsToLoad = ["images/pogo.json","images/enemy.json","images/explosion.json"];
 		loader = new pixi.AssetLoader(assetsToLoad);
 		loader.onComplete = this.init.bind(this);
 		loader.load();        
@@ -27,7 +27,7 @@ function($,       requestAnimFrame,  config,  utils,  pixi,  GameView,  Map,  Pl
 		    this.map = new Map();
 		    
 			this.createPlayer();
-			this.fillMapWithPogos();
+			this.createEnemies();
 			
 			//console.log(player.currentSpace());
 			
@@ -106,7 +106,7 @@ function($,       requestAnimFrame,  config,  utils,  pixi,  GameView,  Map,  Pl
 
 					if(utils.collides(entA,entB)) {
 						entA.explode();
-						entB.getHit(entA.power);
+						entB.getHit(entA.power.shot);
 					}
 				}
 			}
@@ -146,22 +146,10 @@ function($,       requestAnimFrame,  config,  utils,  pixi,  GameView,  Map,  Pl
 		    this.player.currentSpace.occupy();
 			this.entities.push(this.player);
 	    },
-	    fillMapWithPogos: function() {
-		    var pogos = [];
-		    for(var y in this.map.spaces) {
-			    var ind = Math.floor(Math.random()*this.map.spaces[y].length);
-			    var space = this.map.spaces[y][ind];
-				var pogo = new Pogo(space);
-				    
-				pogos.push(pogo);
-		    }
+	    createEnemies: function() {
+		    var enemyController = new EnemyController();
 		    
-		    var int = setInterval(function(){
-			    var pogo = pogos.shift();
-			    self.entities.push(pogo);
-			    
-			    if(pogos.length == 0) clearInterval(int);
-		    }, 10);
+		    enemyController.createEnemies();
 	    }
     };
     

@@ -15,6 +15,9 @@ define(["jquery"], function($) {
 	    pogoHeight: 48,
 	    pogoGunHeight: 16,
 	    
+	    //Enemies
+	    numberOfSpinners: 3,
+	    
 	    //Bullets
 	    bulletSize: 12,
 	    bulletVelocityFactor: 12,

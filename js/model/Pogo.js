@@ -41,7 +41,15 @@ define(["jquery","utils","config","Entity","PogoView","Bullet","Explosion"], fun
     }   
     
     Pogo.prototype = Object.create( Entity.prototype );
-            
+    
+    Pogo.prototype.setPower = function(power) {
+	  	// {shot: 1, block:1}
+	  	this.power = power;  
+    };
+    Pogo.prototype.getPower = function() {
+	    return this.power;
+    }
+    
     Pogo.prototype.getHit = function(power) {
 	    this.health -= power;
 	    if(this.health <= 0) this.kill();

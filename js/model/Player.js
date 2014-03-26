@@ -6,6 +6,7 @@ define(["jquery","Pogo","UserInput","utils","ViewPort"], function($,Pogo,UserInp
 		var self = this;
 		
 		this.health = 10;
+		this.setPower({shot:1,block:1});
 				
 		$.subscribe("keyPressed",handleInput);
 		//Register user input

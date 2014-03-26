@@ -30,9 +30,13 @@ requirejs.config({
         Entity:				'model/Entity',
         Pogo:				'model/Pogo',
         Player:				'model/Player',
-        Enemy:				'model/Enemy',
         Bullet:				'model/Bullet',
         Explosion:			'model/Explosion',
+        
+        //Enemies
+        EnemyController:	'controller/EnemyController',
+        Enemy:				'model/Enemy',
+        Spinner:			'model/Spinner',
         
         //Views
         GameView:			'view/GameView',

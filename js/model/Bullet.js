@@ -20,7 +20,7 @@ define(["jquery","config","Entity","BulletView","Explosion"], function($,config,
 	    this.getNextSpace();
 	    
 	    this.setVelocity(this.dir);
-	    this.setPower();
+	    this.setPower(shooter);
 	    
 	    
 	    this.view = new BulletView(this);
@@ -29,12 +29,8 @@ define(["jquery","config","Entity","BulletView","Explosion"], function($,config,
     }
     
     Bullet.prototype = Object.create( Entity.prototype );
-    Bullet.prototype.setPower = function() {
-	    switch(this.type) {
-		    case Bullet.TYPES.NORMAL:
-		    default:
-		    	this.power = 1;
-	    }
+    Bullet.prototype.setPower = function(shooter) {
+	    this.power = shooter.getPower();
     };
     Bullet.prototype.explode = function() {
 	    var expl = new Explosion({
@@ -114,7 +110,8 @@ define(["jquery","config","Entity","BulletView","Explosion"], function($,config,
 		    	this.removeFromGame();
 	    	} else {
 		    	if(this.nextSpace.size.z > this.pos.z) {
-			    	this.nextSpace.blockHit(this);
+			    	this.currentSpace = this.nextSpace;
+			    	this.currentSpace.blockHit(this);
 		    	} else {
 			    	this.currentSpace = this.nextSpace;
 			    	this.getNextSpace();	
