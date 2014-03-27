@@ -6,7 +6,10 @@ define(["jquery","Enemy","config","utils"], function($,Enemy,config,utils) {
 		this.dir = this.getStartingDirection();
 		this.bounceCounter = 0;
 		this.numBouncesBeforeJump = utils.oneOrNegOne() + 4;
-		console.log(this.numBouncesBeforeJump);
+
+		this.setPower(config.gunPower.SPINNER);
+		this.setPointValue(config.pointValues.SPINNER);
+
 		return this;
     }
     

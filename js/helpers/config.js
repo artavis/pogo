@@ -16,7 +16,17 @@ define(["jquery"], function($) {
 	    pogoGunHeight: 16,
 	    
 	    //Enemies
-	    numberOfSpinners: 3,
+	    gunPower: {
+		    DRONE: {shot:1,block:.5},
+		    SPINNER: {shot:1,block:.5},
+		    CHASER: {shot:1,block:.5}
+	    },
+	    pointValues: {
+		    DRONE: {hit: 25, kill: 50},
+		    SPINNER: {hit: 25, kill: 100},
+		    CHASER: {hit: 25, kill: 200},
+		    BLOCK: {hit: 10, lower: 20}
+	    },
 	    
 	    //Bullets
 	    bulletSize: 12,

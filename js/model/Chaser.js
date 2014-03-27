@@ -6,7 +6,9 @@ define(["jquery","Enemy","config","utils"], function($,Enemy,config,utils) {
 		this.dir = this.getStartingDirection();
 		this.noTurn = false;
 		
-		this.setPower({shot:1,block:.5});
+		this.setPower(config.gunPower.CHASER);
+		this.setPointValue(config.pointValues.CHASER);
+		
 		return this;
     }
     

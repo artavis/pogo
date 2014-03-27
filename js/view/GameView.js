@@ -16,7 +16,7 @@ define(["jquery","config","pixi","ViewPort"], function($,config,pixi,ViewPort){
     
     // Define the class methods.
     GameView.prototype = {
-        render: function(drawArray) {
+        renderGame: function(drawArray) {
 	        this.updateDrawOrder(drawArray);
 			//if(window.DEBUG) console.log(drawArray);
 	        renderer.render(stage);

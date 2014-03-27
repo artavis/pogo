@@ -6,12 +6,19 @@ define(["jquery","config","Pogo","UserInput","utils","ViewPort"], function($,con
 		var self = this;
 		
 		this.health = 3;
-		this.setPower({shot:1,block:0});
+
 		this.view.setUpFrame(Enemy.FRAMES.UP);
 		return this;
     }
     
     Enemy.prototype = Object.create( Pogo.prototype );
+    
+    Enemy.prototype.onKill = function() {
+	    GAME_CONTROLLER.addPoints(this.pointValue.kill);
+    };
+    Enemy.prototype.onHit = function() {
+	    GAME_CONTROLLER.addPoints(this.pointValue.hit);
+    };
     
     Enemy.prototype.getStartingDirection = function() {
 	    var num1 = utils.oneOrNegOne();
@@ -29,6 +36,10 @@ define(["jquery","config","Pogo","UserInput","utils","ViewPort"], function($,con
 			    return config.DIRS.DOWN;
 		    }
 	    }
+    };
+    
+    Enemy.prototype.setPointValue = function(val) {
+	    this.pointValue = val;
     }
     
 /*

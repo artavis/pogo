@@ -6,6 +6,8 @@ function($,       requestAnimFrame,  config,  utils,  pixi,  GameView,  Map,  Pl
    		_lastFPSDisplay = 0,
    		paused = false, setSlowTick = false,
    		
+   		_totalPoints = 0;
+   		
    		self;
     
     function GameController() {
@@ -109,7 +111,7 @@ function($,       requestAnimFrame,  config,  utils,  pixi,  GameView,  Map,  Pl
 
 					if(utils.collides(entA,entB)) {
 						entA.explode();
-						entB.getHit(entA.power.shot);
+						entB.getHit(entA);
 					}
 				}
 			}
@@ -131,7 +133,7 @@ function($,       requestAnimFrame,  config,  utils,  pixi,  GameView,  Map,  Pl
 		    }
 	    },
 	    draw: function() {
-		    this.view.render(this.drawArray);
+		    this.view.renderGame(this.drawArray);
 	    },
 	    addEntity: function(ent) {
 		    if(!ent) return;
@@ -152,7 +154,17 @@ function($,       requestAnimFrame,  config,  utils,  pixi,  GameView,  Map,  Pl
 		    var enemyController = new EnemyController();
 		    
 		    enemyController.createEnemies();
+	    },
+	    addPoints: function(pts) {
+		    _totalPoints += pts;
+		    console.log(_totalPoints);
 	    }
+    };
+    
+    GameController.GAME_MODES = {
+	    EASY: "easy",
+	    MEDIUM: "medium",
+	    HARD: "hard"
     };
     
     GameController.gameStartTime = function() {

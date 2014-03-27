@@ -4,7 +4,10 @@ define(["jquery","Enemy","config","utils"], function($,Enemy,config,utils) {
 		Enemy.call(this,space);
 		
 		this.dir = this.getStartingDirection();
-		this.setPower({shot:1,block:.5});
+
+		this.setPower(config.gunPower.DRONE);
+		this.setPointValue(config.pointValues.DRONE);
+
 		return this;
     }
     

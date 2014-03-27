@@ -22,6 +22,8 @@ define(["jquery","config","Entity","BulletView","Explosion"], function($,config,
 	    this.setVelocity(this.dir);
 	    this.setPower(shooter);
 	    
+	    this.shooter = function(){ return shooter; }
+	    
 	    
 	    this.view = new BulletView(this);
 	    

@@ -51,9 +51,14 @@ define(["jquery","utils","config","Entity","PogoView","Bullet","Explosion"], fun
 	    return this.power;
     }
     
-    Pogo.prototype.getHit = function(power) {
-	    this.health -= power;
-	    if(this.health <= 0) this.kill();
+    Pogo.prototype.getHit = function(bullet) {
+	    this.health -= bullet.power.shot;
+	    
+	    if(this.health <= 0) {
+	    	this.kill();
+	    } else {
+		    this.onHit();
+	    }
     };
     Pogo.prototype.kill = function() {
 	    var currentSpace = this.currentSpace;
@@ -69,6 +74,7 @@ define(["jquery","utils","config","Entity","PogoView","Bullet","Explosion"], fun
 				});    
 			},i*100);
 	    }
+	    this.onKill();
 	    this.removeFromGame();
     };
     Pogo.prototype.triggerJump = function() {
@@ -241,8 +247,10 @@ define(["jquery","utils","config","Entity","PogoView","Bullet","Explosion"], fun
 		
 		this.onUpdate();
     };
-    Pogo.prototype.onBounce = function(){ /* STUB FOR CHILD CLASSES */ }
-    Pogo.prototype.onUpdate = function(){ /* STUB FOR CHILD CLASSES */ }
+    Pogo.prototype.onBounce = function(){ /* STUB FOR CHILD CLASSES */ };
+    Pogo.prototype.onUpdate = function(){ /* STUB FOR CHILD CLASSES */ };
+    Pogo.prototype.onKill = function(){ /* STUB FOR CHILD CLASSES */ };
+    Pogo.prototype.onHit = function(){ /* STUB FOR CHILD CLASSES */ };
     
     Pogo.JUMP_DIRS = {
 		LEFT: config.DIRS.LEFT,    
