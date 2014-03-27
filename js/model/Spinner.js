@@ -2,8 +2,10 @@ define(["jquery","Enemy","config","utils"], function($,Enemy,config,utils) {
         
     function Spinner(space) {
 		Enemy.call(this,space);
+		
+		this.dir = this.getStartingDirection();
 		this.bounceCounter = 0;
-		this.numBouncesBeforeJump = utils.rand(3,6,true);
+		this.numBouncesBeforeJump = utils.oneOrNegOne() + 4;
 		console.log(this.numBouncesBeforeJump);
 		return this;
     }

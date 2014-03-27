@@ -38,6 +38,7 @@ requirejs.config({
         Enemy:				'model/Enemy',
         Drone:				'model/Drone',
         Spinner:			'model/Spinner',
+        Chaser:				'model/Chaser',
         
         //Views
         GameView:			'view/GameView',

@@ -40,6 +40,9 @@ function($,       requestAnimFrame,  config,  utils,  pixi,  GameView,  Map,  Pl
 		    $.publish("GameLoaded");
 
 	    },
+	    pausePlay: function() {
+		    paused = !paused;
+	    },
 	    gameLoop: function(t) {
 		    window.DEBUG = false;
 
@@ -87,7 +90,7 @@ function($,       requestAnimFrame,  config,  utils,  pixi,  GameView,  Map,  Pl
 		    //fire next loop
 		    
 		    var now = +new Date;
-		    console.log("execution time:", now - then);
+		    //console.log("execution time:", now - then);
 		    setTimeout(self.slowTick,tickTime);
 	    },
 	    update: function(dt) {
@@ -143,7 +146,6 @@ function($,       requestAnimFrame,  config,  utils,  pixi,  GameView,  Map,  Pl
 	    },
 	    createPlayer: function() {
 		    this.player = new Player(this.map.spaces[config.boardSpaceTotal.y-2][config.boardSpaceTotal.x-2]);
-		    this.player.currentSpace.occupy();
 			this.entities.push(this.player);
 	    },
 	    createEnemies: function() {

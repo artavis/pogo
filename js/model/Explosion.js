@@ -15,6 +15,8 @@ define(["jquery","config","utils","Entity","pixi","ExplosionView"], function($,c
 
 	    this.setPos(pos);
 	    
+	    this.isVisualFX = true;
+	    
 	    this.view = new ExplosionView(this,type);
 	    
 	    GAME_CONTROLLER.addEntity(this);

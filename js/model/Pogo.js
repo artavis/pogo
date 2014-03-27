@@ -37,6 +37,7 @@ define(["jquery","utils","config","Entity","PogoView","Bullet","Explosion"], fun
 	    this.gunHeight = config.pogoGunHeight;
 	    
 	    this.view = new PogoView(this);
+	    
 	    return this;	    
     }   
     
@@ -110,6 +111,9 @@ define(["jquery","utils","config","Entity","PogoView","Bullet","Explosion"], fun
     };
     
     Pogo.prototype.canJumpToSpace = function(space) {		
+		//console.log(space);
+		//GAME_CONTROLLER.pausePlay();
+		//if(space === GAME_CONTROLLER.player.currentSpace) debugger;
 		return (space.blockHeight - this.currentSpace.blockHeight > 2 || space.isOccupied()) ? false : true;
     };
     
@@ -211,8 +215,8 @@ define(["jquery","utils","config","Entity","PogoView","Bullet","Explosion"], fun
 			this.moveTime = 0;
 			
 			this.currentSpace.unoccupy();
+			this.destSpace.occupy();
 			this.currentSpace = this.destSpace;
-			this.currentSpace.occupy();
 		}
 
     };

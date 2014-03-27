@@ -3,7 +3,7 @@ define(["jquery","Enemy","config","utils"], function($,Enemy,config,utils) {
     function Spinner(space) {
 		Enemy.call(this,space);
 		
-		this.dir = getStartingDirection();
+		this.dir = this.getStartingDirection();
 		this.setPower({shot:1,block:.5});
 		return this;
     }
@@ -41,23 +41,6 @@ define(["jquery","Enemy","config","utils"], function($,Enemy,config,utils) {
 			case config.DIRS.LEFT:
 				return config.DIRS.RIGHT;
 		}    
-    }
-    function getStartingDirection() {
-	    var num1 = utils.oneOrNegOne();
-	    var num2 = utils.oneOrNegOne();
-	    if(num1 < 0) {
-		    if(num2 < 0) {
-			    return config.DIRS.RIGHT; 
-		    } else {
-			    return config.DIRS.LEFT;
-		    }
-	    } else {
-		    if(num2 < 0) {
-			    return config.DIRS.UP;
-		    } else {
-			    return config.DIRS.DOWN;
-		    }
-	    }
     }
         
     return Spinner;

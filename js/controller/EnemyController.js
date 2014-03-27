@@ -1,4 +1,4 @@
-define(["jquery","config","Spinner","Drone"], function($,config,Spinner,Drone){
+define(["jquery","config","Spinner","Drone","Chaser"], function($,config,Spinner,Drone,Chaser){
 
     function EnemyController(){
 
@@ -8,8 +8,9 @@ define(["jquery","config","Spinner","Drone"], function($,config,Spinner,Drone){
     
     EnemyController.prototype = {
 		createEnemies: function() {
-			this.addSpinners();
+			//this.addSpinners();
 			//this.addDrones();
+			this.addChasers();
 		},
 		addDrones: function() {
 			var space = GAME_CONTROLLER.map.spaces[config.boardSpaceTotal.y-1][config.boardSpaceTotal.x-1];
@@ -20,6 +21,11 @@ define(["jquery","config","Spinner","Drone"], function($,config,Spinner,Drone){
 			var space = GAME_CONTROLLER.map.spaces[config.boardSpaceTotal.y-1][config.boardSpaceTotal.x-1];
 			var spinner = new Spinner(space);
 			GAME_CONTROLLER.addEntity(spinner);
+		},
+		addChasers: function() {
+			var space = GAME_CONTROLLER.map.spaces[config.boardSpaceTotal.y-1][config.boardSpaceTotal.x-1];
+			var chaser = new Chaser(space);
+			GAME_CONTROLLER.addEntity(chaser);
 		},
 /*
 		addSpinners: function() {

@@ -22,6 +22,8 @@ define(["jquery","Pogo","UserInput","utils","ViewPort"], function($,Pogo,UserInp
 				}
 			}
 		};
+		
+		//this.currentSpace.watch("occupied", function(){ console.error(); });
 		return this;
     }
     

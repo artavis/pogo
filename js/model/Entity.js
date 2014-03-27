@@ -6,8 +6,11 @@ define(["jquery"],
             
             this.pos  	= {x:0,y:0,z:0};
             this.size 	= {width:0, height:0, z:0};
+            
+            this.isVisualFX	  = false;
             this.isProjectile = false;
             this.checkCollide = false;
+            
             
             // Return this object reference.
             return( this );
@@ -40,7 +43,7 @@ define(["jquery"],
             },
             removeFromGame: function() {
 	            this.view.removeFromStage();
-	            if(this.currentSpace) this.currentSpace.unoccupy();
+	            if(this.currentSpace && !this.isProjectile && !this.isVisualFX) this.currentSpace.unoccupy();
 	            GAME_CONTROLLER.removeEntity(this);
             }
         };

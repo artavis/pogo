@@ -43,7 +43,9 @@ define(["jquery","utils","config","Entity","SpaceView","Explosion"],
 		this.view = new SpaceView(this);
 	};
 	Space.prototype.occupy = function(){ this.occupied = true; };
-	Space.prototype.unoccupy = function(){ this.occupied = false; };
+	Space.prototype.unoccupy = function(){ 
+		this.occupied = false; 
+	};
 	Space.prototype.isOccupied = function(){ return this.occupied; };
     
     Space.prototype.draw = function() {

@@ -1,4 +1,4 @@
-define(["jquery","Pogo","UserInput","utils","ViewPort"], function($,Pogo,UserInput,utils,ViewPort) {
+define(["jquery","config","Pogo","UserInput","utils","ViewPort"], function($,config,Pogo,UserInput,utils,ViewPort) {
         
     function Enemy(space) {
 		Pogo.call(this,space);
@@ -12,6 +12,24 @@ define(["jquery","Pogo","UserInput","utils","ViewPort"], function($,Pogo,UserInp
     }
     
     Enemy.prototype = Object.create( Pogo.prototype );
+    
+    Enemy.prototype.getStartingDirection = function() {
+	    var num1 = utils.oneOrNegOne();
+	    var num2 = utils.oneOrNegOne();
+	    if(num1 < 0) {
+		    if(num2 < 0) {
+			    return config.DIRS.RIGHT; 
+		    } else {
+			    return config.DIRS.LEFT;
+		    }
+	    } else {
+		    if(num2 < 0) {
+			    return config.DIRS.UP;
+		    } else {
+			    return config.DIRS.DOWN;
+		    }
+	    }
+    }
     
 /*
     Enemy.prototype.onBounce = function(){
