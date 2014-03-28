@@ -49,10 +49,10 @@ define(["jquery","utils","pixi"], function($,utils,pixi){
 			if(this.isMovie) {
 				_img.visible = false;
 				setTimeout(function(){					
-					_img.stage.removeChild(_img);	
+					_img.parent.removeChild(_img);	
 				},100);
 			} else {
-				_img.stage.removeChild(_img);	
+				_img.parent.removeChild(_img);	
 			}
 			
 		}

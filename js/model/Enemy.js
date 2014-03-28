@@ -1,4 +1,4 @@
-define(["jquery","config","Pogo","UserInput","utils","ViewPort"], function($,config,Pogo,UserInput,utils,ViewPort) {
+define(["jquery","config","Pogo","utils"], function($,config,Pogo,utils) {
         
     function Enemy(space) {
 		Pogo.call(this,space);

@@ -46,7 +46,9 @@ requirejs.config({
         SpaceView:			'view/SpaceView',
         PogoView:			'view/PogoView',
         BulletView:			'view/BulletView',
-        ExplosionView:			'view/ExplosionView'
+        ExplosionView:		'view/ExplosionView',
+        
+        StatusBar:			'view/StatusBar'
         
     },
     

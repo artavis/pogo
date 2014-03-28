@@ -1,13 +1,13 @@
-define(["jquery","requestAnimFrame","config","utils","pixi","GameView","Map","Player","Pogo","EnemyController"], 
-function($,       requestAnimFrame,  config,  utils,  pixi,  GameView,  Map,  Player,  Pogo,  EnemyController) {
+define(["jquery","requestAnimFrame","config","utils","pixi","GameView","StatusBar","Map","Player","Pogo","EnemyController"], 
+function($,       requestAnimFrame,  config,  utils,  pixi,  GameView,  StatusBar,  Map,  Player,  Pogo,  EnemyController) {
     
    	var _gameStartTime=0, 
    		_currentTime = 0, 
    		_lastFPSDisplay = 0,
    		paused = false, setSlowTick = false,
    		
-   		_totalPoints = 0;
-   		
+   		_totalPoints = 0,
+   		_gameMap,
    		self;
     
     function GameController() {
@@ -26,7 +26,11 @@ function($,       requestAnimFrame,  config,  utils,  pixi,  GameView,  Map,  Pl
     GameController.prototype = {
 	    init: function() {
 		    this.view = new GameView();
-		    this.map = new Map();
+		    this.statusBar = new StatusBar();
+		    this.view.addStatusBar(this.statusBar);
+		    
+		    _gameMap = new Map();
+		    this.map = _gameMap;
 		    
 			this.createPlayer();
 			this.createEnemies();
@@ -47,7 +51,7 @@ function($,       requestAnimFrame,  config,  utils,  pixi,  GameView,  Map,  Pl
 	    },
 	    gameLoop: function(t) {
 		    window.DEBUG = false;
-
+			
 		    //set clock and delta since last frame
 		    var dt = t - _currentTime;
 		    _currentTime = t;
@@ -72,6 +76,7 @@ function($,       requestAnimFrame,  config,  utils,  pixi,  GameView,  Map,  Pl
 	    },
 	    slowTick: function() {
 		    window.DEBUG = true;
+		    
 		    var then = +new Date;
 		    
 		    tickTime = 500;
@@ -119,11 +124,11 @@ function($,       requestAnimFrame,  config,  utils,  pixi,  GameView,  Map,  Pl
 	    updateDrawOrder: function() {
 		    this.drawArray = [];
 		    //console.log(this.entities[0].currentSpace());
-		    for(var y in this.map.spaces) {
-			    for(var x in this.map.spaces[y]) {
-					this.drawArray.push(this.map.spaces[x][y]);    
+		    for(var y in _gameMap.spaces) {
+			    for(var x in _gameMap.spaces[y]) {
+					this.drawArray.push(_gameMap.spaces[x][y]);    
 				    for(var i in this.entities) {
-					    if(this.entities[i].currentSpace == this.map.spaces[x][y]) {
+					    if(this.entities[i].currentSpace == _gameMap.spaces[x][y]) {
 					    	this.drawArray.push(this.entities[i]);
 					    }
 				    }
@@ -147,7 +152,7 @@ function($,       requestAnimFrame,  config,  utils,  pixi,  GameView,  Map,  Pl
 		    }
 	    },
 	    createPlayer: function() {
-		    this.player = new Player(this.map.spaces[config.boardSpaceTotal.y-2][config.boardSpaceTotal.x-2]);
+		    this.player = new Player(_gameMap.spaces[config.boardSpaceTotal.y-2][config.boardSpaceTotal.x-2]);
 			this.entities.push(this.player);
 	    },
 	    createEnemies: function() {
@@ -157,6 +162,7 @@ function($,       requestAnimFrame,  config,  utils,  pixi,  GameView,  Map,  Pl
 	    },
 	    addPoints: function(pts) {
 		    _totalPoints += pts;
+		    StatusBar.updatePoints(_totalPoints);
 		    console.log(_totalPoints);
 	    }
     };
@@ -167,6 +173,9 @@ function($,       requestAnimFrame,  config,  utils,  pixi,  GameView,  Map,  Pl
 	    HARD: "hard"
     };
     
+    GameController.getMap = function() {
+	    return _gameMap;
+    };
     GameController.gameStartTime = function() {
 	    return _gameStartTime;
     };

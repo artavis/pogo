@@ -1,27 +1,16 @@
 define(["jquery","ViewPort","config"], function($,ViewPort,config) {
     
+    var isoZ = config.isoZFactor;
+
     function iso(x,y,z) {
 	   	return {
 /*
-			x: ((x - y * 1)) + 960 + 20,
-			y: ((((x + y) / 1.5) - z*1.5) + 100) * 1
-*/			
-/*
-			x: x,
-			y: y
-*/
-	
-/*
-			x: (x - y/4) + 980,
-			y: (y/4-z)*2
-*/
-/*
-			x: ((x - y)),
-			y: (((x + y) / 1.5) - z*1.5)
+			x: Math.round(x - y),
+			y: Math.round(((x + y) / 1.5) - z*isoZ)
 */
 			
 			x: Math.round(x - y),
-			y: Math.round(((x + y) / 1.5) - z*config.isoZFactor)
+			y: Math.round(((x + y) / 1.5) - z*isoZ)
 
 	
 		};
