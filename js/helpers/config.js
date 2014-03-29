@@ -6,7 +6,7 @@ define(["jquery"], function($) {
 	    //Board Spaces
 	    spaceWidth: 48,
 	    platformHeight: 24,
-	    maxBlockHeight: 4,
+	    maxBlockHeight: 1,
 	    boardSpaceTotal: { x: 15, y:15 },
 	    blockStrength: 2,
 	    
@@ -25,7 +25,7 @@ define(["jquery"], function($) {
 		    DRONE: {hit: 25, kill: 50},
 		    SPINNER: {hit: 25, kill: 100},
 		    CHASER: {hit: 25, kill: 200},
-		    BLOCK: {hit: 10, lower: 20}
+		    BLOCK: {hit: 0, lower: 10}
 	    },
 	    
 	    //Bullets

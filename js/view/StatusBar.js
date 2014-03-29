@@ -1,6 +1,6 @@
 define(["jquery","pixi","config"], function($,pixi,config){
 	
-	var bar, pointDisplay;
+	var bar, pointDisplay, timerDisplay, minutes=0, seconds=0;
     function StatusBar(){
 		bar = new pixi.DisplayObjectContainer();
 		
@@ -11,7 +11,11 @@ define(["jquery","pixi","config"], function($,pixi,config){
 		var fade = this.createBarBg();
         bar.addChild(fade);
         
-        var pointBox = this.createPointBox();
+        
+        //Point Display
+        var pointBox = this.createLightBox();
+		pointBox.x = bar.height/6;
+		pointBox.y = bar.height/6;
         bar.addChild(pointBox);
         
         pointDisplay = this.createPointDisplay();
@@ -21,6 +25,19 @@ define(["jquery","pixi","config"], function($,pixi,config){
         pointDisplay.x = pointBox.width/2;
         pointDisplay.y = pointBox.height/2;
         
+        
+        //Timer Display
+        var timerBox = this.createLightBox();
+		timerBox.x = bar.width - timerBox.width - bar.height/6;
+		timerBox.y = bar.height/6;
+        bar.addChild(timerBox);
+        
+        timerDisplay = this.createTimerDisplay();
+        timerBox.addChild(timerDisplay);
+        timerDisplay.anchor.x = .5;
+        timerDisplay.anchor.y = .5;
+        timerDisplay.x = timerBox.width/2;
+        timerDisplay.y = timerBox.height/2;
         
         return( bar );
     }
@@ -34,10 +51,8 @@ define(["jquery","pixi","config"], function($,pixi,config){
 	        
 	        return fade;
 		},
-		createPointBox: function() {
+		createLightBox: function() {
 			var lightBox = new pixi.Graphics();
-			lightBox.x = bar.height/6;
-			lightBox.y = bar.height/6;
 			lightBox.width = bar.width/5;
 			lightBox.height = bar.height*2/3;
 			
@@ -54,11 +69,27 @@ define(["jquery","pixi","config"], function($,pixi,config){
 				align: "center"
 			});
 			return txt;
+		},
+		createTimerDisplay: function() {
+			var txt = new pixi.Text("00:00",{
+				font: 'bold 20pt Arial',
+				fill: "red",
+				align: "center"
+			});
+			return txt;
 		}
     };
     
     StatusBar.updatePoints = function(pts) {
 	    pointDisplay.setText("points\n"+pts);
+    };
+    StatusBar.updateTimer = function() {
+	    seconds += 1;
+	    if(seconds == 60){ minutes++; seconds=0; }
+	    var secDisp = seconds < 10 ? "0"+seconds : seconds;
+	    var minDisp = minutes < 10 ? "0"+minutes : minutes;
+	    
+	    timerDisplay.setText(minDisp+":"+secDisp);
     };
 
     return StatusBar;

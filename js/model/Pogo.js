@@ -120,7 +120,7 @@ define(["jquery","utils","config","Entity","PogoView","Bullet","Explosion"], fun
 		//console.log(space);
 		//GAME_CONTROLLER.pausePlay();
 		//if(space === GAME_CONTROLLER.player.currentSpace) debugger;
-		return (space.blockHeight - this.currentSpace.blockHeight > 2 || space.isOccupied()) ? false : true;
+		return (space.blockHeight - this.currentSpace.blockHeight > 1 || space.isOccupied()) ? false : true;
     };
     
     // t: current time, b: begInnIng value, c: change In value, d: duration
@@ -154,25 +154,14 @@ define(["jquery","utils","config","Entity","PogoView","Bullet","Explosion"], fun
 		}		
     };
     Pogo.prototype.jumpFunc = function(dt) {
-/* 		if(window.DEBUG) console.log("dt",dt); */
 		
 		var downZ = this.currentSpace.size.z;
 		var topZ = downZ + _jumpHeight;
 		
 		if(this.bounceTime == 0 && this.goingUp) this.moveTime = 0;
-		
-/*
-		if(window.DEBUG) console.log("bounce time",this.bounceTime);
-		if(window.DEBUG) console.log("move time",this.moveTime);
-*/
 
 		this.bounceTime += dt;
 		this.moveTime += dt;
-		
-/*
-		if(window.DEBUG) console.log("bounce time",this.bounceTime);
-		if(window.DEBUG) console.log("move time",this.moveTime);
-*/
 		
 		if(this.bounceTime >= _jumpLength) {
 			this.bounceTime = _jumpLength;
@@ -196,22 +185,13 @@ define(["jquery","utils","config","Entity","PogoView","Bullet","Explosion"], fun
 		if(window.DEBUG) console.log(this.destSpace.pos.x - this.currentSpace.pos.x);
 		if(window.DEBUG) console.log(this.destSpace.pos.y - this.currentSpace.pos.y);
 		if(window.DEBUG) console.log(this.pos);
+		if(window.DEBUG) console.log("****");
 */
-		
 		
 		this.pos.x = Pogo.noEasing(this.moveTime, this.currentSpace.pos.x, 
 									this.destSpace.pos.x - this.currentSpace.pos.x, _moveLength);
 		this.pos.y = Pogo.noEasing(this.moveTime, this.currentSpace.pos.y, 
 									this.destSpace.pos.y - this.currentSpace.pos.y, _moveLength);		
-		
-		
-/*
-		if(window.DEBUG) console.log(this.pos);
-		if(window.DEBUG) console.log("****");
-		if(window.DEBUG) console.log("****");
-		if(window.DEBUG) console.log("****");
-		if(window.DEBUG) console.log("****");
-*/
 		
 		if(this.bounceTime == _jumpLength) {
 			this.goingUp = !this.goingUp;
@@ -224,6 +204,7 @@ define(["jquery","utils","config","Entity","PogoView","Bullet","Explosion"], fun
 			this.destSpace.occupy();
 			this.currentSpace = this.destSpace;
 		}
+		
 
     };
         

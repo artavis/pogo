@@ -48,7 +48,7 @@ define(["jquery","config","pixi","ViewPort"], function($,config,pixi,ViewPort){
         },
         addStatusBar: function(bar){
 	        stage.addChild(bar);
-	        console.log(bar);
+	        //console.log(bar);
         }
     };
 

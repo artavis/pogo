@@ -4,6 +4,7 @@ function($,       requestAnimFrame,  config,  utils,  pixi,  GameView,  StatusBa
    	var _gameStartTime=0, 
    		_currentTime = 0, 
    		_lastFPSDisplay = 0,
+   		_lastTimerUpdate = 0,
    		paused = false, setSlowTick = false,
    		
    		_totalPoints = 0,
@@ -56,6 +57,7 @@ function($,       requestAnimFrame,  config,  utils,  pixi,  GameView,  StatusBa
 		    var dt = t - _currentTime;
 		    _currentTime = t;
 		    updateFPS(dt);
+		    self.updateTimer(dt);
 		    
 		    if(paused) { requestAnimFrame(self.gameLoop); return; }
 		    
@@ -163,7 +165,14 @@ function($,       requestAnimFrame,  config,  utils,  pixi,  GameView,  StatusBa
 	    addPoints: function(pts) {
 		    _totalPoints += pts;
 		    StatusBar.updatePoints(_totalPoints);
-		    console.log(_totalPoints);
+	    },
+	    updateTimer: function(dt) {
+		    _lastTimerUpdate += dt;
+		    if(_lastTimerUpdate >= 1000) {
+			    _lastTimerUpdate = 0;
+			    StatusBar.updateTimer();
+		    }
+		    
 	    }
     };
     

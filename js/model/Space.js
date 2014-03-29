@@ -67,6 +67,7 @@ define(["jquery","utils","config","Entity","SpaceView","Explosion"],
 		if(this.strength <= 0) {
 			this.lower();
 			bullet.multExplosion(3);
+			if(bullet.shooter() == GAME_CONTROLLER.player) GAME_CONTROLLER.addPoints(config.pointValues.BLOCK.lower);
 		} else {
 			bullet.explode();
 			//this.addHit();
@@ -81,6 +82,7 @@ define(["jquery","utils","config","Entity","SpaceView","Explosion"],
 			z: config.platformHeight * this.blockHeight
 		});
 		this.view.resetBuffer();
+		
 	};
 
 

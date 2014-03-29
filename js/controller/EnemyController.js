@@ -9,7 +9,7 @@ define(["jquery","config","Spinner","Drone","Chaser"], function($,config,Spinner
     EnemyController.prototype = {
 		createEnemies: function() {
 			//this.addSpinners();
-			this.addDrones();
+			//this.addDrones();
 			//this.addChasers();
 		},
 		addDrones: function() {
