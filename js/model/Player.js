@@ -1,4 +1,4 @@
-define(["jquery","Pogo","UserInput","utils","ViewPort"], function($,Pogo,UserInput,utils,ViewPort) {
+define(["jquery","Pogo","UserInput","utils","ViewPort","StatusBar"], function($,Pogo,UserInput,utils,ViewPort,StatusBar) {
         
     function Player(space) {
 		Pogo.call(this,space);
@@ -48,7 +48,7 @@ define(["jquery","Pogo","UserInput","utils","ViewPort"], function($,Pogo,UserInp
 		
 		this.jumpTriggered = false;
 		//console.log(this.currentSpace);
-    }
+    };
     Player.prototype.onUpdate = function(){
 		var keys = UserInput.keys();
 		if(!this.jumping || !this.goingUp) {
@@ -63,7 +63,10 @@ define(["jquery","Pogo","UserInput","utils","ViewPort"], function($,Pogo,UserInp
 		//set viewport
 		var drawPos = utils.iso(this.pos.x,this.pos.y,0);
 		ViewPort.setPosByPlayerPosition(drawPos);
-    }
+    };
+    Player.prototype.onHit = function() {
+	    StatusBar.updatePlayerHealth(this.health);
+    };
     
     return Player;
     

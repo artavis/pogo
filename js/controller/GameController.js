@@ -8,6 +8,8 @@ function($,       requestAnimFrame,  config,  utils,  pixi,  GameView,  StatusBa
    		paused = false, setSlowTick = false,
    		
    		_totalPoints = 0,
+   		_totalEnemies = 0,
+   		
    		_gameMap,
    		self;
     
@@ -160,11 +162,21 @@ function($,       requestAnimFrame,  config,  utils,  pixi,  GameView,  StatusBa
 	    createEnemies: function() {
 		    var enemyController = new EnemyController();
 		    
-		    enemyController.createEnemies();
+		    _totalEnemies = enemyController.createEnemies();
+		    StatusBar.updateEnemyCount(_totalEnemies);
 	    },
 	    addPoints: function(pts) {
 		    _totalPoints += pts;
 		    StatusBar.updatePoints(_totalPoints);
+	    },
+	    reduceEnemyCount: function() {
+		    _totalEnemies--;
+		    StatusBar.updateEnemyCount(_totalEnemies);
+		    
+		    if(_totalEnemies === 0) {
+			    //END GAME!!!!
+			    
+		    }
 	    },
 	    updateTimer: function(dt) {
 		    _lastTimerUpdate += dt;

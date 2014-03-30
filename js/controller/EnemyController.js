@@ -8,9 +8,12 @@ define(["jquery","config","Spinner","Drone","Chaser"], function($,config,Spinner
     
     EnemyController.prototype = {
 		createEnemies: function() {
+			var count = 0;
 			//this.addSpinners();
-			//this.addDrones();
+			this.addDrones();
 			//this.addChasers();
+			count += 1;
+			return count;
 		},
 		addDrones: function() {
 			var space = GAME_CONTROLLER.map.spaces[config.boardSpaceTotal.y-1][config.boardSpaceTotal.x-1];

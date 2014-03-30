@@ -15,6 +15,7 @@ define(["jquery","config","Pogo","utils"], function($,config,Pogo,utils) {
     
     Enemy.prototype.onKill = function() {
 	    GAME_CONTROLLER.addPoints(this.pointValue.kill);
+	    GAME_CONTROLLER.reduceEnemyCount();
     };
     Enemy.prototype.onHit = function() {
 	    GAME_CONTROLLER.addPoints(this.pointValue.hit);

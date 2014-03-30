@@ -1,6 +1,11 @@
 define(["jquery","pixi","config"], function($,pixi,config){
 	
-	var bar, pointDisplay, timerDisplay, minutes=0, seconds=0;
+	var bar, 
+		pointDisplay, 
+		timerDisplay, minutes=0, seconds=0,
+		healthDisplay,
+		enemiesDisplay
+		;
     function StatusBar(){
 		bar = new pixi.DisplayObjectContainer();
 		
@@ -11,34 +16,65 @@ define(["jquery","pixi","config"], function($,pixi,config){
 		var fade = this.createBarBg();
         bar.addChild(fade);
         
+		var boxWidth = bar.width/5;
+		var boxHeight = bar.height*2/3;
+        var boxSpace = bar.height/6;
         
         //Point Display
-        var pointBox = this.createLightBox();
-		pointBox.x = bar.height/6;
-		pointBox.y = bar.height/6;
-        bar.addChild(pointBox);
-        
-        pointDisplay = this.createPointDisplay();
+        var pointBox = this.createLightBox({
+        	x: boxWidth - boxWidth/2 - boxSpace*2,
+        	y: boxSpace
+        });
+        pointDisplay = this.createTextDisplay({
+	        x: boxWidth/2,
+	        y: boxHeight/2,
+	        text: "points:\n0"
+        });
         pointBox.addChild(pointDisplay);
-        pointDisplay.anchor.x = .5;
-        pointDisplay.anchor.y = .5;
-        pointDisplay.x = pointBox.width/2;
-        pointDisplay.y = pointBox.height/2;
+        bar.addChild(pointBox);
+          
         
+        //Health Bar
+        var healthBox = this.createLightBox({
+        	x: boxWidth*2 - boxWidth/2 - boxSpace,
+        	y: boxSpace
+        });
+        healthDisplay = this.createTextDisplay({
+	        x: boxWidth/2,
+	        y: boxHeight/2,
+	        text: 'health:\n10',
+        });
+		healthBox.addChild(healthDisplay);
+        bar.addChild(healthBox);
+
+
+        //Enemies
+        var enemyBox = this.createLightBox({
+        	x: boxWidth*3 - boxWidth/2,
+        	y: boxSpace
+        });
+        enemiesDisplay = this.createTextDisplay({
+	        x: boxWidth/2,
+	        y: boxHeight/2,
+	        text: 'enemies:\n10',
+        });
+		enemyBox.addChild(enemiesDisplay);
+        bar.addChild(enemyBox);
+
         
         //Timer Display
-        var timerBox = this.createLightBox();
-		timerBox.x = bar.width - timerBox.width - bar.height/6;
-		timerBox.y = bar.height/6;
+        var timerBox = this.createLightBox({
+        	x: boxWidth*4 - boxWidth/2 + boxSpace,
+        	y: boxSpace
+        });
+        timerDisplay = this.createTextDisplay({
+	        x: boxWidth/2,
+	        y: boxHeight/2,
+	        text: '00:00',
+	        font: 'bold 20pt Arial'
+        });
+		timerBox.addChild(timerDisplay);
         bar.addChild(timerBox);
-        
-        timerDisplay = this.createTimerDisplay();
-        timerBox.addChild(timerDisplay);
-        timerDisplay.anchor.x = .5;
-        timerDisplay.anchor.y = .5;
-        timerDisplay.x = timerBox.width/2;
-        timerDisplay.y = timerBox.height/2;
-        
         return( bar );
     }
     
@@ -51,10 +87,15 @@ define(["jquery","pixi","config"], function($,pixi,config){
 	        
 	        return fade;
 		},
-		createLightBox: function() {
+		createLightBox: function(pos) {
 			var lightBox = new pixi.Graphics();
-			lightBox.width = bar.width/5;
-			lightBox.height = bar.height*2/3;
+			var boxWidth = bar.width/5;
+			var boxHeight = bar.height*2/3;
+
+			lightBox.width = boxWidth;
+			lightBox.height = boxHeight;
+			lightBox.x = pos.x;
+			lightBox.y = pos.y;
 			
 			lightBox.beginFill(0xFFFFFF,.5);
 	        lightBox.drawRect(0,0,lightBox.width,lightBox.height);
@@ -62,26 +103,32 @@ define(["jquery","pixi","config"], function($,pixi,config){
 	        
 	        return lightBox;
 		},
-		createPointDisplay: function() {
-			var txt = new pixi.Text("points\n0",{
-				font: 'bold 16pt Arial',
-				fill: "red",
+		createTextDisplay: function(opts) {
+			var fontStyle = opts.font || "bold 16pt Arial";
+			var fill = opts.fill || "red";
+			var textF = opts.text || "";
+			
+			var txt = new pixi.Text(textF,{
+				font: fontStyle,
+				fill: fill,
 				align: "center"
 			});
-			return txt;
-		},
-		createTimerDisplay: function() {
-			var txt = new pixi.Text("00:00",{
-				font: 'bold 20pt Arial',
-				fill: "red",
-				align: "center"
-			});
+			txt.anchor.x = .5;
+			txt.anchor.y = .5;
+			txt.x = opts.x;
+			txt.y = opts.y;
 			return txt;
 		}
     };
     
     StatusBar.updatePoints = function(pts) {
 	    pointDisplay.setText("points\n"+pts);
+    };
+    StatusBar.updateEnemyCount = function(enemies) {
+	    enemiesDisplay.setText("enemies\n"+enemies);
+    };
+    StatusBar.updatePlayerHealth = function(health) {
+	    healthDisplay.setText("health\n"+health);
     };
     StatusBar.updateTimer = function() {
 	    seconds += 1;
