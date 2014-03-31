@@ -36,18 +36,25 @@ function($,       requestAnimFrame,  config,  utils,  pixi,  GameView,  StatusBa
 		    this.map = _gameMap;
 		    
 			this.createPlayer();
-			this.createEnemies();
+			//this.createEnemies();
 			
 			//console.log(player.currentSpace());
 			
 			$("#pauser").on("click",function(){ paused = !paused; });
 			$("#slower").on("click",function(){ setSlowTick = !setSlowTick; });
 			
-			//Start the game loop
-		    requestAnimFrame(this.gameLoop);
 		    
+		    this.startGame(config.GAME_MODES.EASY);
 		    $.publish("GameLoaded");
 
+	    },
+	    startGame: function(mode) {
+		    this.createEnemies(mode);
+		    
+		    //Start the game loop
+		    requestAnimFrame(this.gameLoop);
+
+		    
 	    },
 	    pausePlay: function() {
 		    paused = !paused;
@@ -159,10 +166,10 @@ function($,       requestAnimFrame,  config,  utils,  pixi,  GameView,  StatusBa
 		    this.player = new Player(_gameMap.spaces[config.boardSpaceTotal.y-2][config.boardSpaceTotal.x-2]);
 			this.entities.push(this.player);
 	    },
-	    createEnemies: function() {
+	    createEnemies: function(mode) {
 		    var enemyController = new EnemyController();
 		    
-		    _totalEnemies = enemyController.createEnemies();
+		    _totalEnemies = enemyController.createEnemies(mode);
 		    StatusBar.updateEnemyCount(_totalEnemies);
 	    },
 	    addPoints: function(pts) {
@@ -185,13 +192,10 @@ function($,       requestAnimFrame,  config,  utils,  pixi,  GameView,  StatusBa
 			    StatusBar.updateTimer();
 		    }
 		    
+	    },
+	    resetStatusBar: function() {
+		    StatusBar.reset();
 	    }
-    };
-    
-    GameController.GAME_MODES = {
-	    EASY: "easy",
-	    MEDIUM: "medium",
-	    HARD: "hard"
     };
     
     GameController.getMap = function() {

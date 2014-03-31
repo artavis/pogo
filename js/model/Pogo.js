@@ -55,12 +55,12 @@ define(["jquery","utils","config","Entity","PogoView","Bullet","Explosion"], fun
 	    this.health -= bullet.power.shot;
 	    
 	    if(this.health <= 0) {
-	    	this.kill();
+	    	this.kill(bullet.shooter);
 	    } else {
-		    this.onHit();
+		    this.onHit(bullet.shooter);
 	    }
     };
-    Pogo.prototype.kill = function() {
+    Pogo.prototype.kill = function(shooter) {
 	    var currentSpace = this.currentSpace;
 	    var pos = this.pos;
 	    for(var i=0; i<4; i++) {
@@ -74,7 +74,7 @@ define(["jquery","utils","config","Entity","PogoView","Bullet","Explosion"], fun
 				});    
 			},i*100);
 	    }
-	    this.onKill();
+	    this.onKill(shooter);
 	    this.removeFromGame();
     };
     Pogo.prototype.triggerJump = function() {

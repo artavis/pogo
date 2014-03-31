@@ -27,6 +27,11 @@ define(["jquery"], function($) {
 		    CHASER: {hit: 25, kill: 200},
 		    BLOCK: {hit: 0, lower: 10}
 	    },
+	    enemyCounts: {
+		    "easy": {DRONE: 5, SPINNER: 5, CHASER: 3},
+		    "medium": {DRONE: 7, SPINNER: 7, CHASER: 6},
+		    "hard": {DRONE: 15, SPINNER: 15, CHASER: 10},
+	    },
 	    
 	    //Bullets
 	    bulletSize: 12,
@@ -39,6 +44,11 @@ define(["jquery"], function($) {
 		    RIGHT: "right",
 		    UP: "up",
 		    DOWN: "down"
+	    },
+	    GAME_MODES: {
+		    EASY: "easy",
+		    MEDIUM: "medium",
+		    HARD: "hard"
 	    }
     };
     

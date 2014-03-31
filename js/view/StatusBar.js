@@ -138,6 +138,15 @@ define(["jquery","pixi","config"], function($,pixi,config){
 	    
 	    timerDisplay.setText(minDisp+":"+secDisp);
     };
+    StatusBar.reset = function() {
+	    pointDisplay.setText("points\n0");
+	    enemiesDisplay.setText("enemies\n0");
+	    healthDisplay.setText("health\n10");
+	    timerDisplay.setText("00:00");
+	    
+	    seconds = 0;
+	    minutes = 0;
+    }
 
     return StatusBar;
 });

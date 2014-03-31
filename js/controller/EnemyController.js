@@ -7,25 +7,41 @@ define(["jquery","config","Spinner","Drone","Chaser"], function($,config,Spinner
     }
     
     EnemyController.prototype = {
-		createEnemies: function() {
+		createEnemies: function(game_mode) {
+/*
+		    if(mode == config.GAME_MODES.HARD) {
+			    
+		    } else if (mode == config.GAME_MODES.MEDIUM) {
+			    
+		    } else {
+			    
+		    }
+*/
+			
+			
 			var count = 0;
-			//this.addSpinners();
-			this.addDrones();
-			//this.addChasers();
-			count += 1;
+			
+			this.addDrones(config.enemyCounts[game_mode].DRONE);
+			this.addSpinners(config.enemyCounts[game_mode].SPINNER);
+			this.addChasers(config.enemyCounts[game_mode].CHASER);
+			
+			count = config.enemyCounts[game_mode].DRONE +
+					config.enemyCounts[game_mode].SPINNER +
+					config.enemyCounts[game_mode].CHASER;
+					
 			return count;
 		},
-		addDrones: function() {
+		addDrones: function(numEnemies) {
 			var space = GAME_CONTROLLER.map.spaces[config.boardSpaceTotal.y-1][config.boardSpaceTotal.x-1];
 			var drone = new Drone(space);
 			GAME_CONTROLLER.addEntity(drone);
 		},
-		addSpinners: function() {
+		addSpinners: function(numEnemies) {
 			var space = GAME_CONTROLLER.map.spaces[config.boardSpaceTotal.y-1][config.boardSpaceTotal.x-1];
 			var spinner = new Spinner(space);
 			GAME_CONTROLLER.addEntity(spinner);
 		},
-		addChasers: function() {
+		addChasers: function(numEnemies) {
 			var space = GAME_CONTROLLER.map.spaces[config.boardSpaceTotal.y-1][config.boardSpaceTotal.x-1];
 			var chaser = new Chaser(space);
 			GAME_CONTROLLER.addEntity(chaser);
