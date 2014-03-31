@@ -209,6 +209,12 @@ define(["jquery","utils","config","Entity","PogoView","Bullet","Explosion"], fun
     };
         
     Pogo.prototype.update = function(dt) {
+		if(!GAME_CONTROLLER.gameReady) {
+			this.bouncing = true;
+			this.jumping = false;
+			this.bounceFunc(dt);
+			return;
+		}
 		if(this.bouncing) {
 			this.bounceFunc(dt);
 			

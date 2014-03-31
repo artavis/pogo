@@ -32,12 +32,12 @@ define(["jquery","config","Spinner","Drone","Chaser"], function($,config,Spinner
 			return count;
 		},
 		addDrones: function(numEnemies) {
-			var space = GAME_CONTROLLER.map.spaces[config.boardSpaceTotal.y-1][config.boardSpaceTotal.x-1];
+			var space = GAME_CONTROLLER.map.spaces[config.boardSpaceTotal.y-2][config.boardSpaceTotal.x-1];
 			var drone = new Drone(space);
 			GAME_CONTROLLER.addEntity(drone);
 		},
 		addSpinners: function(numEnemies) {
-			var space = GAME_CONTROLLER.map.spaces[config.boardSpaceTotal.y-1][config.boardSpaceTotal.x-1];
+			var space = GAME_CONTROLLER.map.spaces[config.boardSpaceTotal.y-3][config.boardSpaceTotal.x-1];
 			var spinner = new Spinner(space);
 			GAME_CONTROLLER.addEntity(spinner);
 		},

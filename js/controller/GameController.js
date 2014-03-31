@@ -1,5 +1,5 @@
-define(["jquery","requestAnimFrame","config","utils","pixi","GameView","StatusBar","Map","Player","Pogo","EnemyController"], 
-function($,       requestAnimFrame,  config,  utils,  pixi,  GameView,  StatusBar,  Map,  Player,  Pogo,  EnemyController) {
+define(["jquery","requestAnimFrame","config","utils","pixi","GameView","StatusBar","Map","Player","Pogo","EnemyController","ViewPort"], 
+function($,       requestAnimFrame,  config,  utils,  pixi,  GameView,  StatusBar,  Map,  Player,  Pogo,  EnemyController,  ViewPort) {
     
    	var _gameStartTime=0, 
    		_currentTime = 0, 
@@ -10,6 +10,7 @@ function($,       requestAnimFrame,  config,  utils,  pixi,  GameView,  StatusBa
    		_totalPoints = 0,
    		_totalEnemies = 0,
    		
+   		_transitionOffset = {x:1000,y:1000},
    		_gameMap,
    		self;
     
@@ -51,6 +52,10 @@ function($,       requestAnimFrame,  config,  utils,  pixi,  GameView,  StatusBa
 	    startGame: function(mode) {
 		    this.createEnemies(mode);
 		    
+			var drawPos = utils.iso(_transitionOffset.x,_transitionOffset.y,0);
+			ViewPort.setPosByPlayerPosition(drawPos);
+		    
+		    this.gameReady = false;
 		    //Start the game loop
 		    requestAnimFrame(this.gameLoop);
 
@@ -66,9 +71,21 @@ function($,       requestAnimFrame,  config,  utils,  pixi,  GameView,  StatusBa
 		    var dt = t - _currentTime;
 		    _currentTime = t;
 		    updateFPS(dt);
-		    self.updateTimer(dt);
+		    
+		    if(!self.gameReady) {
+				var drawPos = utils.iso(_transitionOffset.x,_transitionOffset.y,0);
+				ViewPort.setPosByPlayerPosition(drawPos);
+				
+				if(_transitionOffset.x > self.player.pos.x) _transitionOffset.x -= 3;
+				if(_transitionOffset.y > self.player.pos.y) _transitionOffset.y -= 3;
+				
+				
+				if(_transitionOffset.x <= self.player.pos.x && _transitionOffset.y <= self.player.pos.y) self.gameReady = true;
+		    }
 		    
 		    if(paused) { requestAnimFrame(self.gameLoop); return; }
+		    
+		    if(self.gameReady) self.updateTimer(dt);
 		    
 		    //Update all game entities
 		    self.update(dt);		    
@@ -164,7 +181,7 @@ function($,       requestAnimFrame,  config,  utils,  pixi,  GameView,  StatusBa
 	    },
 	    createPlayer: function() {
 		    this.player = new Player(_gameMap.spaces[config.boardSpaceTotal.y-2][config.boardSpaceTotal.x-2]);
-			this.entities.push(this.player);
+			this.entities.push(this.player);			
 	    },
 	    createEnemies: function(mode) {
 		    var enemyController = new EnemyController();

@@ -15,6 +15,7 @@ define(["jquery","Enemy","config","utils"], function($,Enemy,config,utils) {
     Chaser.prototype = Object.create( Enemy.prototype );
     
     Chaser.prototype.onBounce = function(){
+		
 		this.jumping = !this.jumping;
 		this.bouncing = !this.bouncing;
 		
@@ -37,7 +38,7 @@ define(["jquery","Enemy","config","utils"], function($,Enemy,config,utils) {
 		}
 		if(this.bouncing) this.shoot();
     };
-    Chaser.prototype.onUpdate = function() {
+    Chaser.prototype.onUpdate = function() {	    
 	    if(this.currentSpace.xIndex == GAME_CONTROLLER.player.currentSpace.xIndex) {
 		    if(this.currentSpace.yIndex > GAME_CONTROLLER.player.currentSpace.yIndex) {
 			    this.changeDir(config.DIRS.UP);
