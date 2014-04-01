@@ -48,7 +48,8 @@ requirejs.config({
         BulletView:			'view/BulletView',
         ExplosionView:		'view/ExplosionView',
         
-        StatusBar:			'view/StatusBar'
+        StatusBar:			'view/StatusBar',
+        Countdown:			'view/Countdown'
         
     },
     

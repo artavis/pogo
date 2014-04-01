@@ -1,5 +1,21 @@
-define(["jquery","requestAnimFrame","config","utils","pixi","GameView","StatusBar","Map","Player","Pogo","EnemyController","ViewPort"], 
-function($,       requestAnimFrame,  config,  utils,  pixi,  GameView,  StatusBar,  Map,  Player,  Pogo,  EnemyController,  ViewPort) {
+define(function(require){
+
+	var $ 					= require('jquery'),
+	    requestAnimFrame 	= require('requestAnimFrame'),
+	    config 				= require('config'),
+	    utils 				= require('utils'),
+	    pixi 				= require('pixi'),
+	    GameView 			= require('GameView'),
+	    StatusBar 			= require('StatusBar'),
+	    Map 				= require('Map'),
+	    Player 				= require('Player'),
+	    Pogo 				= require('Pogo'),
+	    EnemyController 	= require('EnemyController'),
+	    Countdown 	= require('Countdown'),
+	    ViewPort 			= require('ViewPort');
+	
+//define(["jquery","requestAnimFrame","config","utils","pixi","GameView","StatusBar","Map","Player","Pogo","EnemyController","ViewPort"], 
+//function($,       requestAnimFrame,  config,  utils,  pixi,  GameView,  StatusBar,  Map,  Player,  Pogo,  EnemyController,  ViewPort) {
     
    	var _gameStartTime=0, 
    		_currentTime = 0, 
@@ -10,7 +26,7 @@ function($,       requestAnimFrame,  config,  utils,  pixi,  GameView,  StatusBa
    		_totalPoints = 0,
    		_totalEnemies = 0,
    		
-   		_transitionOffset = {x:1000,y:1000},
+   		_transitionOffset = {x:-150,y:-150},
    		_gameMap,
    		self;
     
@@ -73,14 +89,18 @@ function($,       requestAnimFrame,  config,  utils,  pixi,  GameView,  StatusBa
 		    updateFPS(dt);
 		    
 		    if(!self.gameReady) {
-				var drawPos = utils.iso(_transitionOffset.x,_transitionOffset.y,0);
-				ViewPort.setPosByPlayerPosition(drawPos);
-				
-				if(_transitionOffset.x > self.player.pos.x) _transitionOffset.x -= 3;
-				if(_transitionOffset.y > self.player.pos.y) _transitionOffset.y -= 3;
-				
-				
-				if(_transitionOffset.x <= self.player.pos.x && _transitionOffset.y <= self.player.pos.y) self.gameReady = true;
+				if(!self.transitioned) {
+					var drawPos = utils.iso(_transitionOffset.x,_transitionOffset.y,0);
+					ViewPort.setPosByPlayerPosition(drawPos);
+					
+					if(_transitionOffset.x < self.player.pos.x) _transitionOffset.x += 3;
+					if(_transitionOffset.y < self.player.pos.y) _transitionOffset.y += 3;
+					
+					
+					if(_transitionOffset.x >= self.player.pos.x && _transitionOffset.y >= self.player.pos.y) self.initCountdown();
+				} else {
+					self.updateCountdown(dt);
+				}
 		    }
 		    
 		    if(paused) { requestAnimFrame(self.gameLoop); return; }
@@ -127,6 +147,30 @@ function($,       requestAnimFrame,  config,  utils,  pixi,  GameView,  StatusBa
 		    var now = +new Date;
 		    //console.log("execution time:", now - then);
 		    setTimeout(self.slowTick,tickTime);
+	    },
+	    initCountdown: function() {
+		    this.transitioned = true;
+		    var counter = new Countdown();
+		    this.view.addCountdown(counter);
+		    
+		    this.count = 4;
+		    this.countTime = 0;
+	    },
+	    updateCountdown: function(dt) {
+		    this.countTime += dt;
+		    if(this.countTime >= 1000) {
+			    this.count--;
+			    if(this.count > 1) {
+				    Countdown.updateCounter(this.count-1);
+				    this.countTime = 0;
+			    } else if (this.count > 0) {
+				    Countdown.updateCounter("GO!");
+				    this.countTime = 0;
+			    } else {
+				    this.gameReady = true;
+				    Countdown.removeCounter();
+			    }
+		    }
 	    },
 	    update: function(dt) {
 		    for(var i in this.entities) this.entities[i].update(dt);
