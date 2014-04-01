@@ -16,12 +16,13 @@ define(["jquery","Enemy","config","utils"], function($,Enemy,config,utils) {
     Spinner.prototype = Object.create( Enemy.prototype );
     
     Spinner.prototype.onBounce = function(){
-		this.bounceCounter++;
+		//this.bounceCounter++;
 		this.jumping = false;
 		this.bouncing = true;
 
 		var nextDir = nextDirection(this.dir);
 		this.changeDir(nextDir);
+/*
 		if(this.bounceCounter == this.numBouncesBeforeJump) {
 			this.destSpace = this.getDestination(this.dir);
 			if(this.destSpace) {
@@ -30,6 +31,7 @@ define(["jquery","Enemy","config","utils"], function($,Enemy,config,utils) {
 			}
 			this.bounceCounter = 0;
 		}	
+*/
 		
 		this.shoot();
     };

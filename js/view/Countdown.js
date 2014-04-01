@@ -8,7 +8,7 @@ define(["jquery","pixi","config"], function($,pixi,config){
         
         textReadout = new pixi.Text(3,{
 	        font: 'bold 96px Arial',
-	        fill: 'black'
+	        fill: 'red'
         });
         textReadout.anchor.x = .5;
         textReadout.anchor.y = .5;

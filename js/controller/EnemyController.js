@@ -8,6 +8,7 @@ define(["jquery","config","Spinner","Drone","Chaser","utils"], function($,config
     
     EnemyController.prototype = {
 		createEnemies: function(game_mode) {
+			//debugger;
 			var count = 0;
 			
 			this.addDrones(config.enemyCounts[game_mode].DRONE);
@@ -51,6 +52,7 @@ define(["jquery","config","Spinner","Drone","Chaser","utils"], function($,config
 				var y = utils.rand(0,config.boardSpaceTotal.y);
 				
 				var space = map.getSpace(x,y);
+				if(!space) continue;
 				if(!space.occupied) {
 					if(!topOfTheWorld) return space;
 					if(space.blockHeight == config.maxBlockHeight-1) return space;

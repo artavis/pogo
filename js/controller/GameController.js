@@ -61,7 +61,7 @@ define(function(require){
 			$("#slower").on("click",function(){ setSlowTick = !setSlowTick; });
 			
 		    
-		    this.startGame(config.GAME_MODES.EASY);
+		    this.startGame(config.GAME_MODES.HARD);
 		    $.publish("GameLoaded");
 
 	    },
@@ -76,6 +76,9 @@ define(function(require){
 		    requestAnimFrame(this.gameLoop);
 
 		    
+	    },
+	    endGame: function(win) {
+			this.view.showGameOverScreen();  
 	    },
 	    pausePlay: function() {
 		    paused = !paused;
