@@ -1,6 +1,10 @@
 define(["jquery"], function($) {
     
-    return {
+    var screenW = $(window).width();
+    var screenH = $(window).height();
+    //console.log(screenW,screenH);
+    
+    var _configOpts = {
 	    canvasSize: { width:720, height:480 },
 	    
 	    //Board Spaces
@@ -14,6 +18,8 @@ define(["jquery"], function($) {
 	    pogoWidth: 24,
 	    pogoHeight: 48,
 	    pogoGunHeight: 16,
+	    
+	    playerHealth: 10,
 	    
 	    //Enemies
 	    gunPower: {
@@ -30,7 +36,7 @@ define(["jquery"], function($) {
 	    enemyCounts: {
 		    "easy": {DRONE: 5, SPINNER: 5, CHASER: 3},
 		    "medium": {DRONE: 7, SPINNER: 7, CHASER: 6},
-		    "hard": {DRONE: 15, SPINNER: 15, CHASER: 10},
+		    "hard": {DRONE: 0, SPINNER: 0, CHASER: 20},
 	    },
 	    
 	    //Bullets
@@ -51,6 +57,17 @@ define(["jquery"], function($) {
 		    HARD: "hard"
 	    }
     };
+    
+    function Config() {
+	    return _configOpts;
+    }
+    
+    Config.update = function(prop,val) {
+	    if(typeof _configOpts[prop] === typeof val) {
+			_configOpts[prop] = val;    
+	    }	    
+    }
+    return Config;
     
     
 });

@@ -9,9 +9,9 @@ define(["jquery","pixi","config"], function($,pixi,config){
     function StatusBar(){
 		bar = new pixi.DisplayObjectContainer();
 		
-		bar.width = config.canvasSize.width;
-		bar.height = config.canvasSize.height/6;
-		bar.y = config.canvasSize.height*5/6;
+		bar.width = config().canvasSize.width;
+		bar.height = config().canvasSize.height/6;
+		bar.y = config().canvasSize.height*5/6;
 		
 		var fade = this.createBarBg();
         bar.addChild(fade);
@@ -42,7 +42,7 @@ define(["jquery","pixi","config"], function($,pixi,config){
         healthDisplay = this.createTextDisplay({
 	        x: boxWidth/2,
 	        y: boxHeight/2,
-	        text: 'health:\n10',
+	        text: 'health:\n'+config().playerHealth,
         });
 		healthBox.addChild(healthDisplay);
         bar.addChild(healthBox);

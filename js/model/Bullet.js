@@ -1,6 +1,6 @@
 define(["jquery","config","Entity","BulletView","Explosion"], function($,config,Entity,BulletView,Explosion) {
     
-    var _bulletSpeed = config.spaceWidth*config.bulletVelocityFactor;
+    var _bulletSpeed = config().spaceWidth*config().bulletVelocityFactor;
     
     function Bullet(shooter,type) {
 	    Entity.call(this);
@@ -10,12 +10,12 @@ define(["jquery","config","Entity","BulletView","Explosion"], function($,config,
 	    this.type = type || Bullet.TYPES.NORMAL;
 	    this.currentSpace = shooter.currentSpace || GAME_CONTROLLER.map.getSpace(0,0);
 	    this.setSize({
-			width: config.bulletSize,
-			height: config.bulletSize,
-			z: config.bulletSize
+			width: config().bulletSize,
+			height: config().bulletSize,
+			z: config().bulletSize
 	    });
 		
-		this.dir = shooter.dir || config.DIRS.LEFT;
+		this.dir = shooter.dir || config().DIRS.LEFT;
 	    this.setOriginPos(shooter,this.dir);
 	    this.getNextSpace();
 	    
@@ -59,13 +59,13 @@ define(["jquery","config","Entity","BulletView","Explosion"], function($,config,
     }
     Bullet.prototype.setOriginPos = function(shooter,dir) {
 	    var origPos;
-	    if(dir == config.DIRS.LEFT) {
+	    if(dir == config().DIRS.LEFT) {
 		    origPos = {x: shooter.pos.x - shooter.size.width, y: shooter.pos.y, z: shooter.pos.z + shooter.gunHeight};
-	    } else if(dir == config.DIRS.RIGHT) {
+	    } else if(dir == config().DIRS.RIGHT) {
 		    origPos = {x: shooter.pos.x + shooter.size.width, y: shooter.pos.y, z: shooter.pos.z + shooter.gunHeight};
-	    } else if(dir == config.DIRS.UP) {
+	    } else if(dir == config().DIRS.UP) {
 		    origPos = {x: shooter.pos.x, y: shooter.pos.y - shooter.size.height, z: shooter.pos.z + shooter.gunHeight};
-	    } else if(dir == config.DIRS.DOWN) {
+	    } else if(dir == config().DIRS.DOWN) {
 		    origPos = {x: shooter.pos.x, y: shooter.pos.y + shooter.size.height, z: shooter.pos.z + shooter.gunHeight};
 	    } else {
 		    origPos = {x: shooter.pos.x, y: shooter.pos.y, z: shooter.gunHeight};
@@ -73,13 +73,13 @@ define(["jquery","config","Entity","BulletView","Explosion"], function($,config,
 	    this.setPos(origPos);
     };
     Bullet.prototype.setVelocity = function(dir) {
-	    if(dir == config.DIRS.LEFT) {
+	    if(dir == config().DIRS.LEFT) {
 		    this.velocity = {x: -_bulletSpeed, y: 0 };
-	    } else if(dir == config.DIRS.RIGHT) {
+	    } else if(dir == config().DIRS.RIGHT) {
 		    this.velocity = {x: _bulletSpeed, y: 0 };
-	    } else if(dir == config.DIRS.UP) {
+	    } else if(dir == config().DIRS.UP) {
 		    this.velocity = {x: 0, y: -_bulletSpeed };
-	    } else if(dir == config.DIRS.DOWN) {
+	    } else if(dir == config().DIRS.DOWN) {
 		    this.velocity = {x: 0, y: _bulletSpeed };
 	    } else {
 		    this.velocity = {x: 10000, y: 10000 };
@@ -87,21 +87,21 @@ define(["jquery","config","Entity","BulletView","Explosion"], function($,config,
     };
     Bullet.prototype.getNextSpace = function(){
 	    var map = GAME_CONTROLLER.map;
-	    if(this.dir == config.DIRS.LEFT) {
+	    if(this.dir == config().DIRS.LEFT) {
 		    this.nextSpace = map.getSpace(this.currentSpace.xIndex-1,this.currentSpace.yIndex);
-	    } else if(this.dir == config.DIRS.RIGHT) {
+	    } else if(this.dir == config().DIRS.RIGHT) {
 		    this.nextSpace = map.getSpace(this.currentSpace.xIndex+1,this.currentSpace.yIndex);
-	    } else if(this.dir == config.DIRS.UP) {
+	    } else if(this.dir == config().DIRS.UP) {
 		    this.nextSpace = map.getSpace(this.currentSpace.xIndex,this.currentSpace.yIndex-1);
-	    } else if(this.dir == config.DIRS.DOWN) {
+	    } else if(this.dir == config().DIRS.DOWN) {
 		    this.nextSpace = map.getSpace(this.currentSpace.xIndex,this.currentSpace.yIndex+1);
 	    } 
     };
     Bullet.prototype.leavingCurrentSpace = function() {
-	    return (this.pos.x < this.currentSpace.edges.left && this.dir == config.DIRS.LEFT) || 
-	    	(this.pos.x >= this.currentSpace.edges.right && this.dir == config.DIRS.RIGHT) || 
-	    	(this.pos.y < this.currentSpace.edges.top && this.dir == config.DIRS.UP) || 
-	    	(this.pos.y >= this.currentSpace.edges.bottom && this.dir == config.DIRS.DOWN);
+	    return (this.pos.x < this.currentSpace.edges.left && this.dir == config().DIRS.LEFT) || 
+	    	(this.pos.x >= this.currentSpace.edges.right && this.dir == config().DIRS.RIGHT) || 
+	    	(this.pos.y < this.currentSpace.edges.top && this.dir == config().DIRS.UP) || 
+	    	(this.pos.y >= this.currentSpace.edges.bottom && this.dir == config().DIRS.DOWN);
     }
     Bullet.prototype.update = function(dt) {
 	    this.pos.x += (dt*this.velocity.x)/1000;

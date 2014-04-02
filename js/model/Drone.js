@@ -5,8 +5,8 @@ define(["jquery","Enemy","config","utils"], function($,Enemy,config,utils) {
 		
 		this.dir = this.getStartingDirection();
 
-		this.setPower(config.gunPower.DRONE);
-		this.setPointValue(config.pointValues.DRONE);
+		this.setPower(config().gunPower.DRONE);
+		this.setPointValue(config().pointValues.DRONE);
 
 		return this;
     }
@@ -35,14 +35,14 @@ define(["jquery","Enemy","config","utils"], function($,Enemy,config,utils) {
     
     function nextDirection(dir) {
 		switch(dir) {
-			case config.DIRS.UP:
-				return config.DIRS.DOWN;
-			case config.DIRS.RIGHT:
-				return config.DIRS.LEFT;
-			case config.DIRS.DOWN:
-				return config.DIRS.UP;
-			case config.DIRS.LEFT:
-				return config.DIRS.RIGHT;
+			case config().DIRS.UP:
+				return config().DIRS.DOWN;
+			case config().DIRS.RIGHT:
+				return config().DIRS.LEFT;
+			case config().DIRS.DOWN:
+				return config().DIRS.UP;
+			case config().DIRS.LEFT:
+				return config().DIRS.RIGHT;
 		}    
     }
         

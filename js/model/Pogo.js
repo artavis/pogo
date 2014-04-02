@@ -1,19 +1,19 @@
 define(["jquery","utils","config","Entity","PogoView","Bullet","Explosion"], function($,utils,config,Entity,PogoView,Bullet,Explosion) {
     
-	var _bounceLength = config.spaceWidth*5,
-		_jumpLength = config.spaceWidth*6,
+	var _bounceLength = config().spaceWidth*5,
+		_jumpLength = config().spaceWidth*6,
 		_moveLength =_jumpLength*2, 
-		_bounceHeight = config.pogoHeight*2/3, 
-		_jumpHeight = config.pogoHeight*4/3;
+		_bounceHeight = config().pogoHeight*2/3, 
+		_jumpHeight = config().pogoHeight*4/3;
 	
     function Pogo(startingSpace) {
 	    
 	    Entity.call(this);
 	    
 	    this.setSize({
-		    width: config.pogoWidth,
-		    height: config.pogoWidth,
-		    z: config.pogoHeight
+		    width: config().pogoWidth,
+		    height: config().pogoWidth,
+		    z: config().pogoHeight
 	    });
 	    this.checkCollide = true;
 	    this.health = 1;
@@ -34,7 +34,7 @@ define(["jquery","utils","config","Entity","PogoView","Bullet","Explosion"], fun
 	    this.moveTime = 0;
 	    this.dir = Pogo.JUMP_DIRS.UP;
 	    
-	    this.gunHeight = config.pogoGunHeight;
+	    this.gunHeight = config().pogoGunHeight;
 	    
 	    this.view = new PogoView(this);
 	    
@@ -112,7 +112,11 @@ define(["jquery","utils","config","Entity","PogoView","Bullet","Explosion"], fun
 			return false;    
 	    }
 	    
-	    if(this.canJumpToSpace(dest)) return dest;
+	    if(this.canJumpToSpace(dest)) {
+	    	dest.occupy();
+	    	this.currentSpace.unoccupy();
+	    	return dest;
+	    }
 	    return false;
     };
     
@@ -199,9 +203,6 @@ define(["jquery","utils","config","Entity","PogoView","Bullet","Explosion"], fun
 		}		
 		if(this.moveTime == _moveLength) {
 			this.moveTime = 0;
-			
-			this.currentSpace.unoccupy();
-			this.destSpace.occupy();
 			this.currentSpace = this.destSpace;
 		}
 		
@@ -240,10 +241,10 @@ define(["jquery","utils","config","Entity","PogoView","Bullet","Explosion"], fun
     Pogo.prototype.onHit = function(){ /* STUB FOR CHILD CLASSES */ };
     
     Pogo.JUMP_DIRS = {
-		LEFT: config.DIRS.LEFT,    
-		RIGHT: config.DIRS.RIGHT,    
-		UP: config.DIRS.UP,    
-		DOWN: config.DIRS.DOWN    
+		LEFT: config().DIRS.LEFT,    
+		RIGHT: config().DIRS.RIGHT,    
+		UP: config().DIRS.UP,    
+		DOWN: config().DIRS.DOWN    
     };
     
     return Pogo; 

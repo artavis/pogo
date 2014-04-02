@@ -1,6 +1,6 @@
 define(["jquery","config"], function($,config){
- 	
- 	var _size = { width: config.canvasSize.width, height: config.canvasSize.height };
+ 	 	
+ 	var _size = { width: config().canvasSize.width, height: config().canvasSize.height };
  	var _pos = { x:0, y:0 };
 
     // I return an initialized object.

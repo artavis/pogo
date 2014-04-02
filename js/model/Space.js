@@ -7,10 +7,10 @@ define(["jquery","utils","config","Entity","SpaceView","Explosion"],
 	    
 	    this.xIndex = xInd;
 		this.yIndex = yInd;
-		this.spaceIndex = (yInd*config.boardSpaceTotal.y) + xInd;
+		this.spaceIndex = (yInd*config().boardSpaceTotal.y) + xInd;
 		
 		this.occupied = false;
-		this.strength = config.blockStrength;
+		this.strength = config().blockStrength;
 	    
 	    this.init();
 	    
@@ -23,21 +23,21 @@ define(["jquery","utils","config","Entity","SpaceView","Explosion"],
     Space.prototype.init = function() {
 		this.blockHeight = initBlockHeight();
 		this.setSize({
-			width: config.spaceWidth,
-			height: config.spaceWidth,
-			z: config.platformHeight * this.blockHeight
+			width: config().spaceWidth,
+			height: config().spaceWidth,
+			z: config().platformHeight * this.blockHeight
 		});
 		this.setPos({
-			x: this.xIndex * config.spaceWidth,
-			y: this.yIndex * config.spaceWidth,
+			x: this.xIndex * config().spaceWidth,
+			y: this.yIndex * config().spaceWidth,
 			z: 0
 		});
 		
 		this.edges = {
-			left: this.pos.x - config.spaceWidth/2,
-			right: this.pos.x + config.spaceWidth/2,
-			top: this.pos.y - config.spaceWidth/2,
-			bottom: this.pos.y + config.spaceWidth/2,
+			left: this.pos.x - config().spaceWidth/2,
+			right: this.pos.x + config().spaceWidth/2,
+			top: this.pos.y - config().spaceWidth/2,
+			bottom: this.pos.y + config().spaceWidth/2,
 		}
 		
 		this.view = new SpaceView(this);
@@ -55,9 +55,9 @@ define(["jquery","utils","config","Entity","SpaceView","Explosion"],
 	Space.prototype.onBoardEdge = function(dir) {
 		if(!dir) return false;		
 		
-		if(dir === "right") return this.xIndex == config.boardSpaceTotal.x - 1;
+		if(dir === "right") return this.xIndex == config().boardSpaceTotal.x - 1;
 		if(dir === "left") return this.xIndex == 0;
-		if(dir === "down") return this.yIndex == config.boardSpaceTotal.y - 1;
+		if(dir === "down") return this.yIndex == config().boardSpaceTotal.y - 1;
 		if(dir === "up") return this.yIndex == 0;
 		
 		return false;
@@ -67,19 +67,19 @@ define(["jquery","utils","config","Entity","SpaceView","Explosion"],
 		if(this.strength <= 0) {
 			this.lower();
 			bullet.multExplosion(3);
-			if(bullet.shooter() == GAME_CONTROLLER.player) GAME_CONTROLLER.addPoints(config.pointValues.BLOCK.lower);
+			if(bullet.shooter() == GAME_CONTROLLER.player) GAME_CONTROLLER.addPoints(config().pointValues.BLOCK.lower);
 		} else {
 			bullet.explode();
 			//this.addHit();
 		}
 	};
 	Space.prototype.lower = function() {
-		this.strength = config.blockStrength;
+		this.strength = config().blockStrength;
 		this.blockHeight -= 1;
 		this.setSize({
-			width: config.spaceWidth,
-			height: config.spaceWidth,
-			z: config.platformHeight * this.blockHeight
+			width: config().spaceWidth,
+			height: config().spaceWidth,
+			z: config().platformHeight * this.blockHeight
 		});
 		this.view.resetBuffer();
 		
@@ -88,7 +88,7 @@ define(["jquery","utils","config","Entity","SpaceView","Explosion"],
 
 	function initBlockHeight() {
 	    //return 3;
-	    return Math.floor(Math.random()*config.maxBlockHeight);
+	    return Math.floor(Math.random()*config().maxBlockHeight);
     }
     
     return Space;

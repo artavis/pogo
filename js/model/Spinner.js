@@ -7,8 +7,8 @@ define(["jquery","Enemy","config","utils"], function($,Enemy,config,utils) {
 		this.bounceCounter = 0;
 		this.numBouncesBeforeJump = utils.oneOrNegOne() + 4;
 
-		this.setPower(config.gunPower.SPINNER);
-		this.setPointValue(config.pointValues.SPINNER);
+		this.setPower(config().gunPower.SPINNER);
+		this.setPointValue(config().pointValues.SPINNER);
 
 		return this;
     }
@@ -38,14 +38,14 @@ define(["jquery","Enemy","config","utils"], function($,Enemy,config,utils) {
     
     function nextDirection(dir) {
 		switch(dir) {
-			case config.DIRS.UP:
-				return config.DIRS.RIGHT;
-			case config.DIRS.RIGHT:
-				return config.DIRS.DOWN;
-			case config.DIRS.DOWN:
-				return config.DIRS.LEFT;
-			case config.DIRS.LEFT:
-				return config.DIRS.UP;
+			case config().DIRS.UP:
+				return config().DIRS.RIGHT;
+			case config().DIRS.RIGHT:
+				return config().DIRS.DOWN;
+			case config().DIRS.DOWN:
+				return config().DIRS.LEFT;
+			case config().DIRS.LEFT:
+				return config().DIRS.UP;
 		}    
     }
         

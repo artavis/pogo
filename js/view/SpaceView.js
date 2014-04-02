@@ -36,7 +36,7 @@ define(["jquery","utils","config","EntityView","pixi"], function($,utils,config,
 
     
     function createBufferCanvas(blockHeight) {
-		var size = config.platformHeight * blockHeight;
+		var size = config().platformHeight * blockHeight;
 		var iso = isoPoints(0,size,true);
 		
 		var buffer = document.createElement("canvas");
@@ -56,12 +56,12 @@ define(["jquery","utils","config","EntityView","pixi"], function($,utils,config,
     }
     
     function drawBlockOnBuffer(bcx,bH,blockHeight) {
-	    var z1 = bH*config.platformHeight;
-	    var z2 = z1 + config.platformHeight;
+	    var z1 = bH*config().platformHeight;
+	    var z2 = z1 + config().platformHeight;
 	    var iso = isoPoints(z1,z2);
 
 	    var bR = blockHeight-bH-1;
-	    var z3 = bR*config.platformHeight*config.isoZFactor;
+	    var z3 = bR*config().platformHeight*config().isoZFactor;
     	
     	for(var i in iso) {
 			iso[i].y += (z3);
@@ -108,7 +108,7 @@ define(["jquery","utils","config","EntityView","pixi"], function($,utils,config,
     function createSpaceImages() {
 	    if(spaceImages != null) return;
 	    spaceImages = [];
-	    for(var i=0; i<config.maxBlockHeight; i++) {
+	    for(var i=0; i<config().maxBlockHeight; i++) {
 		    var blocks = {};
 		    blocks[SpaceView.BLOCK_TYPES.NORMAL] = createBufferCanvas(i);
 		    
@@ -118,9 +118,9 @@ define(["jquery","utils","config","EntityView","pixi"], function($,utils,config,
     
     function isoPoints(z1,z2,restrictY) {
 	    var left = 0,
-		    right = config.spaceWidth,
+		    right = config().spaceWidth,
 		    top = 0,
-		    bottom = config.spaceWidth;
+		    bottom = config().spaceWidth;
 		
 		var points = {
 			nw: utils.iso(left,top,z1),

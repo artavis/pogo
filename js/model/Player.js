@@ -1,11 +1,11 @@
-define(["jquery","Pogo","UserInput","utils","ViewPort","StatusBar"], function($,Pogo,UserInput,utils,ViewPort,StatusBar) {
+define(["jquery","config","Pogo","UserInput","utils","ViewPort","StatusBar"], function($,config,Pogo,UserInput,utils,ViewPort,StatusBar) {
         
     function Player(space) {
 		Pogo.call(this,space);
 		
 		var self = this;
 		
-		this.health = 10;
+		this.health = config().playerHealth;
 		this.setPower({shot:1,block:1});
 				
 		$.subscribe("keyPressed",handleInput);
@@ -68,6 +68,7 @@ define(["jquery","Pogo","UserInput","utils","ViewPort","StatusBar"], function($,
 	    StatusBar.updatePlayerHealth(this.health);
     };
     Player.prototype.onKill = function() {
+	    StatusBar.updatePlayerHealth(this.health);
 	    GAME_CONTROLLER.endGame(false);
     };
     

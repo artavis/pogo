@@ -1,6 +1,6 @@
 define(["jquery","ViewPort","config"], function($,ViewPort,config) {
     
-    var isoZ = config.isoZFactor;
+    var isoZ = config().isoZFactor;
 
     function iso(x,y,z) {
 	   	return {

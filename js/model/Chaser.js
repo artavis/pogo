@@ -6,8 +6,10 @@ define(["jquery","Enemy","config","utils"], function($,Enemy,config,utils) {
 		this.dir = this.getStartingDirection();
 		this.noTurn = false;
 		
-		this.setPower(config.gunPower.CHASER);
-		this.setPointValue(config.pointValues.CHASER);
+		this.setPower(config().gunPower.CHASER);
+		this.setPointValue(config().pointValues.CHASER);
+		
+		this.chasing = false;
 		
 		return this;
     }
@@ -16,8 +18,13 @@ define(["jquery","Enemy","config","utils"], function($,Enemy,config,utils) {
     
     Chaser.prototype.onBounce = function(){
 		
-		this.jumping = !this.jumping;
-		this.bouncing = !this.bouncing;
+		if(this.chasing) {
+			this.jumping = true;
+			this.bouncing = false;
+		} else {
+			this.jumping = !this.jumping;
+			this.bouncing = !this.bouncing;
+		}
 		
 		if(this.jumping) {
 			this.destSpace = this.getDestination(this.dir);
@@ -36,25 +43,28 @@ define(["jquery","Enemy","config","utils"], function($,Enemy,config,utils) {
 				}
 			}
 		}
-		if(this.bouncing) this.shoot();
+		if(this.chasing) this.shoot();
     };
     Chaser.prototype.onUpdate = function() {	    
 	    if(this.currentSpace.xIndex == GAME_CONTROLLER.player.currentSpace.xIndex) {
 		    if(this.currentSpace.yIndex > GAME_CONTROLLER.player.currentSpace.yIndex) {
-			    this.changeDir(config.DIRS.UP);
+			    this.changeDir(config().DIRS.UP);
 		    } else {
-			    this.changeDir(config.DIRS.DOWN);
+			    this.changeDir(config().DIRS.DOWN);
 		    }
 		    this.noTurn = true;
+		    this.chasing = true
 	    } else if(this.currentSpace.yIndex == GAME_CONTROLLER.player.currentSpace.yIndex) {
 		    if(this.currentSpace.xIndex > GAME_CONTROLLER.player.currentSpace.xIndex) {
-			    this.changeDir(config.DIRS.LEFT);
+			    this.changeDir(config().DIRS.LEFT);
 		    } else {
-			    this.changeDir(config.DIRS.RIGHT);
+			    this.changeDir(config().DIRS.RIGHT);
 		    }
 		    this.noTurn = true;
+		    this.chasing = true;
 	   	} else {
 		   	this.noTurn = false;
+		   	this.chasing = false;
 	   	}
     };
     
@@ -62,15 +72,15 @@ define(["jquery","Enemy","config","utils"], function($,Enemy,config,utils) {
 		var ind = utils.rand(0,4);
 		switch(ind) {
 			case 0:
-				return config.DIRS.DOWN;
+				return config().DIRS.DOWN;
 			case 1:
-				return config.DIRS.LEFT;
+				return config().DIRS.LEFT;
 			case 2:
-				return config.DIRS.UP;
+				return config().DIRS.UP;
 			case 3:
-				return config.DIRS.RIGHT;
+				return config().DIRS.RIGHT;
 			default:
-				return config.DIRS.RIGHT;
+				return config().DIRS.RIGHT;
 		}    
     }
         

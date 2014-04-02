@@ -26,15 +26,15 @@ define(["jquery","config","Pogo","utils"], function($,config,Pogo,utils) {
 	    var num2 = utils.oneOrNegOne();
 	    if(num1 < 0) {
 		    if(num2 < 0) {
-			    return config.DIRS.RIGHT; 
+			    return config().DIRS.RIGHT; 
 		    } else {
-			    return config.DIRS.LEFT;
+			    return config().DIRS.LEFT;
 		    }
 	    } else {
 		    if(num2 < 0) {
-			    return config.DIRS.UP;
+			    return config().DIRS.UP;
 		    } else {
-			    return config.DIRS.DOWN;
+			    return config().DIRS.DOWN;
 		    }
 	    }
     };

@@ -3,6 +3,7 @@ define(function(require){
 	var $ 					= require('jquery'),
 	    requestAnimFrame 	= require('requestAnimFrame'),
 	    config 				= require('config'),
+
 	    utils 				= require('utils'),
 	    pixi 				= require('pixi'),
 	    GameView 			= require('GameView'),
@@ -11,13 +12,14 @@ define(function(require){
 	    Player 				= require('Player'),
 	    Pogo 				= require('Pogo'),
 	    EnemyController 	= require('EnemyController'),
-	    Countdown 	= require('Countdown'),
-	    ViewPort 			= require('ViewPort');
+	    Countdown 			= require('Countdown'),
+	    ViewPort 			= require('ViewPort'),
+
 	
 //define(["jquery","requestAnimFrame","config","utils","pixi","GameView","StatusBar","Map","Player","Pogo","EnemyController","ViewPort"], 
 //function($,       requestAnimFrame,  config,  utils,  pixi,  GameView,  StatusBar,  Map,  Player,  Pogo,  EnemyController,  ViewPort) {
     
-   	var _gameStartTime=0, 
+   	 	_gameStartTime=0, 
    		_currentTime = 0, 
    		_lastFPSDisplay = 0,
    		_lastTimerUpdate = 0,
@@ -29,6 +31,8 @@ define(function(require){
    		_transitionOffset = {x:-150,y:-150},
    		_gameMap,
    		self;
+   		
+   	var GAME_LOADED = false;
     
     function GameController() {
 	    self = this;
@@ -45,6 +49,33 @@ define(function(require){
     
     GameController.prototype = {
 	    init: function() {
+			
+			$("#pauser").on("click",function(){ paused = !paused; });
+			$("#slower").on("click",function(){ setSlowTick = !setSlowTick; });
+			$("#start").on("click",function(){ 
+				if(GAME_LOADED) { window.location.reload(); return; }
+				$(this).val("RELOAD");
+				$(this).blur();
+				var counts = {
+					"easy": {
+						DRONE: parseInt($("#drones").val()), 
+						SPINNER: parseInt($("#spinners").val()), 
+						CHASER: parseInt($("#chasers").val())
+					}
+				}
+				var health = parseInt($("#health").val());
+				
+				config.update("enemyCounts",counts);
+				config.update("playerHealth",health);
+				
+				self.initNewGame();
+			});
+			
+			
+			//this.initNewGame();
+
+	    },
+	    initNewGame: function() {
 		    this.view = new GameView();
 		    this.statusBar = new StatusBar();
 		    this.view.addStatusBar(this.statusBar);
@@ -53,17 +84,14 @@ define(function(require){
 		    this.map = _gameMap;
 		    
 			this.createPlayer();
-			//this.createEnemies();
 			
-			//console.log(player.currentSpace());
-			
-			$("#pauser").on("click",function(){ paused = !paused; });
-			$("#slower").on("click",function(){ setSlowTick = !setSlowTick; });
-			
+		    this.startGame(config().GAME_MODES.EASY);
 		    
-		    this.startGame(config.GAME_MODES.HARD);
+		    GAME_LOADED = true;
 		    $.publish("GameLoaded");
-
+	    },
+	    clearGame: function() {
+		    
 	    },
 	    startGame: function(mode) {
 		    this.createEnemies(mode);
@@ -78,7 +106,12 @@ define(function(require){
 		    
 	    },
 	    endGame: function(win) {
-			this.view.showGameOverScreen();  
+			if(win) {
+				this.view.showVictoryScreen(_currentTime,_totalPoints);
+			} else {
+				this.view.showGameOverScreen();  	
+			}
+			
 	    },
 	    pausePlay: function() {
 		    paused = !paused;
@@ -227,7 +260,9 @@ define(function(require){
 		    }
 	    },
 	    createPlayer: function() {
-		    this.player = new Player(_gameMap.spaces[config.boardSpaceTotal.y-2][config.boardSpaceTotal.x-2]);
+		    var y = Math.round(config().boardSpaceTotal.y/2);
+		    var x = Math.round(config().boardSpaceTotal.x/2);
+		    this.player = new Player(_gameMap.spaces[y][x]);
 			this.entities.push(this.player);			
 	    },
 	    createEnemies: function(mode) {
@@ -246,7 +281,7 @@ define(function(require){
 		    
 		    if(_totalEnemies === 0) {
 			    //END GAME!!!!
-			    
+			    this.endGame(true);
 		    }
 	    },
 	    updateTimer: function(dt) {

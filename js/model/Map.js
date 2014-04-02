@@ -1,8 +1,8 @@
 define(["jquery","config","Space","Pogo"], function($,config,Space,Pogo) {
     
-    var X_SPACES = config.boardSpaceTotal.x, 
-        Y_SPACES = config.boardSpaceTotal.y,
-        SPACE_WIDTH = config.spaceWidth;
+    var X_SPACES = config().boardSpaceTotal.x, 
+        Y_SPACES = config().boardSpaceTotal.y,
+        SPACE_WIDTH = config().spaceWidth;
 
     function Map() {
 	    this.init = function() {

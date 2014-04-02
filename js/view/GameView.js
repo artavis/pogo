@@ -3,7 +3,7 @@ define(["jquery","config","pixi","ViewPort"], function($,config,pixi,ViewPort){
 	var stage, renderer, gameObjects;
 	
 	var bgImg, statusBar, overlay;
-	var canvasRatio = config.canvasSize.width/config.canvasSize.height;
+	var canvasRatio = config().canvasSize.width/config().canvasSize.height;
 	
 	var fadingOut = false;
 	var fadeLevel = 0;
@@ -11,7 +11,7 @@ define(["jquery","config","pixi","ViewPort"], function($,config,pixi,ViewPort){
     function GameView(){
 
         stage = new pixi.Stage(0x000000);
-        renderer = pixi.autoDetectRenderer(config.canvasSize.width, config.canvasSize.height);
+        renderer = pixi.autoDetectRenderer(config().canvasSize.width, config().canvasSize.height);
         
         gameObjects = new pixi.DisplayObjectContainer();
         
@@ -37,7 +37,7 @@ define(["jquery","config","pixi","ViewPort"], function($,config,pixi,ViewPort){
 			if(fadingOut) {
 				overlay.alpha = fadeLevel;
 
-				fadeLevel += 0.005;
+				fadeLevel += 0.01;
 				if(fadeLevel >= 1) fadeLevel = 1;
 			}
 			//stage.addChildAt(bgImg,0);
@@ -67,22 +67,60 @@ define(["jquery","config","pixi","ViewPort"], function($,config,pixi,ViewPort){
         },
         showGameOverScreen: function() {
 	        overlay = new pixi.Graphics();
-	        overlay.width = config.canvasSize.width;
-	        overlay.height = config.canvasSize.height;
+	        overlay.width = config().canvasSize.width;
+	        overlay.height = config().canvasSize.height;
 	        
 	        overlay.beginFill(0xFFFFFF);
 	        overlay.drawRect(0,0,overlay.width,overlay.height);
 	        
-	        var textReadout = new pixi.Text("GAME OVER!",{
-		        font: 'bold 96px Arial',
+	        var textReadout = new pixi.Text("GAME OVER",{
+		        font: 'bold 48px Arial',
 		        fill: 'red'
 	        });
 	        textReadout.anchor.x = .5;
 	        textReadout.anchor.y = .5;
-	        textReadout.x = config.canvasSize.width/2;
-	        textReadout.y = config.canvasSize.height/2;
+	        textReadout.x = config().canvasSize.width/2;
+	        textReadout.y = config().canvasSize.height/2;
 	        
 	        overlay.addChild(textReadout);
+	        stage.addChild(overlay);
+	        fadingOut = true;
+        },
+        showVictoryScreen: function(time,points) {
+	        overlay = new pixi.Graphics();
+	        overlay.width = config().canvasSize.width;
+	        overlay.height = config().canvasSize.height;
+	        
+	        overlay.beginFill(0xFFFFFF);
+	        overlay.drawRect(0,0,overlay.width,overlay.height);
+	        
+	        var textReadout = new pixi.Text("VICTORY",{
+		        font: 'bold 48px Arial',
+		        fill: 'red'
+	        });
+	        textReadout.anchor.x = .5;
+	        textReadout.anchor.y = .5;
+	        textReadout.x = config().canvasSize.width/2;
+	        textReadout.y = config().canvasSize.height*1/3;
+	        
+	        var min = Math.floor(time/60000);
+	        var sec = Math.round((time % 60000)/1000);
+	        var statsText  = "time: "+min+":"+sec+"\n";
+	        	statsText += "points: "+points+"\n";
+	        	
+	        var statsReadout = new pixi.Text(
+	        	statsText,
+	        	{
+		        	font: 'bold 48px Arial',
+					fill: 'red'
+				});
+	        statsReadout.anchor.x = .5;
+	        statsReadout.anchor.y = .5;
+	        statsReadout.x = config().canvasSize.width/2;
+	        statsReadout.y = config().canvasSize.height*2/3;
+	        
+	        overlay.addChild(textReadout);
+	        overlay.addChild(statsReadout);
 	        stage.addChild(overlay);
 	        fadingOut = true;
         }
