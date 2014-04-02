@@ -8,20 +8,12 @@ define(["jquery","config","Pogo","UserInput","utils","ViewPort","StatusBar"], fu
 		this.health = config().playerHealth;
 		this.setPower({shot:1,block:1});
 				
-		$.subscribe("keyPressed",handleInput);
+		$.subscribe("mouseMoveFromUI",handleMouseMove);
 		//Register user input
-
-		function handleInput(key) {
-			if(!this.jumping || !this.goingUp) {
-				switch(key) {
-					case Pogo.JUMP_DIRS.LEFT:
-					case Pogo.JUMP_DIRS.RIGHT:
-					case Pogo.JUMP_DIRS.UP:
-					case Pogo.JUMP_DIRS.DOWN:
-					case "space":
-				}
-			}
-		};
+		
+		function handleMouseMove(e,dir) {
+			self.changeDir(dir);
+		}
 		
 		//this.currentSpace.watch("occupied", function(){ console.error(); });
 		return this;
