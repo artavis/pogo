@@ -90,7 +90,7 @@ define(["jquery","utils","config","Entity","PogoView","Bullet","Explosion"], fun
         
     Pogo.prototype.shoot = function() {
 	    var b = new Bullet(this);
-		GAME_CONTROLLER.addEntity(b);
+	    $.publish("addEntity",b);
 	    
 	    this.shotTriggered = false;
     };
@@ -122,8 +122,6 @@ define(["jquery","utils","config","Entity","PogoView","Bullet","Explosion"], fun
     
     Pogo.prototype.canJumpToSpace = function(space) {		
 		//console.log(space);
-		//GAME_CONTROLLER.pausePlay();
-		//if(space === GAME_CONTROLLER.player.currentSpace) debugger;
 		return (space.blockHeight - this.currentSpace.blockHeight > 1 || space.isOccupied()) ? false : true;
     };
     

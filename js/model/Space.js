@@ -67,7 +67,7 @@ define(["jquery","utils","config","Entity","SpaceView","Explosion"],
 		if(this.strength <= 0) {
 			this.lower();
 			bullet.multExplosion(3);
-			if(bullet.shooter() == GAME_CONTROLLER.player) GAME_CONTROLLER.addPoints(config().pointValues.BLOCK.lower);
+			if(bullet.shooter() == GAME_CONTROLLER.player) $.publish("addPoints",config().pointValues.BLOCK.lower);
 		} else {
 			bullet.explode();
 			//this.addHit();

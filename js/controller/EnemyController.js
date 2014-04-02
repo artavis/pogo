@@ -9,6 +9,7 @@ define(["jquery","config","Spinner","Drone","Chaser","utils"], function($,config
     EnemyController.prototype = {
 		createEnemies: function(game_mode) {
 			//debugger;
+			
 			var count = 0;
 			
 			this.addDrones(config().enemyCounts[game_mode].DRONE);
@@ -25,21 +26,21 @@ define(["jquery","config","Spinner","Drone","Chaser","utils"], function($,config
 			for(var i=0; i<numEnemies; i++) {
 				var space = this.findUnoccupiedSpace();
 				var drone = new Drone(space);
-				GAME_CONTROLLER.addEntity(drone);
+				$.publish("addEntity",drone);
 			}
 		},
 		addSpinners: function(numEnemies) {
 			for(var i=0; i<numEnemies; i++) {
 				var space = this.findUnoccupiedSpace(true);
 				var spinner = new Spinner(space);
-				GAME_CONTROLLER.addEntity(spinner);
+				$.publish("addEntity",spinner);
 			}
 		},
 		addChasers: function(numEnemies) {
 			for(var i=0; i<numEnemies; i++) {
 				var space = this.findUnoccupiedSpace();
 				var chaser = new Chaser(space);
-				GAME_CONTROLLER.addEntity(chaser);
+				$.publish("addEntity",chaser);
 			}
 		},
 		findUnoccupiedSpace: function(topOfTheWorld) {

@@ -19,7 +19,8 @@ define(["jquery","config","utils","Entity","pixi","ExplosionView"], function($,c
 	    
 	    this.view = new ExplosionView(this,type);
 	    
-	    GAME_CONTROLLER.addEntity(this);
+	    $.publish("addEntity",this);
+
 	    return this;
     }
     

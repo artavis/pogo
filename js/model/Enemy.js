@@ -14,11 +14,11 @@ define(["jquery","config","Pogo","utils"], function($,config,Pogo,utils) {
     Enemy.prototype = Object.create( Pogo.prototype );
     
     Enemy.prototype.onKill = function(shooter) {
-	    if(shooter() == GAME_CONTROLLER.player) GAME_CONTROLLER.addPoints(this.pointValue.kill);
-	    GAME_CONTROLLER.reduceEnemyCount();
+	    if(shooter() == GAME_CONTROLLER.player) $.publish("addPoints",this.pointValue.kill);
+	    $.publish("entityKilled");
     };
     Enemy.prototype.onHit = function(shooter) {
-	    if(shooter() == GAME_CONTROLLER.player) GAME_CONTROLLER.addPoints(this.pointValue.hit);
+	    if(shooter() == GAME_CONTROLLER.player) $.publish("addPoints",this.pointValue.hit);
     };
     
     Enemy.prototype.getStartingDirection = function() {

@@ -58,11 +58,11 @@ define(["jquery","config","Pogo","UserInput","utils","ViewPort","StatusBar"], fu
     };
     Player.prototype.onHit = function() {
 	    StatusBar.updatePlayerHealth(this.health);
-	    GAME_CONTROLLER.view.triggerHitFlash();
+	    $.publish("hitFlash");
     };
     Player.prototype.onKill = function() {
 	    StatusBar.updatePlayerHealth(this.health);
-	    GAME_CONTROLLER.endGame(false);
+	    $.publish("endGame",false);
     };
     
     return Player;

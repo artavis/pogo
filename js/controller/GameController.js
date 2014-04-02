@@ -44,7 +44,9 @@ define(function(require){
 	    var assetsToLoad = ["images/pogo.json","images/enemy.json","images/explosion.json"];
 		loader = new pixi.AssetLoader(assetsToLoad);
 		loader.onComplete = this.init.bind(this);
-		loader.load();        
+		loader.load();    
+		
+		return this;    
     }
     
     GameController.prototype = {
@@ -71,9 +73,34 @@ define(function(require){
 				self.initNewGame();
 			});
 			
+			this.addListeners();
+			
 			
 			//this.initNewGame();
 
+	    },
+	    addListeners: function() {
+			$.subscribe("addPoints",function(e,pnts){
+				self.addPoints(pnts);
+			});  
+			$.subscribe("addEntity",function(e,entity){
+				self.addEntity(entity);
+			});  
+			$.subscribe("entityKilled",function(){
+				self.reduceEnemyCount();
+			}); 
+			$.subscribe("removeEntity",function(e,entity){
+				self.removeEntity(entity);
+			});
+			$.subscribe("endGame", function(e,win){
+				self.endGame(win);
+			}); 
+			$.subscribe("hitFlash", function(){
+				self.view.triggerHitFlash();
+			});
+	    },
+	    removeListeners: function() {
+		    
 	    },
 	    initNewGame: function() {
 		    this.view = new GameView();
