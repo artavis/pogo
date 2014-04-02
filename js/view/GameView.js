@@ -7,6 +7,7 @@ define(["jquery","config","pixi","ViewPort"], function($,config,pixi,ViewPort){
 	
 	var fadingOut = false;
 	var fadeLevel = 0;
+	var hitFlash, showFlash = false, hideFlash = false;
     // I return an initialized object.
     function GameView(){
 
@@ -18,6 +19,7 @@ define(["jquery","config","pixi","ViewPort"], function($,config,pixi,ViewPort){
         document.getElementById("canvasHolder").appendChild(renderer.view);
         
         createBgImage();
+        this.createHitFlash();
         
         stage.addChild(bgImg);
         stage.addChild(gameObjects);
@@ -40,8 +42,14 @@ define(["jquery","config","pixi","ViewPort"], function($,config,pixi,ViewPort){
 				fadeLevel += 0.01;
 				if(fadeLevel >= 1) fadeLevel = 1;
 			}
+			
+			if(showFlash) this.showHitFlash();  
+			
+			
 			//stage.addChildAt(bgImg,0);
 	        renderer.render(stage);
+	        
+	        if(hideFlash) this.hideHitFlash();  
         },
         updateDrawOrder: function(drawArray) {
 	        //console.log(drawArray);
@@ -64,6 +72,26 @@ define(["jquery","config","pixi","ViewPort"], function($,config,pixi,ViewPort){
         },
         fadeOutGame: function() {
 	        fadingOut = true;
+        },
+        createHitFlash: function() {
+	        hitFlash = new pixi.Graphics();
+	        hitFlash.width = config().canvasSize.width;
+	        hitFlash.height = config().canvasSize.height;
+	        
+	        hitFlash.beginFill(0xFF0000);
+	        hitFlash.drawRect(0,0,hitFlash.width,hitFlash.height);
+        },
+        triggerHitFlash: function() {
+	        showFlash = true;
+        },
+        showHitFlash: function() {
+	        stage.addChild(hitFlash);
+	        showFlash = false;
+	        hideFlash = true;
+        },
+        hideHitFlash: function() {
+	        stage.removeChild(hitFlash);
+	        hideFlash = false;
         },
         showGameOverScreen: function() {
 	        overlay = new pixi.Graphics();
