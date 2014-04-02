@@ -18,27 +18,51 @@
 	
 	Drones:
 	<select id="drones">
-	<?php $i=1; while($i<=20): ?>
-		<option<?php echo $i==7 ? " selected" : "" ?>><?php echo $i; ?></option>
-	<?php $i++; endwhile; ?>
+		<?php 
+			$text = "";
+			for($i=1;$i<20;$i++){ 
+				$text .= "<option";	
+				$text .= $i == 7 ? " selected" : "";
+				$text .= ">{$i}</option>";	
+			}
+			echo $text;	
+		?>
 	</select>
 	Spinners:
 	<select id="spinners">
-	<?php $i=1; while($i<=20): ?>
-		<option<?php echo $i==3 ? " selected" : "" ?>><?php echo $i; ?></option>
-	<?php $i++; endwhile; ?>
+		<?php 
+			$text = "";
+			for($i=1;$i<20;$i++){ 
+				$text .= "<option";	
+				$text .= $i == 3 ? " selected" : "";
+				$text .= ">{$i}</option>";	
+			}
+			echo $text;	
+		?>
 	</select>
 	Chasers:
 	<select id="chasers">
-	<?php $i=1; while($i<=20): ?>
-		<option<?php echo $i==5 ? " selected" : "" ?>><?php echo $i; ?></option>
-	<?php $i++; endwhile; ?>
+		<?php 
+			$text = "";
+			for($i=1;$i<20;$i++){ 
+				$text .= "<option";	
+				$text .= $i == 5 ? " selected" : "";
+				$text .= ">{$i}</option>";	
+			}
+			echo $text;	
+		?>
 	</select>
 	Player Health:
 	<select id="health">
-	<?php $i=1; while($i<=20): ?>
-		<option<?php echo $i==10 ? " selected" : "" ?>><?php echo $i; ?></option>
-	<?php $i++; endwhile; ?>
+		<?php 
+			$text = "";
+			for($i=1;$i<20;$i++){ 
+				$text .= "<option";	
+				$text .= $i == 10 ? " selected" : "";
+				$text .= ">{$i}</option>";	
+			}
+			echo $text;	
+		?>
 	</select>
 	
 	<input type="button" id="start" value="START" />
