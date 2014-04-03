@@ -1,4 +1,4 @@
-define(["jquery","config","Entity","BulletView","Explosion"], function($,config,Entity,BulletView,Explosion) {
+define(["jquery","config","Entity","BulletView","Explosion","proxy"], function($,config,Entity,BulletView,Explosion,proxy) {
     
     var _bulletSpeed = config().spaceWidth*config().bulletVelocityFactor;
     
@@ -8,7 +8,7 @@ define(["jquery","config","Entity","BulletView","Explosion"], function($,config,
 	    this.checkCollide = true;
 	    this.isProjectile = true;
 	    this.type = type || Bullet.TYPES.NORMAL;
-	    this.currentSpace = shooter.currentSpace || GAME_CONTROLLER.map.getSpace(0,0);
+	    this.currentSpace = shooter.currentSpace || proxy().gameMap.getSpace(0,0);
 	    this.setSize({
 			width: config().bulletSize,
 			height: config().bulletSize,
@@ -86,7 +86,7 @@ define(["jquery","config","Entity","BulletView","Explosion"], function($,config,
 	    }
     };
     Bullet.prototype.getNextSpace = function(){
-	    var map = GAME_CONTROLLER.map;
+	    var map = proxy().gameMap;
 	    if(this.dir == config().DIRS.LEFT) {
 		    this.nextSpace = map.getSpace(this.currentSpace.xIndex-1,this.currentSpace.yIndex);
 	    } else if(this.dir == config().DIRS.RIGHT) {

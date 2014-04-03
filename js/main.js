@@ -19,6 +19,7 @@ requirejs.config({
         config:   			'helpers/config',
         UserInput:   		'helpers/UserInput',
         ViewPort:   		'helpers/ViewPort',
+        proxy:   			'helpers/proxy',
         
         //Game
         GameController:     'controller/GameController',
@@ -69,6 +70,6 @@ IMG.src = "images/pogo.png";
 requirejs(['jquery', 'pubsub', 'UserInput', 'GameController'],
 function   ($,        pubsub,   UserInput,   GameController) {
 
-    window.GAME_CONTROLLER = new GameController();
+    var controller = new GameController();
     UserInput.createListeners();
 });

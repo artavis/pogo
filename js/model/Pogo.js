@@ -1,4 +1,5 @@
-define(["jquery","utils","config","Entity","PogoView","Bullet","Explosion"], function($,utils,config,Entity,PogoView,Bullet,Explosion) {
+define(["jquery","utils","config","Entity","PogoView","Bullet","Explosion","proxy"], 
+function($,utils,config,Entity,PogoView,Bullet,Explosion,proxy) {
     
 	var _bounceLength = config().spaceWidth*5,
 		_jumpLength = config().spaceWidth*6,
@@ -37,7 +38,7 @@ define(["jquery","utils","config","Entity","PogoView","Bullet","Explosion"], fun
 	    this.gunHeight = config().pogoGunHeight;
 	    
 	    this.view = new PogoView(this);
-	    
+	    	    
 	    return this;	    
     }   
     
@@ -96,18 +97,18 @@ define(["jquery","utils","config","Entity","PogoView","Bullet","Explosion"], fun
     };
 
     Pogo.prototype.getDestination = function(dir) {
-	    var dest;
+	    var dest, map = proxy().gameMap;
 	    
 	    if(dir == undefined || dir == null) return false;
 	    
 	    if(dir == Pogo.JUMP_DIRS.LEFT && !this.currentSpace.onBoardEdge(Pogo.JUMP_DIRS.LEFT)) {
-		    dest = GAME_CONTROLLER.map.getSpace(this.currentSpace.xIndex-1,this.currentSpace.yIndex);
+		    dest = map.getSpace(this.currentSpace.xIndex-1,this.currentSpace.yIndex);
 	    } else if(dir == Pogo.JUMP_DIRS.RIGHT && !this.currentSpace.onBoardEdge(Pogo.JUMP_DIRS.RIGHT)) {
-		    dest = GAME_CONTROLLER.map.getSpace(this.currentSpace.xIndex+1,this.currentSpace.yIndex);
+		    dest = map.getSpace(this.currentSpace.xIndex+1,this.currentSpace.yIndex);
 	    } else if(dir == Pogo.JUMP_DIRS.UP && !this.currentSpace.onBoardEdge(Pogo.JUMP_DIRS.UP)) {
-		    dest = GAME_CONTROLLER.map.getSpace(this.currentSpace.xIndex,this.currentSpace.yIndex-1);
+		    dest = map.getSpace(this.currentSpace.xIndex,this.currentSpace.yIndex-1);
 	    } else if(dir == Pogo.JUMP_DIRS.DOWN && !this.currentSpace.onBoardEdge(Pogo.JUMP_DIRS.DOWN)) {
-		    dest = GAME_CONTROLLER.map.getSpace(this.currentSpace.xIndex,this.currentSpace.yIndex+1);
+		    dest = map.getSpace(this.currentSpace.xIndex,this.currentSpace.yIndex+1);
 	    } else {
 			return false;    
 	    }
@@ -208,7 +209,7 @@ define(["jquery","utils","config","Entity","PogoView","Bullet","Explosion"], fun
     };
         
     Pogo.prototype.update = function(dt) {
-		if(!GAME_CONTROLLER.gameReady) {
+		if(!proxy().gameReady) {
 			this.bouncing = true;
 			this.jumping = false;
 			this.bounceFunc(dt);

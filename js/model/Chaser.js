@@ -1,4 +1,4 @@
-define(["jquery","Enemy","config","utils"], function($,Enemy,config,utils) {
+define(["jquery","Enemy","config","utils","proxy"], function($,Enemy,config,utils,proxy) {
         
     function Chaser(space) {
 		Enemy.call(this,space);
@@ -46,19 +46,22 @@ define(["jquery","Enemy","config","utils"], function($,Enemy,config,utils) {
 		if(this.chasing) this.shoot();
     };
     Chaser.prototype.onUpdate = function() {	    
-	    if(this.currentSpace.xIndex == GAME_CONTROLLER.player.currentSpace.xIndex) {
-		    if(this.currentSpace.yIndex > GAME_CONTROLLER.player.currentSpace.yIndex) {
-			    this.changeDir(config().DIRS.UP);
+	    var player = proxy().player;
+	    var cfg = config();
+	    
+	    if(this.currentSpace.xIndex == player.currentSpace.xIndex) {
+		    if(this.currentSpace.yIndex > player.currentSpace.yIndex) {
+			    this.changeDir(cfg.DIRS.UP);
 		    } else {
-			    this.changeDir(config().DIRS.DOWN);
+			    this.changeDir(cfg.DIRS.DOWN);
 		    }
 		    this.noTurn = true;
 		    this.chasing = true
-	    } else if(this.currentSpace.yIndex == GAME_CONTROLLER.player.currentSpace.yIndex) {
-		    if(this.currentSpace.xIndex > GAME_CONTROLLER.player.currentSpace.xIndex) {
-			    this.changeDir(config().DIRS.LEFT);
+	    } else if(this.currentSpace.yIndex == player.currentSpace.yIndex) {
+		    if(this.currentSpace.xIndex > player.currentSpace.xIndex) {
+			    this.changeDir(cfg.DIRS.LEFT);
 		    } else {
-			    this.changeDir(config().DIRS.RIGHT);
+			    this.changeDir(cfg.DIRS.RIGHT);
 		    }
 		    this.noTurn = true;
 		    this.chasing = true;
@@ -70,6 +73,7 @@ define(["jquery","Enemy","config","utils"], function($,Enemy,config,utils) {
     
     function nextDirection() {
 		var ind = utils.rand(0,4);
+		
 		switch(ind) {
 			case 0:
 				return config().DIRS.DOWN;

@@ -1,5 +1,5 @@
-define(["jquery","utils","config","Entity","SpaceView","Explosion"], 
-	function($,   utils,  config,  Entity,  SpaceView,  Explosion) {
+define(["jquery","utils","config","Entity","SpaceView","Explosion","proxy"], 
+	function($,   utils,  config,  Entity,  SpaceView,  Explosion,  proxy) {
             
     function Space(xInd,yInd) {
 	    
@@ -67,7 +67,7 @@ define(["jquery","utils","config","Entity","SpaceView","Explosion"],
 		if(this.strength <= 0) {
 			this.lower();
 			bullet.multExplosion(3);
-			if(bullet.shooter() == GAME_CONTROLLER.player) $.publish("addPoints",config().pointValues.BLOCK.lower);
+			if(bullet.shooter() == proxy().player) $.publish("addPoints",config().pointValues.BLOCK.lower);
 		} else {
 			bullet.explode();
 			//this.addHit();

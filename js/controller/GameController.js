@@ -3,6 +3,7 @@ define(function(require){
 	var $ 					= require('jquery'),
 	    requestAnimFrame 	= require('requestAnimFrame'),
 	    config 				= require('config'),
+	    proxy 				= require('proxy'),
 
 	    utils 				= require('utils'),
 	    pixi 				= require('pixi'),
@@ -109,6 +110,7 @@ define(function(require){
 		    
 		    _gameMap = new Map();
 		    this.map = _gameMap;
+		    proxy.addObject("gameMap",_gameMap);
 		    
 			this.createPlayer();
 			
@@ -127,6 +129,8 @@ define(function(require){
 			ViewPort.setPosByPlayerPosition(drawPos);
 		    
 		    this.gameReady = false;
+		    proxy.addObject("gameReady",false);
+		    
 		    //Start the game loop
 		    requestAnimFrame(this.gameLoop);
 
@@ -231,6 +235,7 @@ define(function(require){
 				    this.countTime = 0;
 			    } else {
 				    this.gameReady = true;
+				    proxy.addObject("gameReady",true);
 				    Countdown.removeCounter();
 			    }
 		    }
@@ -290,7 +295,8 @@ define(function(require){
 		    var y = Math.round(config().boardSpaceTotal.y/2);
 		    var x = Math.round(config().boardSpaceTotal.x/2);
 		    this.player = new Player(_gameMap.spaces[y][x]);
-			this.entities.push(this.player);			
+			this.entities.push(this.player);
+			proxy.addObject("player",this.player);			
 	    },
 	    createEnemies: function(mode) {
 		    var enemyController = new EnemyController();

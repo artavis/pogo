@@ -1,4 +1,4 @@
-define(["jquery","config","Spinner","Drone","Chaser","utils"], function($,config,Spinner,Drone,Chaser,utils){
+define(["jquery","config","Spinner","Drone","Chaser","utils","proxy"], function($,config,Spinner,Drone,Chaser,utils,proxy){
 
     function EnemyController(){
 
@@ -45,7 +45,7 @@ define(["jquery","config","Spinner","Drone","Chaser","utils"], function($,config
 		},
 		findUnoccupiedSpace: function(topOfTheWorld) {
 			topOfTheWorld = topOfTheWorld || false;
-			var map = GAME_CONTROLLER.map;
+			var map = proxy().gameMap;
 			
 			var found = false;
 			while(!found) {
