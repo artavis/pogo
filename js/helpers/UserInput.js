@@ -8,7 +8,8 @@ define(["jquery","config"], function($,config){
 		UP: config().DIRS.UP,
 		DOWN: config().DIRS.DOWN,
 		SPACE: "space",
-		MOUSE_L: "mouse_l"
+		MOUSE_L: "mouse_l",
+		MOUSE_R: "mouse_r"
 	};
     
     var _keys = {};
@@ -18,6 +19,7 @@ define(["jquery","config"], function($,config){
     _keys[KEY_NAMES.DOWN] = false;
     _keys[KEY_NAMES.SPACE] = false;
     _keys[KEY_NAMES.MOUSE_L] = false;
+    _keys[KEY_NAMES.MOUSE_R] = false;
 
     function UserInput(){
         return( this );
@@ -35,6 +37,10 @@ define(["jquery","config"], function($,config){
 		$(document).mousedown(function(e){
 			var key = KEY_NAMES.SPACE;
 			if(key) _keys[key] = true;
+			if(e.which == 1) {
+				var dir = self.getDirectionFromMousePosition(e);
+				$.publish("leftMouseClick",dir);
+			}
 		});
 		$(document).mouseup(function(e){
 			var key = KEY_NAMES.SPACE;

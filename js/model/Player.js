@@ -9,10 +9,14 @@ define(["jquery","config","Pogo","UserInput","utils","ViewPort","StatusBar"], fu
 		this.setPower({shot:1,block:1});
 				
 		$.subscribe("mouseMoveFromUI",handleMouseMove);
+		$.subscribe("leftMouseClick",handleMouseClick);
 		//Register user input
 		
 		function handleMouseMove(e,dir) {
 			self.changeDir(dir);
+		}
+		function handleMouseClick() {
+			self.triggerJump()
 		}
 		
 		//this.currentSpace.watch("occupied", function(){ console.error(); });

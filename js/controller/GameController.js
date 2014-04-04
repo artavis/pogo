@@ -52,6 +52,7 @@ define(function(require){
     
     GameController.prototype = {
 	    init: function() {
+			this.view = new GameView();
 			
 			$("#pauser").on("click",function(){ paused = !paused; });
 			$("#slower").on("click",function(){ setSlowTick = !setSlowTick; });
@@ -71,14 +72,10 @@ define(function(require){
 				config.update("enemyCounts",counts);
 				config.update("playerHealth",health);
 				
-				self.initNewGame();
+				self.initNewGame(config().GAME_MODES.EASY);
 			});
 			
 			this.addListeners();
-			
-			
-			//this.initNewGame();
-
 	    },
 	    addListeners: function() {
 			$.subscribe("addPoints",function(e,pnts){
@@ -103,8 +100,8 @@ define(function(require){
 	    removeListeners: function() {
 		    
 	    },
-	    initNewGame: function() {
-		    this.view = new GameView();
+	    initNewGame: function(mode) {
+		    
 		    this.statusBar = new StatusBar();
 		    this.view.addStatusBar(this.statusBar);
 		    
@@ -113,8 +110,9 @@ define(function(require){
 		    proxy.addObject("gameMap",_gameMap);
 		    
 			this.createPlayer();
+			this.createEnemies(mode);
 			
-		    this.startGame(config().GAME_MODES.EASY);
+		    this.startGame();
 		    
 		    GAME_LOADED = true;
 		    $.publish("GameLoaded");
@@ -122,9 +120,7 @@ define(function(require){
 	    clearGame: function() {
 		    
 	    },
-	    startGame: function(mode) {
-		    this.createEnemies(mode);
-		    
+	    startGame: function() {
 			var drawPos = utils.iso(_transitionOffset.x,_transitionOffset.y,0);
 			ViewPort.setPosByPlayerPosition(drawPos);
 		    
@@ -133,8 +129,6 @@ define(function(require){
 		    
 		    //Start the game loop
 		    requestAnimFrame(this.gameLoop);
-
-		    
 	    },
 	    endGame: function(win) {
 			if(win) {
