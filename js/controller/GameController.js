@@ -68,9 +68,11 @@ define(function(require){
 					}
 				}
 				var health = parseInt($("#health").val());
+				var height = parseInt($("#bHeight").val());
 				
 				config.update("enemyCounts",counts);
 				config.update("playerHealth",health);
+				config.update("maxBlockHeight",height);
 				
 				self.initNewGame(config().GAME_MODES.EASY);
 			});

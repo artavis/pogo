@@ -72,4 +72,30 @@ function   ($,        pubsub,   UserInput,   GameController) {
 
     var controller = new GameController();
     UserInput.createListeners();
+    
+    
+    window.setOpts = function(radio) {
+		var val = radio.getAttribute("value");
+		switch(val) {
+			case "easy":
+				var d=5,s=2,c=1,h=10,b=1;
+				break;
+			case "medium":
+				var d=7,s=3,c=5,h=10,b=2;
+				break;
+			case "hard":
+				var d=0,s=0,c=10,h=10,b=3;
+				break;
+			case "empty":
+				var d=0,s=0,c=0,h=10,b=0;
+				break;
+		}
+		
+		$('#drones option:eq('+d+')').attr('selected', 'selected');
+		$('#spinners option:eq('+s+')').attr('selected', 'selected');
+		$('#chasers option:eq('+c+')').attr('selected', 'selected');
+		$('#health option:eq('+h+')').attr('selected', 'selected');
+		$('#bHeight option:eq('+b+')').attr('selected', 'selected');
+
+    }
 });

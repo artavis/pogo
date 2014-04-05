@@ -20,7 +20,7 @@
 	<select id="drones">
 		<?php 
 			$text = "";
-			for($i=1;$i<20;$i++){ 
+			for($i=0;$i<20;$i++){ 
 				$text .= "<option";	
 				$text .= $i == 7 ? " selected" : "";
 				$text .= ">{$i}</option>";	
@@ -32,7 +32,7 @@
 	<select id="spinners">
 		<?php 
 			$text = "";
-			for($i=1;$i<20;$i++){ 
+			for($i=0;$i<20;$i++){ 
 				$text .= "<option";	
 				$text .= $i == 3 ? " selected" : "";
 				$text .= ">{$i}</option>";	
@@ -44,7 +44,7 @@
 	<select id="chasers">
 		<?php 
 			$text = "";
-			for($i=1;$i<20;$i++){ 
+			for($i=0;$i<20;$i++){ 
 				$text .= "<option";	
 				$text .= $i == 5 ? " selected" : "";
 				$text .= ">{$i}</option>";	
@@ -56,7 +56,7 @@
 	<select id="health">
 		<?php 
 			$text = "";
-			for($i=1;$i<20;$i++){ 
+			for($i=0;$i<20;$i++){ 
 				$text .= "<option";	
 				$text .= $i == 10 ? " selected" : "";
 				$text .= ">{$i}</option>";	
@@ -64,9 +64,22 @@
 			echo $text;	
 		?>
 	</select>
+	Block Height:
+	<select id="bHeight">
+		<option>1</option>
+		<option>2</option>
+		<option selected>3</option>
+		<option>4</option>
+	</select>
 	
-	<input type="button" id="start" value="START" />
-</div>
 
+	<br>
+	EASY:<input type="radio" name="preset" value="easy" onclick="setOpts(this);" />
+	MEDIUM:<input type="radio" name="preset" value="medium" onclick="setOpts(this);" checked />
+	HARD:<input type="radio" name="preset" value="hard" onclick="setOpts(this);" />
+	EMPTY:<input type="radio" name="preset" value="empty" onclick="setOpts(this);" />
+	<br /><br>
+		<input type="button" id="start" value="START" />	
+</div>
 </body>
 </html>
