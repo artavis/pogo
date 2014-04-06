@@ -43,7 +43,6 @@ define(["jquery"],
             },
             removeFromGame: function() {
 	            this.view.removeFromStage();
-	            if(this.currentSpace && !this.isProjectile && !this.isVisualFX) this.currentSpace.unoccupy();
 				$.publish("removeEntity",this);
             }
         };

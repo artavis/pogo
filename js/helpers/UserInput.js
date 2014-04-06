@@ -28,13 +28,14 @@ define(["jquery","config"], function($,config){
 		var self = this;
 		$(document).keydown(function(e){
 			var key = UserInput.getKeyNameFromCode(e.keyCode);
-			if(key) _keys[key] = true;
+			if(key) { e.preventDefault(); _keys[key] = true; }
 		});
 		$(document).keyup(function(e){
 			var key = UserInput.getKeyNameFromCode(e.keyCode);
-			if(key) _keys[key] = false;
+			if(key) { e.preventDefault(); _keys[key] = false; }
 		});
-		$(document).mousedown(function(e){
+		$("#canvasHolder").mousedown(function(e){
+			e.preventDefault();
 			var key = KEY_NAMES.SPACE;
 			if(key) _keys[key] = true;
 			if(e.which == 1) {
@@ -42,11 +43,13 @@ define(["jquery","config"], function($,config){
 				$.publish("leftMouseClick",dir);
 			}
 		});
-		$(document).mouseup(function(e){
+		$("#canvasHolder").mouseup(function(e){
+			e.preventDefault();
 			var key = KEY_NAMES.SPACE;
 			if(key) _keys[key] = false;
 		});
 		$("#canvasHolder").mousemove(function(e){
+			e.preventDefault();
 			var dir = self.getDirectionFromMousePosition(e);
 			$.publish("mouseMoveFromUI",dir);
 		});

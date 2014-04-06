@@ -76,6 +76,7 @@ function($,utils,config,Entity,PogoView,Bullet,Explosion,proxy) {
 			},i*100);
 	    }
 	    this.onKill(shooter);
+	    this.currentSpace.unoccupy();
 	    this.removeFromGame();
     };
     Pogo.prototype.triggerJump = function() {
