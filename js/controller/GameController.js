@@ -9,6 +9,7 @@ define(function(require){
 	    pixi 				= require('pixi'),
 	    GameView 			= require('GameView'),
 	    StatusBar 			= require('StatusBar'),
+	    StartMenu 			= require('StartMenu'),
 	    Map 				= require('Map'),
 	    Player 				= require('Player'),
 	    Pogo 				= require('Pogo'),
@@ -42,7 +43,7 @@ define(function(require){
 	    this.drawArray = [];
 	    this.scheduledTasks = [];	
 	    
-	    var assetsToLoad = ["images/pogo.json","images/enemy.json","images/explosion.json"];
+	    var assetsToLoad = ["images/pogo.json","images/enemy.json","images/explosion.json","images/starbg.png"];
 		loader = new pixi.AssetLoader(assetsToLoad);
 		loader.onComplete = this.init.bind(this);
 		loader.load();    
@@ -53,6 +54,8 @@ define(function(require){
     GameController.prototype = {
 	    init: function() {
 			this.view = new GameView();
+			
+			this.view.addStartMenu(new StartMenu());
 			
 			$("#pauser").on("click",function(){ paused = !paused; });
 			$("#slower").on("click",function(){ setSlowTick = !setSlowTick; });
@@ -74,12 +77,17 @@ define(function(require){
 				config.update("playerHealth",health);
 				config.update("maxBlockHeight",height);
 				
-				self.initNewGame(config().GAME_MODES.EASY);
+				$.publish("startGame",config().GAME_MODES.EASY);
+				//self.initNewGame();
 			});
 			
 			this.addListeners();
+			
+			$.publish("PageLoaded");
 	    },
 	    addListeners: function() {
+			var delegate = window.top.gameDelegate;
+			
 			$.subscribe("addPoints",function(e,pnts){
 				self.addPoints(pnts);
 			});  
@@ -98,13 +106,44 @@ define(function(require){
 			$.subscribe("hitFlash", function(){
 				self.view.triggerHitFlash();
 			});
+			$.subscribe("startGame", function(e,mode){
+				self.initNewGame(mode);
+			});
+			
+			$.subscribe("PageLoaded", function(){
+				//Google analytics
+				//todo
+				delegate.sendEvent("PageLoaded")
+			});
+			$.subscribe("GameStarted", function(e,mode){
+				//Google analytics
+				//todo
+			});
+			$.subscribe("GameEnded", function(e,stats){
+				//Google analytics
+				//todo
+			});
+			$.subscribe("GameRestarting", function(){
+				//Google analytics
+				//todo
+			});
+			
+			window.addEventListener('message', function(e){
+				switch(e.data) {
+					case ("startGame"):
+						//$.publish("startGame",config().GAME_MODES.EASY);
+						break;
+				}
+			}, false);
 	    },
 	    removeListeners: function() {
 		    
 	    },
 	    initNewGame: function(mode) {
+		    config.update("maxBlockHeight",config().blockHeightModes[mode]);
 		    
 		    this.statusBar = new StatusBar();
+		    this.view.hideStartMenu();
 		    this.view.addStatusBar(this.statusBar);
 		    
 		    _gameMap = new Map();
@@ -117,7 +156,7 @@ define(function(require){
 		    this.startGame();
 		    
 		    GAME_LOADED = true;
-		    $.publish("GameLoaded");
+		    $.publish("GameStarted");
 	    },
 	    clearGame: function() {
 		    
@@ -125,6 +164,8 @@ define(function(require){
 	    startGame: function() {
 			var drawPos = utils.iso(_transitionOffset.x,_transitionOffset.y,0);
 			ViewPort.setPosByPlayerPosition(drawPos);
+		    
+		    this.view.beginGameRender();
 		    
 		    this.gameReady = false;
 		    proxy.addObject("gameReady",false);

@@ -2,38 +2,58 @@ define(["jquery","config","pixi","ViewPort"], function($,config,pixi,ViewPort){
  
 	var stage, renderer, gameObjects;
 	
-	var bgImg, statusBar, overlay;
+	var bgImg, statusBar, overlay, _startMenu;
 	var canvasRatio = config().canvasSize.width/config().canvasSize.height;
 	
 	var fadingOut = false;
 	var fadeLevel = 0;
 	var hitFlash, showFlash = false, hideFlash = false;
+	
+	_renderingGame = false;
     // I return an initialized object.
     function GameView(){
 
-        stage = new pixi.Stage(0x000000);
+        stage = new pixi.Stage(0x000000,true);
         renderer = pixi.autoDetectRenderer(config().canvasSize.width, config().canvasSize.height);
         
         gameObjects = new pixi.DisplayObjectContainer();
         
         document.getElementById("canvasHolder").appendChild(renderer.view);
         
-        createBgImage();
-        this.createHitFlash();
+        bgImg = createBgImage();
+        hitFlash = createHitFlash();
         
-        stage.addChild(bgImg);
+        drawBG();
         stage.addChild(gameObjects);
+        renderer.render(stage);
         
         return( this );
     }
     
+    function drawBG() {
+        stage.addChild(bgImg);       
+    }
+
+    
     function createBgImage() {
 		var texture = pixi.Texture.fromImage("images/starbg.png");
-		bgImg = new pixi.Sprite(texture);
+		return new pixi.Sprite(texture);
     }
+    function createHitFlash() {
+        graphic = new pixi.Graphics();
+        graphic.width = config().canvasSize.width;
+        graphic.height = config().canvasSize.height;
+        
+        graphic.beginFill(0xFF0000);
+        graphic.drawRect(0,0,graphic.width,graphic.height);
+        
+        return graphic;
+    }
+
     
     GameView.prototype = {
         renderGame: function(drawArray) {
+	        if(!_renderingGame) return;
 	        this.updateDrawOrder(drawArray);
 			//if(window.DEBUG) console.log(drawArray);
 			if(fadingOut) {
@@ -50,6 +70,17 @@ define(["jquery","config","pixi","ViewPort"], function($,config,pixi,ViewPort){
 	        renderer.render(stage);
 	        
 	        if(hideFlash) this.hideHitFlash();  
+        },
+        addStartMenu: function(menu) {
+	        _startMenu = menu;
+	        stage.addChild(_startMenu);
+	        renderer.render(stage);
+        },
+        hideStartMenu: function() {
+	        stage.removeChild(_startMenu);
+        },
+        beginGameRender: function() {
+	        _renderingGame = true;
         },
         updateDrawOrder: function(drawArray) {
 	        //console.log(drawArray);
@@ -72,14 +103,6 @@ define(["jquery","config","pixi","ViewPort"], function($,config,pixi,ViewPort){
         },
         fadeOutGame: function() {
 	        fadingOut = true;
-        },
-        createHitFlash: function() {
-	        hitFlash = new pixi.Graphics();
-	        hitFlash.width = config().canvasSize.width;
-	        hitFlash.height = config().canvasSize.height;
-	        
-	        hitFlash.beginFill(0xFF0000);
-	        hitFlash.drawRect(0,0,hitFlash.width,hitFlash.height);
         },
         triggerHitFlash: function() {
 	        showFlash = true;

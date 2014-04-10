@@ -5,12 +5,18 @@ define(["jquery"], function($) {
     //console.log(screenW,screenH);
     
     var _configOpts = {
-	    canvasSize: { width:720, height:480 },
+	    //canvasSize: { width:720, height:480 },
+	    canvasSize: { width:screenW, height:screenH },
 	    
 	    //Board Spaces
 	    spaceWidth: 48,
 	    platformHeight: 24,
 	    maxBlockHeight: 4,
+	    blockHeightModes: {
+			"easy": 2,  
+			"medium": 3,  
+			"hard": 4,  
+	    },
 	    boardSpaceTotal: { x: 15, y:15 },
 	    blockStrength: 2,
 	    
@@ -34,9 +40,9 @@ define(["jquery"], function($) {
 		    BLOCK: {hit: 0, lower: 10}
 	    },
 	    enemyCounts: {
-		    "easy": {DRONE: 5, SPINNER: 5, CHASER: 3},
-		    "medium": {DRONE: 7, SPINNER: 7, CHASER: 6},
-		    "hard": {DRONE: 0, SPINNER: 0, CHASER: 20},
+		    "easy": {DRONE: 3, SPINNER: 4, CHASER: 3},
+		    "medium": {DRONE: 5, SPINNER: 5, CHASER: 5},
+		    "hard": {DRONE: 0, SPINNER: 0, CHASER: 10},
 	    },
 	    
 	    //Bullets

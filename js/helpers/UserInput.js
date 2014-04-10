@@ -26,11 +26,11 @@ define(["jquery","config"], function($,config){
     }
     UserInput.createListeners = function() {
 		var self = this;
-		$(document).keydown(function(e){
+		$(window.top).keydown(function(e){
 			var key = UserInput.getKeyNameFromCode(e.keyCode);
 			if(key) { e.preventDefault(); _keys[key] = true; }
 		});
-		$(document).keyup(function(e){
+		$(window.top).keyup(function(e){
 			var key = UserInput.getKeyNameFromCode(e.keyCode);
 			if(key) { e.preventDefault(); _keys[key] = false; }
 		});

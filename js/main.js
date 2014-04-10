@@ -49,6 +49,7 @@ requirejs.config({
         BulletView:			'view/BulletView',
         ExplosionView:		'view/ExplosionView',
         
+        StartMenu:			'view/StartMenu',
         StatusBar:			'view/StatusBar',
         Countdown:			'view/Countdown'
         
@@ -72,8 +73,7 @@ function   ($,        pubsub,   UserInput,   GameController) {
 
     var controller = new GameController();
     UserInput.createListeners();
-    
-    
+        
     window.setOpts = function(radio) {
 		var val = radio.getAttribute("value");
 		switch(val) {
@@ -97,5 +97,5 @@ function   ($,        pubsub,   UserInput,   GameController) {
 		$('#health option:eq('+h+')').attr('selected', 'selected');
 		$('#bHeight option:eq('+b+')').attr('selected', 'selected');
 
-    }
+    };    
 });

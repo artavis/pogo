@@ -1,11 +1,17 @@
+body,html {
+	margin: 0px;
+	padding: 0px;
+}
 h2,h3,h4,h5 {
 	margin: 10px 0px;
 }
 #canvasHolder {
+/*
 	width:720px;
 	height:480px;
 	border:solid 1px #aaa;
 	margin: 20px auto;
+*/
 /*
 	position: fixed;
 	width: 100%;
@@ -17,8 +23,10 @@ h2,h3,h4,h5 {
 */
 }
 #middle {
+/*
 	width: 800px;
 	margin: 0px auto;
+*/
 }
 .button {
 	float: right;
